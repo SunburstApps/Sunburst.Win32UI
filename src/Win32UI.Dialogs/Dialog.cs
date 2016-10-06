@@ -106,15 +106,13 @@ namespace Microsoft.Win32.UserInterface
             using (HGlobal buffer = HGlobal.WithStringUni(dialogName))
             {
                 IntPtr wndProcPtr;
-                if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-                {
-                    wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
-                }
-                else
-                {
-                    Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
-                    wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
-                }
+
+#if CORERT
+                wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
+#else
+                Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
+                wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
+#endif
 
                 IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
                 Handle = NativeMethods.CreateDialogParamW(module.Handle, buffer.Handle,
@@ -125,15 +123,13 @@ namespace Microsoft.Win32.UserInterface
         public void Load(ResourceLoader module, int dialogId, Window parent = null)
         {
             IntPtr wndProcPtr;
-            if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-            {
-                wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
-            }
-            else
-            {
-                Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
-                wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
-            }
+
+#if CORERT
+            wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
+#else
+            Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
+            wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
+#endif
 
             var tag = CreateTag();
 
@@ -149,15 +145,13 @@ namespace Microsoft.Win32.UserInterface
         public void CreateFromTemplate(DialogTemplate template, Window parent = null)
         {
             IntPtr wndProcPtr;
-            if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-            {
-                wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
-            }
-            else
-            {
-                Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
-                wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
-            }
+
+#if CORERT
+            wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
+#else
+            Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
+            wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
+#endif
 
             using (HGlobal templatePtr = template.CreateTemplatePointer())
             {
@@ -170,15 +164,13 @@ namespace Microsoft.Win32.UserInterface
         public void RunModal(DialogTemplate template, Window parent = null)
         {
             IntPtr wndProcPtr;
-            if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-            {
-                wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
-            }
-            else
-            {
-                Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
-                wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
-            }
+
+#if CORERT
+            wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
+#else
+            Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
+            wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
+#endif
 
             using (HGlobal templatePtr = template.CreateTemplatePointer())
             {
@@ -191,15 +183,13 @@ namespace Microsoft.Win32.UserInterface
         public void RunModal(ResourceLoader module, uint dialogId, Window parent = null)
         {
             IntPtr wndProcPtr;
-            if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-            {
-                wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
-            }
-            else
-            {
-                Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
-                wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
-            }
+
+#if CORERT
+            wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
+#else
+            Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
+            wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
+#endif
 
             int tag = mTopmostDialogTag++;
             mDialogs[tag] = this;

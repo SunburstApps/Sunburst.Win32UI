@@ -21,15 +21,12 @@ namespace Microsoft.Win32.UserInterface.TaskDialogs
             config = new TASKDIALOGCONFIG();
             config.cbSize = Marshal.SizeOf<TASKDIALOGCONFIG>();
 
-            if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-            {
-                config.pfCallback = TaskDialogNative.Win32UI_FPtrLookup("Win32UI_TaskDialogCallback");
-            }
-            else
-            {
-                Func<IntPtr, uint, IntPtr, IntPtr, IntPtr, IntPtr> callback = StaticCallback;
-                config.pfCallback = Marshal.GetFunctionPointerForDelegate(callback);
-            }
+#if CORERT
+            config.pfCallback = TaskDialogNative.Win32UI_FPtrLookup("Win32UI_TaskDialogCallback");
+#else
+            Func<IntPtr, uint, IntPtr, IntPtr, IntPtr, IntPtr> callback = StaticCallback;
+            config.pfCallback = Marshal.GetFunctionPointerForDelegate(callback);
+#endif
 
             buttons = new List<TaskDialogButton>();
             radioButtons = new List<TaskDialogButton>();
