@@ -35,5 +35,5 @@
     <DefineConstants>RELEASE;TRACE;NETCOREAPP1_0</DefineConstants>
     <Optimize>true</Optimize>
   </PropertyGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
