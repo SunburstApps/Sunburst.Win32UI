@@ -9,6 +9,19 @@ namespace Microsoft.Win32.UserInterface.Graphics
     /// </summary>
     public class NonOwnedBitmap
     {
+        public static NonOwnedBitmap Load(ResourceLoader loader, string resourceName)
+        {
+            using (HGlobal buffer = HGlobal.WithStringUni(resourceName))
+            {
+                return new NonOwnedBitmap(NativeMethods.LoadBitmap(loader.Handle, buffer.Handle));
+            }
+        }
+
+        public static NonOwnedBitmap Load(ResourceLoader loader, ushort resourceId)
+        {
+            return new NonOwnedBitmap(NativeMethods.LoadBitmap(loader.Handle, (IntPtr)resourceId));
+        }
+
         public NonOwnedBitmap(IntPtr ptr)
         {
             Handle = ptr;

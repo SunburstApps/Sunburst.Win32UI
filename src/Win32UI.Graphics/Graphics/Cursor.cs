@@ -96,6 +96,19 @@ namespace Microsoft.Win32.UserInterface.Graphics
             get { return new Cursor(NativeMethods.LoadCursor(IntPtr.Zero, (IntPtr)32514)); }
         }
 
+        public static Cursor Load(ResourceLoader loader, string resourceName)
+        {
+            using (HGlobal buffer = HGlobal.WithStringUni(resourceName))
+            {
+                return new Cursor(NativeMethods.LoadCursor(loader.Handle, buffer.Handle));
+            }
+        }
+
+        public static Cursor Load(ResourceLoader loader, ushort resourceId)
+        {
+            return new Cursor(NativeMethods.LoadCursor(loader.Handle, (IntPtr)resourceId));
+        }
+
         /// <summary>
         /// Creates a new instance of Cursor.
         /// </summary>
