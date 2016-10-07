@@ -22,12 +22,12 @@ namespace Microsoft.Win32.UserInterface.Graphics
             source.GetSize(out width, out height);
 
             BITMAPINFO info = new BITMAPINFO();
-            info.bmiHeader.biSize = Marshal.SizeOf<BITMAPINFOHEADER>();
-            info.bmiHeader.biWidth = width;
-            info.bmiHeader.biHeight = -height; // the negation is required here
-            info.bmiHeader.biPlanes = 1;
-            info.bmiHeader.biBitCount = 32;
-            info.bmiHeader.biCompression = 0; // == BL_RGB
+            info.biSize = Marshal.SizeOf<BITMAPINFOHEADER>();
+            info.biWidth = width;
+            info.biHeight = -height; // the negation is required here
+            info.biPlanes = 1;
+            info.biBitCount = 32;
+            info.biCompression = 0; // == BL_RGB
 
             using (GraphicsContext context = GraphicsContext.CreateOffscreenContext())
             {
