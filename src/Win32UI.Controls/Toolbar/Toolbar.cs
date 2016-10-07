@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Microsoft.Win32.UserInterface.Graphics;
 using Microsoft.Win32.UserInterface.Interop;
 
@@ -83,6 +84,9 @@ namespace Microsoft.Win32.UserInterface.CommonControls
         private const uint TB_SETPADDING = (WM_USER + 87);
         private const uint TB_SETINSERTMARKCOLOR = (WM_USER + 88);
         private const uint TB_GETINSERTMARKCOLOR = (WM_USER + 89);
+        private const uint TB_GETSTRINGW = (WM_USER + 91);
+        private const uint TB_GETMETRICS = (WM_USER + 101);
+        private const uint TB_SETMETRICS = (WM_USER + 102);
         private const uint TB_SETCOLORSCHEME = 0x2002;
         private const uint TB_GETCOLORSCHEME = 0x2003;
         private const uint TB_MAPACCELERATORW = (WM_USER + 90);
@@ -392,6 +396,104 @@ namespace Microsoft.Win32.UserInterface.CommonControls
             set
             {
                 SendMessage(TB_SETINSERTMARKCOLOR, IntPtr.Zero, (IntPtr)Color.ToWin32Color(value));
+            }
+        }
+
+        public int HotItem
+        {
+            get
+            {
+                return (int)SendMessage(TB_GETHOTITEM, IntPtr.Zero, IntPtr.Zero);
+            }
+
+            set
+            {
+                SendMessage(TB_SETHOTITEM, (IntPtr)value, IntPtr.Zero);
+            }
+        }
+
+        public bool IsButtonHighlighted(int buttonId)
+        {
+            return (int)SendMessage(TB_ISBUTTONHIGHLIGHTED, (IntPtr)buttonId, IntPtr.Zero) == 1;
+        }
+
+        public Size MaxSize
+        {
+            get
+            {
+                using (StructureBuffer<Size> buffer = new StructureBuffer<Size>())
+                {
+                    SendMessage(TB_GETMAXSIZE, IntPtr.Zero, buffer.Handle);
+                    return buffer.Value;
+                }
+            }
+        }
+
+        public Size GetPadding()
+        {
+            int dwRet = (int)SendMessage(TB_GETPADDING, IntPtr.Zero, IntPtr.Zero);
+            return new Size((dwRet & 0xFFFF), (dwRet >> 16) & 0xFFFF);
+        }
+
+        public void SetPadding(Size newSize)
+        {
+            Size unused;
+            SetPadding(newSize, out unused);
+        }
+
+        public void SetPadding(Size newSize, out Size actualSize)
+        {
+            int combined = (newSize.width & 0xFFFF) | ((newSize.height & 0xFFFF) << 16);
+            int effective = (int)SendMessage(TB_SETPADDING, IntPtr.Zero, (IntPtr)combined);
+            actualSize = new Size((effective & 0xFFFF), (effective >> 16) & 0xFFFF);
+        }
+
+        public string GetString(int nString)
+        {
+            int length = (int)SendMessage(TB_GETSTRINGW, (IntPtr)((nString & 0xFFFF) << 16), IntPtr.Zero);
+            if (length == -1) return null;
+
+            using (HGlobal buffer = new HGlobal((length + 1) * Marshal.SystemDefaultCharSize))
+            {
+                SendMessage(TB_GETSTRINGW, (IntPtr)(((length + 1) * Marshal.SystemDefaultCharSize) | nString & 0xFFFF), IntPtr.Zero);
+                return Marshal.PtrToStringUni(buffer.Handle);
+            }
+        }
+
+        public void GetSpacing(out Size innerPadding, out Size barPadding, out Size buttonSpacing)
+        {
+            TBMETRICS metrics = new TBMETRICS();
+            metrics.cbSize = Convert.ToUInt32(Marshal.SizeOf<TBMETRICS>());
+            metrics.dwMask = TBMETRICS.TBMF_PAD | TBMETRICS.TBMF_BARPAD | TBMETRICS.TBMF_BUFFONSPACING;
+
+            using (StructureBuffer<TBMETRICS> buffer = new StructureBuffer<TBMETRICS>())
+            {
+                buffer.Value = metrics;
+                SendMessage(TB_GETMETRICS, IntPtr.Zero, buffer.Handle);
+                metrics = buffer.Value;
+            }
+
+            innerPadding = new Size(metrics.cxPad, metrics.cyPad);
+            barPadding = new Size(metrics.cxBarPad, metrics.cyBarPad);
+            buttonSpacing = new Size(metrics.cxButtonSpacing, metrics.cyButtonSpacing);
+        }
+
+        public void SetSpacing(Size innerPadding, Size barPadding, Size buttonSpacing)
+        {
+            TBMETRICS metrics = new TBMETRICS();
+            metrics.cbSize = Convert.ToUInt32(Marshal.SizeOf<TBMETRICS>());
+            metrics.dwMask = TBMETRICS.TBMF_PAD | TBMETRICS.TBMF_BARPAD | TBMETRICS.TBMF_BUFFONSPACING;
+            metrics.cxPad = innerPadding.width;
+            metrics.cyPad = innerPadding.height;
+            metrics.cxBarPad = barPadding.width;
+            metrics.cyBarPad = barPadding.height;
+            metrics.cxButtonSpacing = buttonSpacing.width;
+            metrics.cyButtonSpacing = buttonSpacing.height;
+
+            using (StructureBuffer<TBMETRICS> buffer = new StructureBuffer<TBMETRICS>())
+            {
+                buffer.Value = metrics;
+                SendMessage(TB_SETMETRICS, IntPtr.Zero, buffer.Handle);
             }
         }
     }
