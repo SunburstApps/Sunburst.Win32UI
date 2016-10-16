@@ -12,13 +12,13 @@ namespace Microsoft.Win32.UserInterface.Graphics
         {
             using (HGlobal buffer = HGlobal.WithStringUni(resourceName))
             {
-                return new NonOwnedIcon(NativeMethods.LoadIcon(loader.Handle, buffer.Handle));
+                return new NonOwnedIcon(NativeMethods.LoadIcon(loader.ModuleHandle, buffer.Handle));
             }
         }
 
         public static NonOwnedIcon Load(ResourceLoader loader, ushort resourceId)
         {
-            return new NonOwnedIcon(NativeMethods.LoadIcon(loader.Handle, (IntPtr)resourceId));
+            return new NonOwnedIcon(NativeMethods.LoadIcon(loader.ModuleHandle, (IntPtr)resourceId));
         }
 
         /// <summary>

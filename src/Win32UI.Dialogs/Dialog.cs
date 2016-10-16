@@ -115,7 +115,7 @@ namespace Microsoft.Win32.UserInterface
 #endif
 
                 IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
-                Handle = NativeMethods.CreateDialogParamW(module.Handle, buffer.Handle,
+                Handle = NativeMethods.CreateDialogParamW(module.ModuleHandle, buffer.Handle,
                     parentHandle, wndProcPtr, tag);
             }
         }
@@ -134,7 +134,7 @@ namespace Microsoft.Win32.UserInterface
             var tag = CreateTag();
 
             IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
-            Handle = NativeMethods.CreateDialogParamW(module.Handle, (IntPtr)dialogId,
+            Handle = NativeMethods.CreateDialogParamW(module.ModuleHandle, (IntPtr)dialogId,
                 parentHandle, wndProcPtr, tag);
         }
 
@@ -195,7 +195,7 @@ namespace Microsoft.Win32.UserInterface
             mDialogs[tag] = this;
 
             IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
-            NativeMethods.DialogBoxParamW(module.Handle, (IntPtr)dialogId, parentHandle, wndProcPtr, (IntPtr)tag);
+            NativeMethods.DialogBoxParamW(module.ModuleHandle, (IntPtr)dialogId, parentHandle, wndProcPtr, (IntPtr)tag);
         }
 
         protected virtual IntPtr ProcessMessage(uint messageId, IntPtr wParam, IntPtr lParam, out bool handled)

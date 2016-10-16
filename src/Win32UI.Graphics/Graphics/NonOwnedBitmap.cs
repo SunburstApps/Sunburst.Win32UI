@@ -13,13 +13,13 @@ namespace Microsoft.Win32.UserInterface.Graphics
         {
             using (HGlobal buffer = HGlobal.WithStringUni(resourceName))
             {
-                return new NonOwnedBitmap(NativeMethods.LoadBitmap(loader.Handle, buffer.Handle));
+                return new NonOwnedBitmap(NativeMethods.LoadBitmap(loader.ModuleHandle, buffer.Handle));
             }
         }
 
         public static NonOwnedBitmap Load(ResourceLoader loader, ushort resourceId)
         {
-            return new NonOwnedBitmap(NativeMethods.LoadBitmap(loader.Handle, (IntPtr)resourceId));
+            return new NonOwnedBitmap(NativeMethods.LoadBitmap(loader.ModuleHandle, (IntPtr)resourceId));
         }
 
         public NonOwnedBitmap(IntPtr ptr)

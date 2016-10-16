@@ -16,7 +16,7 @@ namespace Microsoft.Win32
 
         public ResourceLoader(IntPtr hModule)
         {
-            Handle = hModule;
+            ModuleHandle = hModule;
         }
 
         public static ResourceLoader LoadModule(string fullPath)
@@ -31,20 +31,20 @@ namespace Microsoft.Win32
         }
 
         private bool ShouldDisposeHandle = true;
-        public IntPtr Handle { get; private set; }
+        public IntPtr ModuleHandle { get; private set; }
 
         private unsafe Stream LoadCustomResourceImpl(IntPtr hResource)
         {
-            IntPtr hResData = NativeMethods.LoadResource(Handle, hResource);
+            IntPtr hResData = NativeMethods.LoadResource(ModuleHandle, hResource);
             IntPtr data = NativeMethods.LockResource(hResData);
-            int size = NativeMethods.SizeofResource(Handle, hResource);
+            int size = NativeMethods.SizeofResource(ModuleHandle, hResource);
 
             return new UnmanagedMemoryStream((byte *)data.ToPointer(), Convert.ToInt64(size));
         }
 
         public Stream LoadCustomResource(string resourceType, ushort resourceId)
         {
-            IntPtr hResource = NativeMethods.FindResourceW(Handle, resourceType, (IntPtr)resourceId);
+            IntPtr hResource = NativeMethods.FindResourceW(ModuleHandle, resourceType, (IntPtr)resourceId);
             return LoadCustomResourceImpl(hResource);
         }
 
@@ -52,7 +52,7 @@ namespace Microsoft.Win32
         {
             using (HGlobal nameBuffer = HGlobal.WithStringUni(resourceName))
             {
-                IntPtr hResource = NativeMethods.FindResourceW(Handle, resourceType, nameBuffer.Handle);
+                IntPtr hResource = NativeMethods.FindResourceW(ModuleHandle, resourceType, nameBuffer.Handle);
                 return LoadCustomResourceImpl(hResource);
             }
         }
@@ -61,8 +61,8 @@ namespace Microsoft.Win32
         {
             if (ShouldDisposeHandle)
             {
-                NativeMethods.FreeLibrary(Handle);
-                Handle = IntPtr.Zero;
+                NativeMethods.FreeLibrary(ModuleHandle);
+                ModuleHandle = IntPtr.Zero;
             }
         }
     }

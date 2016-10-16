@@ -100,13 +100,13 @@ namespace Microsoft.Win32.UserInterface.Graphics
         {
             using (HGlobal buffer = HGlobal.WithStringUni(resourceName))
             {
-                return new Cursor(NativeMethods.LoadCursor(loader.Handle, buffer.Handle));
+                return new Cursor(NativeMethods.LoadCursor(loader.ModuleHandle, buffer.Handle));
             }
         }
 
         public static Cursor Load(ResourceLoader loader, ushort resourceId)
         {
-            return new Cursor(NativeMethods.LoadCursor(loader.Handle, (IntPtr)resourceId));
+            return new Cursor(NativeMethods.LoadCursor(loader.ModuleHandle, (IntPtr)resourceId));
         }
 
         /// <summary>

@@ -458,7 +458,7 @@ namespace Microsoft.Win32.UserInterface.TaskDialogs
 
         public void Show(Window dialogOwner, out int buttonResult, out int radioButtonResult, out bool verificationFlagResult)
         {
-            config.hInstance = ResourceLoader.GetEntryModule().Handle;
+            config.hInstance = ResourceLoader.GetEntryModule().ModuleHandle;
             config.hwndParent = (dialogOwner != null) ? dialogOwner.Handle : IntPtr.Zero;
 
             TaskDialogIcon mainIconToUse = mainIcon ?? TaskDialogIcon.None;

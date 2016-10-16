@@ -93,10 +93,10 @@ namespace Microsoft.Win32.UserInterface.Graphics
         /// </returns>
         public static Bitmap LoadImageFromResource(ResourceLoader loader, string resourceTypeName, ushort resourceId)
         {
-            IntPtr hResInfo = NativeMethods.FindResourceW(loader.Handle, resourceTypeName, (IntPtr)resourceId);
-            IntPtr hResData = NativeMethods.LoadResource(loader.Handle, hResInfo);
+            IntPtr hResInfo = NativeMethods.FindResourceW(loader.ModuleHandle, resourceTypeName, (IntPtr)resourceId);
+            IntPtr hResData = NativeMethods.LoadResource(loader.ModuleHandle, hResInfo);
             IntPtr data = NativeMethods.LockResource(hResData);
-            int size = NativeMethods.SizeofResource(loader.Handle, hResData);
+            int size = NativeMethods.SizeofResource(loader.ModuleHandle, hResData);
 
 #if !CORERT
 
@@ -150,12 +150,12 @@ namespace Microsoft.Win32.UserInterface.Graphics
 
             using (HGlobal namePtr = HGlobal.WithStringUni(resourceName))
             {
-                hResInfo = NativeMethods.FindResourceW(loader.Handle, resourceTypeName, namePtr.Handle);
+                hResInfo = NativeMethods.FindResourceW(loader.ModuleHandle, resourceTypeName, namePtr.Handle);
             }
 
-            IntPtr hResData = NativeMethods.LoadResource(loader.Handle, hResInfo);
+            IntPtr hResData = NativeMethods.LoadResource(loader.ModuleHandle, hResInfo);
             IntPtr data = NativeMethods.LockResource(hResData);
-            int size = NativeMethods.SizeofResource(loader.Handle, hResData);
+            int size = NativeMethods.SizeofResource(loader.ModuleHandle, hResData);
 
 #if CORERT
             IntPtr hBitmap;
