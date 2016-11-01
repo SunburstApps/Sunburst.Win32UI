@@ -4,7 +4,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp1.0</TargetFramework>
-    <AssemblyTitle>.NET User Interface Core Library</AssemblyTitle>
+    <AssemblyTitle>Win32UI.Core</AssemblyTitle>
   </PropertyGroup>
 
   <ItemGroup>

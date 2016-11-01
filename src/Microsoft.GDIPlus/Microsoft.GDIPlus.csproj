@@ -4,7 +4,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp1.0</TargetFramework>
-    <AssemblyTitle>Microsoft GDI+ Interop Library</AssemblyTitle>
+    <AssemblyTitle>Microsoft.GDIPlus</AssemblyTitle>
   </PropertyGroup>
 
   <ItemGroup>
