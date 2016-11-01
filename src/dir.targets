@@ -1,4 +1,4 @@
-<Project>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Authors Condition="'$(Authors)' == ''">William Kent</Authors>
     <Copyright Condition="'$(Copyright)' == ''">Copyright © 2016 William Kent. All rights reserved.</Copyright>
