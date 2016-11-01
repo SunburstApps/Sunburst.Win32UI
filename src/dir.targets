@@ -8,5 +8,5 @@
     <Description Condition="'$(AssemblyTitle)' == ''">$(AssemblyTitle)</Description>
   </PropertyGroup>
 
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory)/.., dir.targets))\dir.targets" />
 </Project>
