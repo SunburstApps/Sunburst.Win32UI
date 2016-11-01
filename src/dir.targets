@@ -5,7 +5,7 @@
     <FileVersion Condition="'$(FileVersion)' == ''">$(Version)</FileVersion>
     <Version Condition="'$(Version)' == ''">1.0.0.0</Version>
     <Product Condition="'$(Product)' == ''">.NET Core User Interface Libraries</Product>
-    <Description Condition="'$(AssemblyTitle)' == ''">$(AssemblyTitle)</Description>
+    <Description Condition="'$(Description)' == '' and '$(AssemblyTitle)' != ''">$(AssemblyTitle)</Description>
   </PropertyGroup>
 
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory)/.., dir.targets))\dir.targets" />
