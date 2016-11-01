@@ -4,13 +4,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp1.0</TargetFramework>
-    <Authors>William Kent</Authors>
-    <Copyright>Copyright © 2016 William Kent. All rights reserved.</Copyright>
-    <FileVersion>$(Version)</FileVersion>
-    <Version>1.0.0.0</Version>
-    <Product>.NET Core User Interface Libraries</Product>
     <AssemblyTitle>Microsoft GDI+ Interop Library</AssemblyTitle>
-    <Description>$(AssemblyTitle)</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,5 +22,5 @@
     </PackageReference>
   </ItemGroup>
   
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
