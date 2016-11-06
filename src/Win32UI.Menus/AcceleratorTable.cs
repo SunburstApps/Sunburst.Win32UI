@@ -23,7 +23,7 @@ namespace Microsoft.Win32.UserInterface
         /// <summary>
         /// Accelerator flags.
         /// </summary>
-        public ushort fVirt;
+        public AcceleratorTableFlags fVirt;
         /// <summary>
         /// Accelerator key. This member can be either a virtual-key code or an ASCII character code. 
         /// </summary>
@@ -34,7 +34,7 @@ namespace Microsoft.Win32.UserInterface
         public uint cmd;
     }
 
-    public enum AcceleratorVirtualKey : ushort
+    public enum AcceleratorTableFlags : ushort
     {
         VIRTKEY = 0x01,
         NOINVERT = 0x02,
