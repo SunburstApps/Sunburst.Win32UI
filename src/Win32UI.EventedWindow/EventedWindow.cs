@@ -143,6 +143,9 @@ namespace Microsoft.Win32.UserInterface
         public event EventHandler<CommandEventArgs> Command;
         protected virtual void OnCommand(CommandEventArgs e) => Command?.Invoke(this, e);
 
+        protected virtual void OnMeasureOwnerDrawnItem(MeasureOwnerDrawnItemEventArgs e) { }
+        protected virtual void OnPaintOwnerDrawnItem(PaintOwnerDrawnItemEventArgs e) { }
+
         protected IntPtr ProcessCommonMessage(uint msg, IntPtr wParam, IntPtr lParam, out bool handled)
         {
             if (msg == WindowMessages.WM_CREATE)
@@ -490,6 +493,34 @@ namespace Microsoft.Win32.UserInterface
                 OnCommand(args);
                 handled = args.Handled;
                 if (handled) return IntPtr.Zero;
+            }
+            else if (msg == WindowMessages.WM_MEASUREITEM)
+            {
+                unsafe
+                {
+                    MEASUREITEMSTRUCT* nativeStructPtr = (MEASUREITEMSTRUCT*)lParam;
+                    MeasureOwnerDrawnItemEventArgs args = new MeasureOwnerDrawnItemEventArgs(*nativeStructPtr);
+                    OnMeasureOwnerDrawnItem(args);
+                    if (args.Handled)
+                    {
+                        nativeStructPtr->itemWidth = args.ItemSize.width;
+                        nativeStructPtr->itemHeight = args.ItemSize.height;
+                    }
+
+                    handled = args.Handled;
+                    if (handled) return (IntPtr)1;
+                }
+            }
+            else if (msg == WindowMessages.WM_DRAWITEM)
+            {
+                unsafe
+                {
+                    DRAWITEMSTRUCT* nativeStructPtr = (DRAWITEMSTRUCT*)lParam;
+                    PaintOwnerDrawnItemEventArgs args = new PaintOwnerDrawnItemEventArgs(*nativeStructPtr);
+                    OnPaintOwnerDrawnItem(args);
+                    handled = args.Handled;
+                    if (handled) return (IntPtr)1;
+                }
             }
 
             handled = false;
