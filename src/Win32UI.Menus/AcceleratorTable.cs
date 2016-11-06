@@ -25,7 +25,7 @@ namespace Microsoft.Win32.UserInterface
         /// </summary>
         public AcceleratorTableFlags fVirt;
         /// <summary>
-        /// Accelerator key. This member can be either a virtual-key code or an ASCII character code. 
+        /// Accelerator key. This member can be either a <see cref="VirtualKeys"/> code or an ASCII character code.
         /// </summary>
         public ushort key;
         /// <summary>
