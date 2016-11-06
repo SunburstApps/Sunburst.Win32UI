@@ -15,6 +15,7 @@ namespace Microsoft.Win32.UserInterface.Menus
             Text = nativeStruct.dwTypeData;
             ID = nativeStruct.wID;
             IsSeparator = (nativeStruct.fType & MenuConstants.MFT_SEPARATOR) != 0;
+            IsOwnerDrawn = (nativeStruct.fType & MenuConstants.MFT_OWNERDRAW) != 0;
             IsDefault = (nativeStruct.fState & MenuConstants.MFS_DEFAULT) != 0;
             IsChecked = (nativeStruct.fState & MenuConstants.MFS_CHECKED) != 0;
             UseRadioCheck = (nativeStruct.fType & MenuConstants.MFT_RADIOCHECK) != 0;
@@ -37,7 +38,7 @@ namespace Microsoft.Win32.UserInterface.Menus
             info.dwTypeData = Text;
             info.cch = Convert.ToUInt32(Text.Length);
             info.fState = (IsDefault ? MenuConstants.MFS_DEFAULT : 0) | (IsEnabled ? MenuConstants.MFS_ENABLED : MenuConstants.MFS_DISABLED) | (IsChecked ? MenuConstants.MFS_CHECKED : MenuConstants.MFS_UNCHECKED);
-            info.fType = (IsSeparator ? MenuConstants.MFT_SEPARATOR : 0) | (UseRadioCheck ? MenuConstants.MFT_RADIOCHECK : 0);
+            info.fType = (IsSeparator ? MenuConstants.MFT_SEPARATOR : 0) | (UseRadioCheck ? MenuConstants.MFT_RADIOCHECK : 0) | (IsOwnerDrawn ? MenuConstants.MFT_OWNERDRAW : 0);
             info.hbmpChecked = CheckedBitmap?.Handle ?? IntPtr.Zero;
             info.hbmpUnchecked = UncheckedBitmap?.Handle ?? IntPtr.Zero;
             
@@ -55,6 +56,7 @@ namespace Microsoft.Win32.UserInterface.Menus
         public Menu Submenu { get; set; } = null;
 
         public bool IsSeparator { get; private set; } = false;
+        public bool IsOwnerDrawn { get; set; } = false;
         public bool IsDefault { get; set; } = false;
         public bool IsChecked { get; set; } = false;
         public bool IsEnabled { get; set; } = true;
