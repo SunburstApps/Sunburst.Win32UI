@@ -249,7 +249,7 @@ namespace Microsoft.Win32.UserInterface
                 OnShuttingDown(args);
                 handled = true;
 
-                // This seemingly backwards check is correect. WM_QUERYENDSESSION must return TRUE if the shutdown should proceed.
+                // This seemingly backwards check is correct. WM_QUERYENDSESSION must return TRUE if the shutdown should proceed.
                 return (IntPtr)(args.Cancel ? 0 : 1);
             }
             else if (msg == WindowMessages.WM_ERASEBKGND)
