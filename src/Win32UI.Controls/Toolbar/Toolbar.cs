@@ -523,6 +523,12 @@ namespace Microsoft.Win32.UserInterface.CommonControls
             }
         }
 
+        public bool SetButtonEnabled(int id, bool value) => (int)SendMessage(TB_ENABLEBUTTON, (IntPtr)id, (IntPtr)(value ? 1 : 0)) == 1;
+        public bool SetButtonChecked(int id, bool value) => (int)SendMessage(TB_CHECKBUTTON, (IntPtr)id, (IntPtr)(value ? 1 : 0)) == 1;
+        public bool SetButtonPressed(int id, bool value) => (int)SendMessage(TB_PRESSBUTTON, (IntPtr)id, (IntPtr)(value ? 1 : 0)) == 1;
+        public bool SetButtonVisible(int id, bool value) => (int)SendMessage(TB_HIDEBUTTON, (IntPtr)id, (IntPtr)(value ? 0 : 1)) == 1; // The backwards order here is intentional.
+        public bool SetButtonIndeterminate(int id, bool value) => (int)SendMessage(TB_INDETERMINATE, (IntPtr)id, (IntPtr)(value ? 1 : 0)) == 1;
+
         public int AddBitmap(int buttonCount, NonOwnedBitmap bitmap)
         {
             TBADDBITMAP addStruct = new TBADDBITMAP();
@@ -549,7 +555,7 @@ namespace Microsoft.Win32.UserInterface.CommonControls
 
         public bool RemoveButton(int index)
         {
-            return (int)SendMessage(TB_DELETEBUTTON, (IntPtr)index, 0);
+            return (int)SendMessage(TB_DELETEBUTTON, (IntPtr)index, IntPtr.Zero);
         }
     }
 }
