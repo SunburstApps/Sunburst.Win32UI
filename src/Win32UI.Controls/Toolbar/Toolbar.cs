@@ -94,6 +94,8 @@ namespace Microsoft.Win32.UserInterface.CommonControls
         private const uint TB_SETPRESSEDIMAGELIST = (WM_USER + 104);
         private const uint TB_GETPRESSEDIMAGELIST = (WM_USER + 105);
         private const uint TB_GETITEMDROPDOWNRECT = (WM_USER + 103);
+        private const uint TB_INSERTBUTTON = (WM_USER + 67);
+        private const uint TB_ADDBUTTONS = (WM_USER + 68);
         #endregion
 
         public const string WindowClass = "ToolbarWindow32";
@@ -516,9 +518,38 @@ namespace Microsoft.Win32.UserInterface.CommonControls
         {
             using (StructureBuffer<Rect> buffer = new StructureBuffer<Rect>())
             {
-                SendMessage(TB_GETITEMDROPDOWNRECT, (IntPtr)image, buffer.Handle);
+                SendMessage(TB_GETITEMDROPDOWNRECT, (IntPtr)index, buffer.Handle);
                 return buffer.Value;
             }
+        }
+
+        public int AddBitmap(int buttonCount, NonOwnedBitmap bitmap)
+        {
+            TBADDBITMAP addStruct = new TBADDBITMAP();
+            addStruct.hInst = IntPtr.Zero;
+            addStruct.nID = bitmap.Handle;
+
+            using (StructureBuffer<TBADDBITMAP> buffer = new StructureBuffer<TBADDBITMAP>())
+            {
+                buffer.Value = addStruct;
+                return (int)SendMessage(TB_ADDBITMAP, (IntPtr)buttonCount, buffer.Handle);
+            }
+        }
+
+        public bool AddItem(ToolbarItem item) => InsertItem(-1, item);
+
+        public bool InsertItem(int index, ToolbarItem item)
+        {
+            using (StructureBuffer<TBBUTTON> buffer = new StructureBuffer<TBBUTTON>())
+            {
+                buffer.Value = item.ToNativeStruct();
+                return (int)SendMessage(TB_INSERTBUTTON, (IntPtr)index, buffer.Handle) == 1;
+            }
+        }
+
+        public bool RemoveButton(int index)
+        {
+            return (int)SendMessage(TB_DELETEBUTTON, (IntPtr)index, 0);
         }
     }
 }

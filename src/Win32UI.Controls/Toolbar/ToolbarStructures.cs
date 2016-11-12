@@ -5,6 +5,7 @@ using Microsoft.Win32.UserInterface.Graphics;
 #pragma warning disable 0169
 namespace Microsoft.Win32.UserInterface.Interop
 {
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     internal struct TBBUTTON
     {
         public int iBitmap;
@@ -38,5 +39,11 @@ namespace Microsoft.Win32.UserInterface.Interop
         public const uint TBMF_PAD = 0x1;
         public const uint TBMF_BARPAD = 0x2;
         public const uint TBMF_BUFFONSPACING = 0x4;
+    }
+
+    internal struct TBADDBITMAP
+    {
+        public IntPtr hInst;
+        public IntPtr nID;
     }
 }
