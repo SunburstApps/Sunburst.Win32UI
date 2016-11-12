@@ -93,6 +93,7 @@ namespace Microsoft.Win32.UserInterface.CommonControls
         private const uint TB_MAPACCELERATOR = TB_MAPACCELERATORW;
         private const uint TB_SETPRESSEDIMAGELIST = (WM_USER + 104);
         private const uint TB_GETPRESSEDIMAGELIST = (WM_USER + 105);
+        private const uint TB_GETITEMDROPDOWNRECT = (WM_USER + 103);
         #endregion
 
         public const string WindowClass = "ToolbarWindow32";
@@ -509,6 +510,15 @@ namespace Microsoft.Win32.UserInterface.CommonControls
         public void SetPressedImageList(NonOwnedImageList imageList, int index = 0)
         {
             SendMessage(TB_SETPRESSEDIMAGELIST, (IntPtr)index, imageList.Handle);
+        }
+
+        public Rect GetItemDropDownRect(int index)
+        {
+            using (StructureBuffer<Rect> buffer = new StructureBuffer<Rect>())
+            {
+                SendMessage(TB_GETITEMDROPDOWNRECT, (IntPtr)image, buffer.Handle);
+                return buffer.Value;
+            }
         }
     }
 }
