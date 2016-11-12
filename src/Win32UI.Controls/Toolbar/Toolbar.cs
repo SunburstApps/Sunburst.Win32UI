@@ -91,6 +91,8 @@ namespace Microsoft.Win32.UserInterface.CommonControls
         private const uint TB_GETCOLORSCHEME = 0x2003;
         private const uint TB_MAPACCELERATORW = (WM_USER + 90);
         private const uint TB_MAPACCELERATOR = TB_MAPACCELERATORW;
+        private const uint TB_SETPRESSEDIMAGELIST = (WM_USER + 104);
+        private const uint TB_GETPRESSEDIMAGELIST = (WM_USER + 105);
         #endregion
 
         public const string WindowClass = "ToolbarWindow32";
@@ -495,6 +497,18 @@ namespace Microsoft.Win32.UserInterface.CommonControls
                 buffer.Value = metrics;
                 SendMessage(TB_SETMETRICS, IntPtr.Zero, buffer.Handle);
             }
+        }
+
+        public NonOwnedImageList GetPressedImageList(int index = 0)
+        {
+            NonOwnedImageList retval = new NonOwnedImageList();
+            retval.Handle = SendMessage(TB_GETPRESSEDIMAGELIST, (IntPtr)index, IntPtr.Zero);
+            return retval;
+        }
+
+        public void SetPressedImageList(NonOwnedImageList imageList, int index = 0)
+        {
+            SendMessage(TB_SETPRESSEDIMAGELIST, (IntPtr)index, imageList.Handle);
         }
     }
 }
