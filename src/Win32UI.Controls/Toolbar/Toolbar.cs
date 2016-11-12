@@ -96,6 +96,7 @@ namespace Microsoft.Win32.UserInterface.CommonControls
         private const uint TB_GETITEMDROPDOWNRECT = (WM_USER + 103);
         private const uint TB_INSERTBUTTON = (WM_USER + 67);
         private const uint TB_ADDBUTTONS = (WM_USER + 68);
+        private const uint TB_HITTEST = (WM_USER + 69);
         #endregion
 
         public const string WindowClass = "ToolbarWindow32";
@@ -528,6 +529,7 @@ namespace Microsoft.Win32.UserInterface.CommonControls
         public bool SetButtonPressed(int id, bool value) => (int)SendMessage(TB_PRESSBUTTON, (IntPtr)id, (IntPtr)(value ? 1 : 0)) == 1;
         public bool SetButtonVisible(int id, bool value) => (int)SendMessage(TB_HIDEBUTTON, (IntPtr)id, (IntPtr)(value ? 0 : 1)) == 1; // The backwards order here is intentional.
         public bool SetButtonIndeterminate(int id, bool value) => (int)SendMessage(TB_INDETERMINATE, (IntPtr)id, (IntPtr)(value ? 1 : 0)) == 1;
+        public bool SetBorderMarkState(int id, bool value) => (int)SendMessage(TB_MARKBUTTON, (IntPtr)id, (IntPtr)(value ? 1 : 0)) == 1;
 
         public int AddBitmap(int buttonCount, NonOwnedBitmap bitmap)
         {
@@ -555,7 +557,39 @@ namespace Microsoft.Win32.UserInterface.CommonControls
 
         public bool RemoveButton(int index)
         {
-            return (int)SendMessage(TB_DELETEBUTTON, (IntPtr)index, IntPtr.Zero);
+            return (int)SendMessage(TB_DELETEBUTTON, (IntPtr)index, IntPtr.Zero) == 1;
+        }
+
+        public bool AddSeparator(int width = 8) => InsertSeparator(-1, width);
+        public bool InsertSeparator(int index, int width = 8)
+        {
+            TBBUTTON button = new TBBUTTON();
+            button.idCommand = 0;
+            button.fsStyle = ToolbarStyles.BTNS_SEP;
+            button.fsState = 0;
+            button.iBitmap = width;
+            button.iString = null;
+            button.dwData = IntPtr.Zero;
+
+            using (StructureBuffer<TBBUTTON> buffer = new StructureBuffer<TBBUTTON>())
+            {
+                buffer.Value = button;
+                return (int)SendMessage(TB_INSERTBUTTON, (IntPtr)index, buffer.Handle) == 1;
+            }
+        }
+
+        public void MoveButton(int oldIndex, int newIndex) => SendMessage(TB_MOVEBUTTON, (IntPtr)oldIndex, (IntPtr)newIndex);
+        public int CommandToIndex(int commandId) => (int)SendMessage(TB_COMMANDTOINDEX, (IntPtr)commandId, IntPtr.Zero);
+        public void Customize() => SendMessage(TB_CUSTOMIZE, IntPtr.Zero, IntPtr.Zero);
+        public void AutoSize() => SendMessage(TB_AUTOSIZE, IntPtr.Zero, IntPtr.Zero);
+
+        public int HitTest(Point pt)
+        {
+            using (StructureBuffer<Point> buffer = new StructureBuffer<Point>())
+            {
+                buffer.Value = pt;
+                return (int)SendMessage(TB_HITTEST, IntPtr.Zero, buffer.Handle);
+            }
         }
     }
 }
