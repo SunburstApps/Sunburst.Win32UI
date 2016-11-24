@@ -74,7 +74,10 @@ namespace Microsoft.Win32.UserInterface.CommonControls
 
         public unsafe void GetRange(out int lowerBound, out int upperBound)
         {
-            SendMessage(UDM_GETRANGE32, new IntPtr(&lowerBound), new IntPtr(&upperBound));
+            int lowerValue, upperValue;
+            SendMessage(UDM_GETRANGE32, new IntPtr(&lowerValue), new IntPtr(&upperValue));
+            lowerBound = lowerValue;
+            upperBound = upperValue;
         }
 
         public unsafe void SetRange(int lowerBound, int upperBound)
