@@ -37,7 +37,7 @@ namespace Microsoft.Win32.UserInterface
 #if CORERT
                 wndProcPtr = NativeMethods.Win32UI_FPtrLookup(CustomWindow.WndProcSymbolName);
 #else
-                Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = CustomWindow.WndProc;
+                WndProc callback = CustomWindow.WndProc;
                 wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
 #endif
 

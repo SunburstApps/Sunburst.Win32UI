@@ -8,6 +8,7 @@ namespace Microsoft.Win32.UserInterface
 {
     public class Dialog : EventedWindow
     {
+        private delegate IntPtr WNDPROC(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
         private static int mTopmostDialogTag = 1;
         private static readonly Dictionary<int, Dialog> mDialogs;
 
@@ -16,8 +17,10 @@ namespace Microsoft.Win32.UserInterface
             mDialogs = new Dictionary<int, Dialog>();
         }
 
+#if CORERT
         internal const string DialogProcSymbolName = "Win32UI_DialogProc";
         [NativeCallable(EntryPoint = DialogProcSymbolName, CallingConvention = CallingConvention.StdCall)]
+#endif
         internal static IntPtr DialogProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
             try
@@ -110,7 +113,7 @@ namespace Microsoft.Win32.UserInterface
 #if CORERT
                 wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
 #else
-                Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
+                WNDPROC callback = DialogProc;
                 wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
 #endif
 
@@ -127,7 +130,7 @@ namespace Microsoft.Win32.UserInterface
 #if CORERT
             wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
 #else
-            Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
+            WNDPROC callback = DialogProc;
             wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
 #endif
 
@@ -149,7 +152,7 @@ namespace Microsoft.Win32.UserInterface
 #if CORERT
             wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
 #else
-            Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
+            WNDPROC callback = DialogProc;
             wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
 #endif
 
@@ -168,7 +171,7 @@ namespace Microsoft.Win32.UserInterface
 #if CORERT
             wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
 #else
-            Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
+            WNDPROC callback = DialogProc;
             wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
 #endif
 
@@ -187,7 +190,7 @@ namespace Microsoft.Win32.UserInterface
 #if CORERT
             wndProcPtr = NativeMethods.Win32UI_FPtrLookup(DialogProcSymbolName);
 #else
-            Func<IntPtr, uint, IntPtr, IntPtr, IntPtr> callback = DialogProc;
+            WNDPROC callback = DialogProc;
             wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
 #endif
 
