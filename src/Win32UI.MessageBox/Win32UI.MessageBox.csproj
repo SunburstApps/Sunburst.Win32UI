@@ -20,6 +20,9 @@
       <Version>1.0.0-alpha-20161026-2</Version>
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Win32.Primitives">
+      <Version>4.0.1</Version>
+    </PackageReference>
     <ProjectReference Include="../Win32UI.Core/Win32UI.Core.csproj" />
   </ItemGroup>
   
