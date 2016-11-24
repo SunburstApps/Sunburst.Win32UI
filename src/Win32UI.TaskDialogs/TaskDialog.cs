@@ -10,6 +10,8 @@ namespace Microsoft.Win32.UserInterface.TaskDialogs
 {
     public class TaskDialog
     {
+        private delegate IntPtr _StaticCallbackDelegate(IntPtr a, uint b, IntPtr c, IntPtr d, IntPtr e);
+
         private TASKDIALOGCONFIG config;
         private readonly List<TaskDialogButton> buttons;
         private readonly List<TaskDialogButton> radioButtons;
@@ -24,7 +26,7 @@ namespace Microsoft.Win32.UserInterface.TaskDialogs
 #if CORERT
             config.pfCallback = TaskDialogNative.Win32UI_FPtrLookup("Win32UI_TaskDialogCallback");
 #else
-            Func<IntPtr, uint, IntPtr, IntPtr, IntPtr, IntPtr> callback = StaticCallback;
+            _StaticCallbackDelegate callback = StaticCallback;
             config.pfCallback = Marshal.GetFunctionPointerForDelegate(callback);
 #endif
 
@@ -542,7 +544,9 @@ namespace Microsoft.Win32.UserInterface.TaskDialogs
         private static readonly Dictionary<int, TaskDialog> mRunningTaskDialogMap = new Dictionary<int, TaskDialog>();
         private static int mTopmostTaskDialogMapKey = 1;
 
+#if CORERT
         [NativeCallable(EntryPoint = "Win32UI_TaskDialogCallback", CallingConvention = CallingConvention.StdCall)]
+#endif
         private static IntPtr StaticCallback(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam, IntPtr lpRefData)
         {
             try
