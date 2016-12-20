@@ -27,7 +27,7 @@ namespace Microsoft.Win32.UserInterface.TaskDialogs
             IntPtr temp = Interlocked.CompareExchange(ref pwsz, IntPtr.Zero, pwsz);
             if (temp != IntPtr.Zero)
             {
-                Marshal.FreeHGlobal(pwsz);
+                Marshal.FreeHGlobal(temp);
             }
         }
     }
