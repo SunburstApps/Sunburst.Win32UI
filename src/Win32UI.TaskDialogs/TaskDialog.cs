@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.UserInterface.Graphics;
 
@@ -23,12 +24,15 @@ namespace Microsoft.Win32.UserInterface.TaskDialogs
             config = new TASKDIALOGCONFIG();
             config.cbSize = Marshal.SizeOf<TASKDIALOGCONFIG>();
 
-#if CORERT
-            config.pfCallback = TaskDialogNative.Win32UI_FPtrLookup("Win32UI_TaskDialogCallback");
-#else
-            _StaticCallbackDelegate callback = StaticCallback;
-            config.pfCallback = Marshal.GetFunctionPointerForDelegate(callback);
-#endif
+            if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
+            {
+                config.pfCallback = McgIntrinsics.AddrOf<_StaticCallbackDelegate>(StaticCallback);
+            }
+            else
+            {
+                _StaticCallbackDelegate callback = StaticCallback;
+                config.pfCallback = Marshal.GetFunctionPointerForDelegate(callback);
+            }
 
             buttons = new List<TaskDialogButton>();
             radioButtons = new List<TaskDialogButton>();
@@ -544,9 +548,6 @@ namespace Microsoft.Win32.UserInterface.TaskDialogs
         private static readonly Dictionary<int, TaskDialog> mRunningTaskDialogMap = new Dictionary<int, TaskDialog>();
         private static int mTopmostTaskDialogMapKey = 1;
 
-#if CORERT
-        [NativeCallable(EntryPoint = "Win32UI_TaskDialogCallback", CallingConvention = CallingConvention.StdCall)]
-#endif
         private static IntPtr StaticCallback(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam, IntPtr lpRefData)
         {
             try

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.UserInterface.Graphics;
 using Microsoft.Win32.UserInterface.Interop;
@@ -34,12 +35,15 @@ namespace Microsoft.Win32.UserInterface
             {
                 IntPtr wndProcPtr;
 
-#if CORERT
-                wndProcPtr = NativeMethods.Win32UI_FPtrLookup(CustomWindow.WndProcSymbolName);
-#else
-                WndProc callback = CustomWindow.WndProc;
-                wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
-#endif
+                if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
+                {
+                    wndProcPtr = McgIntrinsics.AddrOf<CustomWindow.WndProcType>(CustomWindow.WndProc);
+                }
+                else
+                {
+                    WndProc callback = CustomWindow.WndProc;
+                    wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
+                }
 
                 WNDCLASSEXW nativeClass = new WNDCLASSEXW();
                 nativeClass.cbSize = Convert.ToUInt32(Marshal.SizeOf<WNDCLASSEXW>());

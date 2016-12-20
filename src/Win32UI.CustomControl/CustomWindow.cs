@@ -12,8 +12,7 @@ namespace Microsoft.Win32.UserInterface
         private static int mTopmostControlTag = 1;
         private static readonly ConcurrentDictionary<int, CustomWindow> mControls = new ConcurrentDictionary<int, CustomWindow>();
 
-        internal const string WndProcSymbolName = "Win32UI_CustomWndProc";
-        [NativeCallable(EntryPoint = WndProcSymbolName, CallingConvention = CallingConvention.StdCall)]
+        internal delegate IntPtr WndProcType(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
         internal static IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
             try

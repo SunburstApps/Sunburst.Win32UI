@@ -5,9 +5,6 @@ namespace Microsoft.Win32.UserInterface.Interop
 {
     internal static class NativeMethods
     {
-        [DllImport("*", CharSet = CharSet.Ansi)]
-        public static extern IntPtr Win32UI_FPtrLookup(string name);
-
         [DllImport("user32.dll")]
         public static extern IntPtr CreateWindowEx(int extendedStyle, string windowClass, string windowName,
             int style, int left, int top, int width, int height, IntPtr hWndParent, IntPtr hMenu,

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Win32.UserInterface.Interop
@@ -8,8 +9,6 @@ namespace Microsoft.Win32.UserInterface.Interop
     {
         private static readonly ConcurrentDictionary<IntPtr, SubclassedWindow> mControls = new ConcurrentDictionary<IntPtr, SubclassedWindow>();
 
-        internal const string WndProcSymbolName = "Win32UI_SubclassWndProc";
-        [NativeCallable(EntryPoint = WndProcSymbolName, CallingConvention = CallingConvention.StdCall)]
         private static IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
             try
@@ -51,12 +50,16 @@ namespace Microsoft.Win32.UserInterface.Interop
                 OriginalWndProc = NativeMethods.GetWindowLongPtr(Owner.Handle, GWLP_WNDPROC);
 
                 IntPtr wndProcPtr;
-                #if CORERT
-                wndProcPtr = NativeMethods.Win32UI_FPtrLookup(WndProcSymbolName);
-                #else
-                WNDPROC wndProc = WndProc;
-                wndProcPtr = Marshal.GetFunctionPointerForDelegate(wndProc);
-                #endif
+
+                if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
+                {
+                    wndProcPtr = McgIntrinsics.AddrOf<WNDPROC>(WndProc);
+                }
+                else
+                {
+                    WNDPROC wndProc = WndProc;
+                    wndProcPtr = Marshal.GetFunctionPointerForDelegate(wndProc);
+                }
 
                 NativeMethods.SetWindowLongPtr(Owner.Handle, GWLP_WNDPROC, wndProcPtr);
                 AlreadySubclassed = true;
