@@ -6,9 +6,9 @@ namespace System.Runtime.InteropServices
     internal sealed class McgIntrinsicsAttribute : Attribute { }
 
     [McgIntrinsics]
-    internal static class McgIntrinsics
+    public static class McgIntrinsics
     {
-        internal static IntPtr AddrOf<T>(T thing)
+        public static IntPtr AddrOf<T>(T thing)
         {
             // This method is implemented in the CoreRT toolchain.
             throw new PlatformNotSupportedException();
