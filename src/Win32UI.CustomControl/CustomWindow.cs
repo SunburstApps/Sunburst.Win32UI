@@ -9,6 +9,7 @@ namespace Microsoft.Win32.UserInterface
 {
     public class CustomWindow : EventedWindow
     {
+        public static string DefaultClassName => mStockControlWindowClass.Value.ClassName;
         private static Lazy<WindowClass> mStockControlWindowClass = new Lazy<WindowClass>(() =>
         {
             WindowClass wndClass = new WindowClass("Win32UI.CustomWindow");
