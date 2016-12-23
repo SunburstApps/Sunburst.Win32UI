@@ -9,6 +9,13 @@ namespace Microsoft.Win32.UserInterface
 {
     public class CustomWindow : EventedWindow
     {
+        private static Lazy<WindowClass> mStockControlWindowClass = new Lazy<WindowClass>(() =>
+        {
+            WindowClass wndClass = new WindowClass("Win32UI.CustomWindow");
+            wndClass.Register();
+            return wndClass;
+        });
+
         private static int mTopmostControlTag = 1;
         private static readonly ConcurrentDictionary<int, CustomWindow> mControls = new ConcurrentDictionary<int, CustomWindow>();
 
@@ -67,7 +74,8 @@ namespace Microsoft.Win32.UserInterface
         public override void CreateHandle(Rect frame, string text, int style = 0, int extendedStyle = 0,
             Window parent = null, IMenuHandle hMenu = null)
         {
-            if (WindowClassName == null) throw new InvalidOperationException($"{nameof(WindowClassName)} must be overridden");
+            string className = WindowClassName;
+            if (className == null) className = mStockControlWindowClass.Value.ClassName;
 
             int tag = mTopmostControlTag++;
             mControls.TryAdd(tag, this);
