@@ -6,11 +6,6 @@ namespace Microsoft.Win32.UserInterface.Interop
 {
     internal static class NativeMethods
     {
-        // P/Invoking a method from the "*" DLL instructs the CoreRT compiler to emit
-        // a compile-time reference to this symbol rather than use runtime dynamic lookup.
-        [DllImport("*", CharSet = CharSet.Ansi)]
-        public static extern IntPtr Win32UI_FPtrLookup(string symbol);
-
         #region Win32UI.Native
 
         private const string UINativeLibrary = "Win32UI.Native.dll";

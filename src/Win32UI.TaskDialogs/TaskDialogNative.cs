@@ -44,9 +44,6 @@ namespace Microsoft.Win32.UserInterface.TaskDialogs
             out int pnRadioButton,
             out int pfVerificationFlagChecked
             );
-
-        [DllImport("*", CharSet = CharSet.Ansi)]
-        public static extern IntPtr Win32UI_FPtrLookup(string name);
     }
 
     /*
