@@ -161,12 +161,9 @@ namespace Microsoft.Win32.UserInterface
                 wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
             }
 
-            using (HGlobal templatePtr = template.CreateTemplatePointer())
-            {
-                IntPtr tag = CreateTag();
-                IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
-                Handle = NativeMethods.CreateDialogIndirectParamW(IntPtr.Zero, templatePtr.Handle, parentHandle, wndProcPtr, tag);
-            }
+            IntPtr tag = CreateTag();
+            IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
+            Handle = NativeMethods.CreateDialogIndirectParamW(IntPtr.Zero, template.GetTemplatePointer(), parentHandle, wndProcPtr, tag);
         }
 
         public void RunModal(DialogTemplate template, Window parent = null)
@@ -183,12 +180,9 @@ namespace Microsoft.Win32.UserInterface
                 wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
             }
 
-            using (HGlobal templatePtr = template.CreateTemplatePointer())
-            {
-                IntPtr tag = CreateTag();
-                IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
-                NativeMethods.DialogBoxIndirectParamW(IntPtr.Zero, templatePtr.Handle, parentHandle, wndProcPtr, tag);
-            }
+            IntPtr tag = CreateTag();
+            IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
+            NativeMethods.DialogBoxIndirectParamW(IntPtr.Zero, template.GetTemplatePointer(), parentHandle, wndProcPtr, tag);
         }
 
         public void RunModal(ResourceLoader module, uint dialogId, Window parent = null)

@@ -31,6 +31,9 @@ namespace Microsoft.Win32.UserInterface.Interop
         [DllImport(UINativeLibrary)]
         public static extern IntPtr LayoutRunModally(IntPtr hLayout, IntPtr hWndParent, IntPtr dlgProc, IntPtr createParam);
 
+        [DllImport(UINativeLibrary)]
+        public static extern IntPtr LayoutGetDataPointer(IntPtr hLayout);
+
         #endregion
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
