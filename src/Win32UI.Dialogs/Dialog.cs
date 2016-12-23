@@ -9,7 +9,6 @@ namespace Microsoft.Win32.UserInterface
 {
     public class Dialog : EventedWindow
     {
-        private delegate IntPtr WNDPROC(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
         private static int mTopmostDialogTag = 1;
         private static readonly Dictionary<int, Dialog> mDialogs;
 
@@ -109,11 +108,11 @@ namespace Microsoft.Win32.UserInterface
 
                 if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
                 {
-                    wndProcPtr = McgIntrinsics.AddrOf<WNDPROC>(DialogProc);
+                    wndProcPtr = McgIntrinsics.AddrOf<DLGPROC>(DialogProc);
                 }
                 else
                 {
-                    WNDPROC callback = DialogProc;
+                    DLGPROC callback = DialogProc;
                     wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
                 }
 
@@ -129,11 +128,11 @@ namespace Microsoft.Win32.UserInterface
 
             if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
             {
-                wndProcPtr = McgIntrinsics.AddrOf<WNDPROC>(DialogProc);
+                wndProcPtr = McgIntrinsics.AddrOf<DLGPROC>(DialogProc);
             }
             else
             {
-                WNDPROC callback = DialogProc;
+                DLGPROC callback = DialogProc;
                 wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
             }
 
@@ -154,11 +153,11 @@ namespace Microsoft.Win32.UserInterface
 
             if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
             {
-                wndProcPtr = McgIntrinsics.AddrOf<WNDPROC>(DialogProc);
+                wndProcPtr = McgIntrinsics.AddrOf<DLGPROC>(DialogProc);
             }
             else
             {
-                WNDPROC callback = DialogProc;
+                DLGPROC callback = DialogProc;
                 wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
             }
 
@@ -176,11 +175,11 @@ namespace Microsoft.Win32.UserInterface
 
             if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
             {
-                wndProcPtr = McgIntrinsics.AddrOf<WNDPROC>(DialogProc);
+                wndProcPtr = McgIntrinsics.AddrOf<DLGPROC>(DialogProc);
             }
             else
             {
-                WNDPROC callback = DialogProc;
+                DLGPROC callback = DialogProc;
                 wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
             }
 
@@ -198,11 +197,11 @@ namespace Microsoft.Win32.UserInterface
 
             if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
             {
-                wndProcPtr = McgIntrinsics.AddrOf<WNDPROC>(DialogProc);
+                wndProcPtr = McgIntrinsics.AddrOf<DLGPROC>(DialogProc);
             }
             else
             {
-                WNDPROC callback = DialogProc;
+                DLGPROC callback = DialogProc;
                 wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
             }
 
