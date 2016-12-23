@@ -39,7 +39,7 @@ namespace Microsoft.Win32.UserInterface
                 IntPtr.Zero, IntPtr.Zero);
         }
 
-        public void CreateHandle(Rect frame, string text, int style = 0, int extendedStyle = 0,
+        public virtual void CreateHandle(Rect frame, string text, int style = 0, int extendedStyle = 0,
             Window parent = null, IMenuHandle hMenu = null)
         {
             if (WindowClassName == null) throw new InvalidOperationException($"{nameof(WindowClassName)} must be overridden");

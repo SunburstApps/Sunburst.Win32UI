@@ -65,7 +65,7 @@ namespace Microsoft.Win32.UserInterface
             return NativeMethods.DefWindowProc(Handle, msg, wParam, lParam);
         }
 
-        public new void CreateHandle(Rect frame, string text, int style = 0, int extendedStyle = 0,
+        public override void CreateHandle(Rect frame, string text, int style = 0, int extendedStyle = 0,
             Window parent = null, IMenuHandle hMenu = null)
         {
             if (WindowClassName == null) throw new InvalidOperationException($"{nameof(WindowClassName)} must be overridden");
