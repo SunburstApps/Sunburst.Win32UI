@@ -5,13 +5,12 @@
 #include <atlbase.h>
 #include <atlcore.h>
 #include <atlwin.h>
-#include <atlapp.h>
-#include <atlctrls.h>
-#include <atlctrlw.h>
-#include <atlctrlx.h>
-#include <atldlgs.h>
-#include <atlribbon.h>
-#include <atltheme.h>
+#include <wtl/atlapp.h>
+#include <wtl/atlctrls.h>
+#include <wtl/atlctrlw.h>
+#include <wtl/atlctrlx.h>
+#include <wtl/atldlgs.h>
+#include <wtl/atltheme.h>
 #pragma warning(pop)
 #include "dllapi.h"
 
