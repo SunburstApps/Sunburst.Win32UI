@@ -37,7 +37,7 @@ namespace Microsoft.Win32.UserInterface
 
                 if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
                 {
-                    wndProcPtr = McgIntrinsics.AddrOf<CustomWindow.WndProcType>(CustomWindow.WndProc);
+                    wndProcPtr = McgIntrinsics.AddrOf<WndProc>(CustomWindow.WndProc);
                 }
                 else
                 {
