@@ -7,48 +7,6 @@ namespace Microsoft.GDIPlus
 {
     internal static class NativeMethods
     {
-        #region Initialization
-
-        private static IntPtr mStartupToken = IntPtr.Zero;
-
-        static NativeMethods()
-        {
-            GdiplusStartupInput input = GdiplusStartupInput.Default;
-            GdiplusStartupOutput output;
-            GpStatus status = GdiplusStartup(out mStartupToken, ref input, out output);
-            ThrowStatus(status);
-        }
-
-        public static void EnsureInitialized()
-        {
-            // This method exists only to ensure that the static constructor has been run.
-            // It need not contain any code.
-        }
-
-        private struct GdiplusStartupInput
-        {
-            public static readonly GdiplusStartupInput Default = new GdiplusStartupInput
-            {
-                GdiplusVersion = 1,
-                debugEventCallback = IntPtr.Zero,
-                suppressBackgroundThread = false,
-                suppressExternalCodecs = false
-            };
-
-            public uint GdiplusVersion;
-            public IntPtr debugEventCallback;
-            public bool suppressBackgroundThread;
-            public bool suppressExternalCodecs;
-        }
-
-        private struct GdiplusStartupOutput
-        {
-            IntPtr NotificationHook;
-            IntPtr NotificationUnhook;
-        }
-
-        #endregion
-
         #region GpStatus
 
         internal enum GpStatus
@@ -106,13 +64,6 @@ namespace Microsoft.GDIPlus
                 default: throw new Exception($"Unknown GDI+ error: {status.ToString()}");
             }
         }
-
-        #endregion
-
-        #region P/Invokes
-
-        [DllImport("gdiplus.dll", CallingConvention = CallingConvention.StdCall)]
-        private static extern GpStatus GdiplusStartup(out IntPtr token, [In] ref GdiplusStartupInput input, [Out, Optional] out GdiplusStartupOutput output);
 
         #endregion
     }
