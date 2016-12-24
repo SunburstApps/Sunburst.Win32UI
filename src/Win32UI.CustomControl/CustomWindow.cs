@@ -19,13 +19,12 @@ namespace Microsoft.Win32.UserInterface
 
         private static int mTopmostControlTag = 1;
         private static readonly ConcurrentDictionary<int, CustomWindow> mControls = new ConcurrentDictionary<int, CustomWindow>();
+        private const string ControlTagPropertyName = "Microsoft.Win32.UserInterface.CustomControl.Tag";
 
         internal static IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
             try
             {
-                const string ControlTagPropertyName = "Microsoft.Win32.UserInterface.CustomControl.Tag";
-
                 if (msg == WindowMessages.WM_CREATE)
                 {
                     CREATESTRUCT createStruct = Marshal.PtrToStructure<CREATESTRUCT>(lParam);
@@ -85,6 +84,16 @@ namespace Microsoft.Win32.UserInterface
             Handle = NativeMethods.CreateWindowEx(extendedStyle, WindowClassName, text,
                 style, frame.left, frame.top, frame.Width, frame.Height,
                 parentHandle, hMenu?.Handle ?? IntPtr.Zero, IntPtr.Zero, (IntPtr)tag);
+        }
+
+        protected void AcquireHandle(IntPtr hWnd)
+        {
+            if (Handle != IntPtr.Zero) throw new InvalidOperationException($"Cannot call {nameof(AcquireHandle)} when the instance already holds a handle");
+            Handle = hWnd;
+
+            int tag = mTopmostControlTag++;
+            mControls.TryAdd(tag, this);
+            NativeMethods.SetProp(Handle, ControlTagPropertyName, (IntPtr)tag);
         }
     }
 }
