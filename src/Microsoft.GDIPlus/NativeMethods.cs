@@ -149,5 +149,40 @@ namespace Microsoft.GDIPlus
         }
 
         #endregion
+
+        #region Guids
+
+        public static class Guids
+        {
+            public static readonly Guid ImageFormatUndefined = new Guid("b96b3ca9-0728-11d3-9d7b-0000f81ef32e");
+            public static readonly Guid ImageFormatMemoryBMP = new Guid("b96b3caa-0728-11d3-9d7b-0000f81ef32e");
+            public static readonly Guid ImageFormatBMP = new Guid("b96b3cab-0728-11d3-9d7b-0000f81ef32e");
+            public static readonly Guid ImageFormatEMF = new Guid("b96b3cac-0728-11d3-9d7b-0000f81ef32e");
+            public static readonly Guid ImageFormatWMF = new Guid("b96b3cad-0728-11d3-9d7b-0000f81ef32e");
+            public static readonly Guid ImageFormatJPEG = new Guid("b96b3cae-0728-11d3-9d7b-0000f81ef32e");
+            public static readonly Guid ImageFormatPNG = new Guid("b96b3caf-0728-11d3-9d7b-0000f81ef32e");
+            public static readonly Guid ImageFormatGIF = new Guid("b96b3cb0-0728-11d3-9d7b-0000f81ef32e");
+            public static readonly Guid ImageFormatTIFF = new Guid("b96b3cb1-0728-11d3-9d7b-0000f81ef32e");
+            public static readonly Guid ImageFormatEXIF = new Guid("b96b3cb2-0728-11d3-9d7b-0000f81ef32e");
+            public static readonly Guid ImageFormatIcon = new Guid("b96b3cb5-0728-11d3-9d7b-0000f81ef32e");
+            public static readonly Guid FrameDimensionTime = new Guid("6aedbd6d-3fb5-418a-83a6-7f45229dc872");
+            public static readonly Guid FrameDimensionResolution = new Guid("84236f7b-3bd3-428f-8dab-4ea1439ca315");
+            public static readonly Guid FrameDimensionPage = new Guid("7462dc86-6180-4c7e-8e3f-ee7333a7a483");
+            public static readonly Guid FormatIDImageInformation = new Guid("e5836cbe-5eef-4f1d-acde-ae4c43b608ce");
+            public static readonly Guid FormatIDJpegAppHeaders = new Guid("1c4afdcd-6177-43cf-abc7-5f51af39ee85");
+            public static readonly Guid EncoderCompression = new Guid("e09d739d-ccd4-44ee-8eba-3fbf8be4fc58");
+            public static readonly Guid EncoderColorDepth = new Guid("66087055-ad66-4c7c-9a18-38a2310b8337");
+            public static readonly Guid EncoderScanMethod = new Guid("3a4e2661-3109-4e56-8536-42c156e7dcfa");
+            public static readonly Guid EncoderVersion = new Guid("24d18c76-814a-41a4-bf53-1c219cccf797");
+            public static readonly Guid EncoderRenderMethod = new Guid("6d42c53a-229a-4825-8bb7-5c99e2b9a8b8");
+            public static readonly Guid EncoderQuality = new Guid("1d5be4b5-fa4a-452d-9cdd-5db35105e7eb");
+            public static readonly Guid EncoderTransformation = new Guid("8d0eb2d1-a58e-4ea8-aa14-108074b7b6f9");
+            public static readonly Guid EncoderLuminanceTable = new Guid("0xedb33bce-0266-4a77-b904-27216099e717");
+            public static readonly Guid EncoderChrominanceTable = new Guid("0xf2e455dc-09b3-4316-8260-676ada32481c");
+            public static readonly Guid EncoderSaveFlag = new Guid("292266fc-ac40-47bf-8cfca85b89a655de");
+            public static readonly Guid CodecIImageBytes = new Guid("025d1823-6c7d-447b-bbdb-a3cbc3dfa2fc");
+        }
+
+        #endregion
     }
 }
