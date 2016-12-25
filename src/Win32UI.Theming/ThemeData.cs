@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Win32.UserInterface.Graphics;
 using Microsoft.Win32.UserInterface.Interop;
 
-namespace Microsoft.Win32.UserInterface
+namespace Microsoft.Win32.UserInterface.Theming
 {
     public class ThemeData : IDisposable
     {

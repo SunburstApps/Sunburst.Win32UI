@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.UserInterface.Graphics;
+using Microsoft.Win32.UserInterface.Theming;
 
 namespace Microsoft.Win32.UserInterface.Interop
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.Win32.UserInterface
+namespace Microsoft.Win32.UserInterface.Theming
 {
     public enum PartSizingMode
     {
