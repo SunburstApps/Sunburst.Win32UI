@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="15.0">
+<Project ToolsVersion="15.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
   <PropertyGroup Label="Configuration">
     <RootNamespace>Microsoft.Win32.UserInterface</RootNamespace>
@@ -25,6 +25,7 @@
     </PackageReference>
     <ProjectReference Include="../Win32UI.Core/Win32UI.Core.csproj" />
     <ProjectReference Include="../Win32UI.Graphics/Win32UI.Graphics.csproj" />
+    <ProjectReference Include="../Win32UI.ImageList/Win32UI.ImageList.csproj" />
     <ProjectReference Include="../Win32UI.Support/Win32UI.Support.csproj" />
   </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
