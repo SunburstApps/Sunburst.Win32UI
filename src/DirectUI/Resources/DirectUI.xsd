@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://xml.sunsol.me/Win32UI/DirectUI/v1" xmlns="http://xml.sunsol.me/Win32UI/DirectUI/v1"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Element">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Element.Styles" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="AbstractElement" minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Elements -->
+  <xs:element name="AbstractElement" abstract="true" />
+  
+  <xs:element name="CustomDraw" substitutionGroup="AbstractElement">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="0" />
+
+      <xs:attribute name="Id" type="xs:string" use="required" />
+      <xs:attribute name="MinWidth" type="xs:unsignedInt" use="required" />
+      <xs:attribute name="MinHeight" type="xs:unsignedInt" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StaticText" substitutionGroup="AbstractElement">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="0" />
+      
+      <xs:attribute name="Id" type="xs:string" use="optional" />
+      <xs:attribute name="Style" type="xs:string" use="optional" />
+      <xs:attribute name="Text" type="xs:string" use="optional" />
+      <xs:attribute name="TextHalign" type="Halign" use="optional" />
+      <xs:attribute name="TextValign" type="Valign" use="optional" />
+      <xs:attribute name="DrawFlags" type="xs:string" use="optional" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StaticImage" substitutionGroup="AbstractElement">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="0" />
+
+      <xs:attribute name="Id" type="xs:string" use="required" />
+      <xs:attribute name="MinWidth" type="xs:unsignedInt" use="required" />
+      <xs:attribute name="MinHeight" type="xs:unsignedInt" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="CCPushButton" substitutionGroup="AbstractElement">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="0" />
+      <xs:attributeGroup ref="CommonCCAttrs" />
+      <xs:attribute name="Text" type="xs:string" use="required" />
+      <xs:attribute name="Default" type="xs:boolean" use="optional" />
+      <xs:attribute name="ContentHalign" type="Halign" use="optional" />
+      <xs:attribute name="ShowsIcon" type="xs:boolean" use="optional" />
+      <xs:attribute name="ElevationShield" type="xs:boolean" use="optional" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CCCommandLink" substitutionGroup="AbstractElement">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="0" />
+      <xs:attributeGroup ref="CommonCCAttrs" />
+      <xs:attribute name="Text" type="xs:string" use="required" />
+      <xs:attribute name="NoteText" type="xs:string" use="optional" />
+      <xs:attribute name="Default" type="xs:boolean" use="optional" />
+      <xs:attribute name="ElevationShield" type="xs:boolean" use="optional" />
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="CommonCCAttrs">
+    <xs:attribute name="Id" type="xs:string" use="required" />
+    <xs:attribute name="Win32Style" type="xs:unsignedInt" use="optional" />
+    <xs:attribute name="Win32ExStyle" type="xs:unsignedInt" use="optional" />
+  </xs:attributeGroup>
+  
+  <!-- Grids -->
+  <xs:element name="Grid" substitutionGroup="AbstractElement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Grid.Columns" />
+        <xs:element ref="Grid.Rows" />
+
+        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+          <xs:element ref="GridCell" />
+        </xs:sequence>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="GridCell">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="1">
+        <xs:element ref="AbstractElement" />
+      </xs:sequence>
+
+      <xs:attribute name="ColumnIndex" type="xs:unsignedInt" use="required" />
+      <xs:attribute name="RowIndex" type="xs:unsignedInt" use="required" />
+      <xs:attribute name="ColumnSpan" type="xs:unsignedInt" use="optional" />
+      <xs:attribute name="RowSpan" type="xs:unsignedInt" use="optional" />
+      <xs:attribute name="Margin" type="Margin" use="optional" />
+      <xs:attribute name="Halign" type="Halign" use="optional" />
+      <xs:attribute name="Valign" type="Valign" use="optional" />
+      <xs:attribute name="Hstretch" type="Stretch" use="optional" />
+      <xs:attribute name="Vstretch" type="Stretch" use="optional" />
+      <xs:attribute name="Style" type="xs:string" use="optional" />
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="Margin">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]+(,[0-9]+,[0-9]+,[0-9]+)?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Halign">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Center" />
+      <xs:enumeration value="Right" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Valign">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Top" />
+      <xs:enumeration value="Center" />
+      <xs:enumeration value="Bottom" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Stretch">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="FixedSize" />
+      <xs:enumeration value="SizeToContent" />
+      <xs:enumeration value="Stretch" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="Grid.Columns">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:element ref="Column" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Column">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="0" />
+      <xs:attribute name="Width" type="GridCellSize" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Grid.Rows">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:element ref="Row" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Row">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="0" />
+      <xs:attribute name="Height" type="GridCellSize" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="GridCellSize">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Auto" />
+          <xs:enumeration value="*" />
+        </xs:restriction>
+      </xs:simpleType>
+      
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[0-9]+\*?" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <!-- Style Sheets -->
+  <xs:element name="Element.Styles">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:element ref="Style" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Style">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element ref="Text" />
+        <xs:element ref="BackgroundFill" />
+      </xs:choice>
+
+      <xs:attribute name="Id" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="BackgroundFill">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="0" />
+
+      <xs:attribute name="ThemePart" type="xs:unsignedLong" use="optional" />
+      <xs:attribute name="ThemeState" type="xs:unsignedLong" use="optional" />
+      <xs:attribute name="Color" type="ThemeColor" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Text">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="0" />
+
+      <xs:attribute name="ThemePart" type="xs:unsignedLong" use="optional" />
+      <xs:attribute name="ThemeState" type="xs:unsignedLong" use="optional" />
+      <xs:attribute name="Color" type="ThemeColor" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="ThemeColor">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="WindowBackground" />
+          <xs:enumeration value="ControlBackground" />
+          <xs:enumeration value="DisabledText" />
+          <xs:enumeration value="Text" />
+        </xs:restriction>
+      </xs:simpleType>
+
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="#[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]([0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])?" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+</xs:schema>
