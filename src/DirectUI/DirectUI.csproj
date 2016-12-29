@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="15.0">
+<Project ToolsVersion="15.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -23,8 +23,6 @@
     <PackageReference Include="Microsoft.Win32.Primitives">
       <Version>4.0.1</Version>
     </PackageReference>
-    <ProjectReference Include="../Win32UI.Aero/Win32UI.Aero.csproj" />
-    <ProjectReference Include="../Win32UI.BufferedGraphics/Win32UI.BufferedGraphics.csproj" />
     <ProjectReference Include="../Win32UI.Controls/Win32UI.Controls.csproj" />
     <ProjectReference Include="../Win32UI.Core/Win32UI.Core.csproj" />
     <ProjectReference Include="../Win32UI.CustomControl/Win32UI.CustomControl.csproj" />
