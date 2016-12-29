@@ -39,6 +39,21 @@ namespace Microsoft.Win32.UserInterface.Interop
         public static extern int DrawThemeIcon(IntPtr hTheme, IntPtr hDC, int partId, int stateId, [In] ref Rect rect, IntPtr hImageList, int imageIndex);
 
         [DllImport("uxtheme.dll")]
+        public static extern int GetThemeColor(IntPtr hTheme, int partId, int stateId, int propId, out int color_ref);
+
+        [DllImport("uxtheme.dll")]
+        public static extern int GetThemeMetric(IntPtr hTheme, IntPtr hDC, int partId, int stateId, int propId, out int value);
+
+        [DllImport("uxtheme.dll")]
+        public static extern int GetThemePosition(IntPtr hTheme, int partId, int stateId, int propId, out Point value);
+
+        [DllImport("uxtheme.dll")]
+        public static extern int GetThemeFont(IntPtr hTheme, IntPtr hDC, int partId, int stateId, int propId, out LOGFONT value);
+
+        [DllImport("uxtheme.dll")]
+        public static extern int GetThemeRect(IntPtr hTheme, IntPtr hDC, int partId, int stateId, int propId, out Rect value);
+
+        [DllImport("uxtheme.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool IsThemePartDefined(IntPtr hTheme, int partId, int stateId);
     }

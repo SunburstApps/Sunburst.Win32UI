@@ -147,6 +147,51 @@ namespace Microsoft.Win32.UserInterface.Theming
             }
         }
 
+        public Color GetColor(int partId, int stateId, int propId)
+        {
+            AssertPartDefined(partId, stateId);
+
+            int hr = NativeMethods.GetThemeColor(Handle, partId, stateId, propId, out var color_ref);
+            if (hr != 0) Marshal.ThrowExceptionForHR(hr);
+            return Color.FromWin32Color(color_ref);
+        }
+
+        public int GetMetric(NonOwnedGraphicsContext dc, int partId, int stateId, int propId)
+        {
+            AssertPartDefined(partId, stateId);
+
+            int hr = NativeMethods.GetThemeMetric(Handle, dc.Handle, partId, stateId, propId, out var value);
+            if (hr != 0) Marshal.ThrowExceptionForHR(hr);
+            return value;
+        }
+
+        public Point GetPosition(int partId, int stateId, int propId)
+        {
+            AssertPartDefined(partId, stateId);
+
+            int hr = NativeMethods.GetThemePosition(Handle, partId, stateId, propId, out var value);
+            if (hr != 0) Marshal.ThrowExceptionForHR(hr);
+            return value;
+        }
+
+        public Font GetFont(NonOwnedGraphicsContext dc, int partId, int stateId, int propId)
+        {
+            AssertPartDefined(partId, stateId);
+
+            int hr = NativeMethods.GetThemeFont(Handle, dc.Handle, partId, stateId, propId, out var value);
+            if (hr != 0) Marshal.ThrowExceptionForHR(hr);
+            return new Font(value);
+        }
+
+        public Rect GetRect(NonOwnedGraphicsContext dc, int partId, int stateId, int propId)
+        {
+            AssertPartDefined(partId, stateId);
+
+            int hr = NativeMethods.GetThemeRect(Handle, dc.Handle, partId, stateId, propId, out var value);
+            if (hr != 0) Marshal.ThrowExceptionForHR(hr);
+            return value;
+        }
+
         public bool IsPartDefined(int partId, int stateId) => NativeMethods.IsThemePartDefined(Handle, partId, stateId);
         private void AssertPartDefined(int partId, int stateId)
         {
