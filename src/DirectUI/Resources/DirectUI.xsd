@@ -87,7 +87,7 @@
 
   <xs:element name="GridCell">
     <xs:complexType>
-      <xs:sequence minOccurs="1" maxOccurs="1">
+      <xs:sequence minOccurs="0" maxOccurs="1">
         <xs:element ref="AbstractElement" />
       </xs:sequence>
 
