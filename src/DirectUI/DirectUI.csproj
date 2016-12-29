@@ -5,12 +5,13 @@
     <TargetFramework>netcoreapp1.0</TargetFramework>
     <AssemblyTitle>DirectUI</AssemblyTitle>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="**\*.cs" />
     <EmbeddedResource Include="**\*.resx" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Content Include="Resources\DirectUI-Sample.xml" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.App">
       <Version>1.0.1</Version>
@@ -37,6 +38,8 @@
     <ProjectReference Include="../Win32UI.TaskDialogs/Win32UI.TaskDialogs.csproj" />
     <ProjectReference Include="../Win32UI.Theming/Win32UI.Theming.csproj" />
   </ItemGroup>
-
+  <ItemGroup>
+    <None Include="Resources\DirectUI.xsd" />
+  </ItemGroup>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
