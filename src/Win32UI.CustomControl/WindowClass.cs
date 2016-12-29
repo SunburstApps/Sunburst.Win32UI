@@ -25,7 +25,7 @@ namespace Microsoft.Win32.UserInterface
         public NonOwnedBrush BackgroundBrush { get; set; }
         public Cursor Cursor { get; set; }
 
-        public IntPtr Register()
+        internal IntPtr Register()
         {
             IntPtr classAtom = IntPtr.Zero;
             bool found = mAtomTable.TryGetValue(ClassName, out classAtom);

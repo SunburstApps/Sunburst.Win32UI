@@ -9,6 +9,7 @@ namespace Microsoft.Win32.UserInterface
 {
     public class CustomWindow : EventedWindow
     {
+        public static void RegisterWindowClass(WindowClass wndClass) => wndClass.Register();
         public static string DefaultClassName => mStockControlWindowClass.Value.ClassName;
         private static Lazy<WindowClass> mStockControlWindowClass = new Lazy<WindowClass>(() =>
         {
@@ -86,11 +87,8 @@ namespace Microsoft.Win32.UserInterface
                 parentHandle, hMenu?.Handle ?? IntPtr.Zero, IntPtr.Zero, (IntPtr)tag);
         }
 
-        protected void AcquireHandle(IntPtr hWnd)
+        public void AcquireHandle()
         {
-            if (Handle != IntPtr.Zero) throw new InvalidOperationException($"Cannot call {nameof(AcquireHandle)} when the instance already holds a handle");
-            Handle = hWnd;
-
             int tag = mTopmostControlTag++;
             mControls.TryAdd(tag, this);
             NativeMethods.SetProp(Handle, ControlTagPropertyName, (IntPtr)tag);
