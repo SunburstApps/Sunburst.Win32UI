@@ -91,6 +91,7 @@
         <xs:element ref="AbstractElement" />
       </xs:sequence>
 
+      <xs:attribute name="Id" type="xs:string" use="optional" />
       <xs:attribute name="ColumnIndex" type="xs:unsignedInt" use="required" />
       <xs:attribute name="RowIndex" type="xs:unsignedInt" use="required" />
       <xs:attribute name="ColumnSpan" type="xs:unsignedInt" use="optional" />
