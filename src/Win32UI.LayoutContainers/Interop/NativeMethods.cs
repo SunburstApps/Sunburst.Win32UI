@@ -13,7 +13,7 @@ namespace Microsoft.Win32.UserInterface.Interop
         public static readonly IntPtr HWND_NOTOPMOST = (IntPtr)(-2);
 
         public const int GW_CHILD = 5, GW_HWNDNEXT = 2;
-        
+
         [DllImport("user32.dll")]
         public static extern IntPtr BeginDeferWindowPos(int controlCount);
 
@@ -28,6 +28,24 @@ namespace Microsoft.Win32.UserInterface.Interop
         public static extern IntPtr GetWindow(IntPtr hWnd, int relationship);
 
         [DllImport("user32.dll")]
-        public static extern int MapWindowPoints(IntPtr hWndFrom, IntPtr hWndTo, ref Point pt, int pointCount);
+        public static extern int MapWindowPoints(IntPtr hWndFrom, IntPtr hWndTo, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Point[] pt, int pointCount);
+
+        [DllImport("user32.dll")]
+        public static extern bool GetScrollInfo(IntPtr hWnd, int wSBFlags, ref SCROLLINFO info);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetScrollInfo(IntPtr hWnd, int wSBFlags, ref SCROLLINFO info, bool redraw);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetScrollPos(IntPtr hWnd, int nBar, int position, bool redraw);
+
+        [DllImport("user32.dll")]
+        public static extern int ScrollWindowEx(IntPtr hWnd, int dx, int dy, IntPtr scrollRectPtr, IntPtr clipRectPtr, IntPtr hRgnUpdate, IntPtr updateRectPtr, uint flags);
+
+        [DllImport("user32.dll")]
+        public static extern bool SystemParametersInfoW(uint action, uint param, IntPtr value, uint winIniFlag);
+
+        [DllImport("user32.dll")]
+        public static extern bool IsWindow(IntPtr hWnd);
     }
 }
