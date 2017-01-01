@@ -217,6 +217,9 @@ namespace Microsoft.Win32.UserInterface.Interop
         [DllImport("gdi32.dll")]
         public static extern IntPtr CreateDIBSection(IntPtr hDC, ref BITMAPINFO bitmapInfo, int colors, out IntPtr imageBits, IntPtr hSection, int offset);
 
+        [DllImport("gdi32.dll")]
+        public static extern bool SetViewportOrgEx(IntPtr hDC, int x, int y, out Point oldOrg);
+
         #region Windows Imaging Component
 
         public enum WICDecodeOptions

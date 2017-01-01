@@ -371,5 +371,11 @@ namespace Microsoft.Win32.UserInterface.Graphics
             NativeMethods.DrawText(Handle, text, -1, ref frame, formatFlags);
             return new Size(frame.right, frame.bottom);
         }
+
+        public Point SetViewportOrigin(Point origin)
+        {
+            NativeMethods.SetViewportOrgEx(Handle, origin.x, origin.y, out var oldOrigin);
+            return oldOrigin;
+        }
     }
 }
