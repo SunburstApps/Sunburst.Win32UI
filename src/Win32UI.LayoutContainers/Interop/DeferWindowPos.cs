@@ -19,13 +19,13 @@ namespace Microsoft.Win32.UserInterface.Interop
 
         public void AddControl(Window windowToMove, Rect frame, DeferWindowPosFlags flags = 0)
         {
-            NativeMethods.DeferWindowPos(Handle, windowToMove.Handle, IntPtr.Zero,
+            Handle = NativeMethods.DeferWindowPos(Handle, windowToMove.Handle, IntPtr.Zero,
                 frame.left, frame.top, frame.Width, frame.Height, flags | DeferWindowPosFlags.IgnoreZOrder);
         }
 
         public void AddControl(Window windowToMove, Window windowToInsertZOrderAfter, Rect frame, DeferWindowPosFlags flags = 0)
         {
-            NativeMethods.DeferWindowPos(Handle, windowToMove.Handle, windowToInsertZOrderAfter.Handle,
+            Handle = NativeMethods.DeferWindowPos(Handle, windowToMove.Handle, windowToInsertZOrderAfter.Handle,
                 frame.left, frame.top, frame.Width, frame.Height, flags);
         }
 
@@ -41,7 +41,7 @@ namespace Microsoft.Win32.UserInterface.Interop
                 default: throw new ArgumentException("Invalid ZOrderPosition value", nameof(specialZOrderPosition));
             }
 
-            NativeMethods.DeferWindowPos(Handle, windowToMove.Handle, hWndSpecial,
+            Handle = NativeMethods.DeferWindowPos(Handle, windowToMove.Handle, hWndSpecial,
                 frame.left, frame.top, frame.Width, frame.Height, flags);
         }
     }
