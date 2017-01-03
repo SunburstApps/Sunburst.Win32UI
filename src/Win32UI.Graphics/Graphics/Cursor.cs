@@ -9,6 +9,22 @@ namespace Microsoft.Win32.UserInterface.Graphics
     public class Cursor
     {
         /// <summary>
+        /// Gets or sets the currently active cursor.
+        /// </summary>
+        public static Cursor Current
+        {
+            get
+            {
+                return new Cursor(NativeMethods.GetCursor());
+            }
+
+            set
+            {
+                NativeMethods.SetCursor(value.Handle);
+            }
+        }
+
+        /// <summary>
         /// The standard arrow cursor.
         /// </summary>
         public static Cursor Arrow

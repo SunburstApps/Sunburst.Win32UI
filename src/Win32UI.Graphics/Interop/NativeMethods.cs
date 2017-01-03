@@ -220,6 +220,12 @@ namespace Microsoft.Win32.UserInterface.Interop
         [DllImport("gdi32.dll")]
         public static extern bool SetViewportOrgEx(IntPtr hDC, int x, int y, out Point oldOrg);
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetCursor();
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetCursor(IntPtr hCursor);
+
         #region Windows Imaging Component
 
         public enum WICDecodeOptions
