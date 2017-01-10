@@ -47,5 +47,32 @@ namespace Microsoft.Win32.UserInterface.Interop
 
         [DllImport("user32.dll")]
         public static extern bool IsWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern void SetFocus(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetFocus();
+
+        [DllImport("user32.dll")]
+        public static extern bool IsChild(IntPtr hWndParent, IntPtr hWndChild);
+
+        [DllImport("user32.dll")]
+        public static extern bool ClientToScreen(IntPtr hWnd, ref Point pt);
+
+        [DllImport("user32.dll")]
+        public static extern bool ScreenToClient(IntPtr hWnd, ref Point pt);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetCursorPos(int x, int y);
+
+        [DllImport("user32.dll")]
+        public static extern int GetMessagePos();
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetCapture();
+
+        [DllImport("user32.dll")]
+        public static extern void SetCapture(IntPtr hWnd);
     }
 }
