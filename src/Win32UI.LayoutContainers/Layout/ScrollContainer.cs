@@ -305,7 +305,7 @@ namespace Microsoft.Win32.UserInterface.Layout
             targetRect.left = points[0].x;
             targetRect.top = points[0].y;
             targetRect.right = points[1].x;
-            targetRect.right = points[1].y;
+            targetRect.bottom = points[1].y;
             ScrollIntoView(targetRect);
         }
 
