@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
 
@@ -30,11 +30,11 @@
   <ItemGroup>
     <Content Include="../../src/Win32UI.Native/x64/Release/Win32UI.Native.dll">
       <Pack>true</Pack>
-      <PackagePath>runtimes/win/native</PackagePath>
+      <PackagePath>runtimes/win10-x64/native</PackagePath>
     </Content>
     <Content Include="../../src/Win32UI.Native/x64/Release/Win32UI.Native.pdb">
       <Pack>true</Pack>
-      <PackagePath>runtimes/win/native</PackagePath>
+      <PackagePath>runtimes/win10-x64/native</PackagePath>
     </Content>
   </ItemGroup>
 </Project>
