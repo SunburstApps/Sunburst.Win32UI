@@ -7,6 +7,4 @@
     <Product Condition="'$(Product)' == ''">.NET Core User Interface Libraries</Product>
     <Description Condition="'$(Description)' == '' and '$(AssemblyTitle)' != ''">$(AssemblyTitle)</Description>
   </PropertyGroup>
-
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory)/.., dir.targets))\dir.targets" />
 </Project>
