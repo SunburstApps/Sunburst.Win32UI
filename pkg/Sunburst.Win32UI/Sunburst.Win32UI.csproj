@@ -24,16 +24,5 @@
     <ProjectReference Update="@(ProjectReference)" Pack="true" />
   </ItemGroup>
 
-  <Target Name="PackProjectReferences" BeforeTargets="_GetPackageFiles">
-    <ItemGroup>
-      <_PackableProjectReference Include="@(ProjectReference)" Condition="'%(ProjectReference.Pack)' == 'true' and '%(ProjectReference.PackagePath)' != ''" />
-      <_PackableProjectReference Include="@(ProjectReference)" Condition="'%(ProjectReference.Pack)' == 'true' and '%(ProjectReference.PackagePath)' == ''">
-        <PackagePath>lib/$(TargetFramework)</PackagePath>
-      </_PackableProjectReference>
-    </ItemGroup>
-
-    <CreateItem Include="@(_PackableProjectReference -> '$(OutputPath)%(FileName).dll')" AdditionalMetadata="Pack=true; PackagePath=%(PackagePath)">
-      <Output TaskParameter="Include" ItemName="Content" />
-    </CreateItem>
-  </Target>
+  <Import Project="../dir.targets" />
 </Project>
