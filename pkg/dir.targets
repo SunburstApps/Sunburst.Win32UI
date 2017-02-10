@@ -10,5 +10,9 @@
     <CreateItem Include="@(_PackableProjectReference -> '$(OutputPath)%(FileName).dll')" AdditionalMetadata="Pack=true; PackagePath=%(PackagePath)">
       <Output TaskParameter="Include" ItemName="Content" />
     </CreateItem>
+
+    <CreateItem Include="@(_PackableProjectReference -> '$(OutputPath)%(FileName).pdb')" AdditionalMetadata="Pack=true; PackagePath=%(PackagePath)" Condition="'$(IncludeSymbols)' == 'true'">
+      <Output TaskParameter="Include" ItemName="_TargetPathsToSymbols" />
+    </CreateItem>
   </Target>
 </Project>
