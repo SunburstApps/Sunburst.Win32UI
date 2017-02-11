@@ -13,11 +13,11 @@
       <Output TaskParameter="ResourceScriptPath" ItemName="_ResourceScript" />
     </GenerateResourceScript>
 
-    <CompileResourceScript ResourceScripts="@(_ResourceScripts)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(RCToolPath)">
+    <CompileResourceScript ResourceScripts="@(_ResourceScripts)" OutputDirectory="$(IntermediateOutputPath)" ToolPath32="$(RCToolPath32)" ToolPath64="$(RCToolPath64)">
       <Output TaskParameter="ResourceObjects" ItemName="_ResourceObject" />
     </CompileResourceScript>
 
-    <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)" SxsReferences="@(SxsReference)" UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(LinkToolPath)">
+    <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)" SxsReferences="@(SxsReference)" UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputDirectory="$(IntermediateOutputPath)" ToolPath32="$(LinkToolPath32)" ToolPath64="$(ToolPath64)">
       <Output TaskParameter="OutputPath" ItemName="_ResourceLinkOutput" />
     </MsvcLink>
 
