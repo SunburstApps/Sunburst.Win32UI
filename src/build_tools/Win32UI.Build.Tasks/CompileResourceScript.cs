@@ -23,7 +23,7 @@ namespace Win32UI.Build.Tasks
 
         protected override string GenerateFullPathToTool()
         {
-            return IntPtr.Size == 8 ? ToolPath64 : ToolPath32;
+            return ToolPath ?? "rc.exe";
         }
 
         protected override string GenerateCommandLineCommands()

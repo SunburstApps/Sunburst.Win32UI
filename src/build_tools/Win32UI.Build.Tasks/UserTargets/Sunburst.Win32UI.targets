@@ -1,11 +1,6 @@
 <Project>
   <PropertyGroup>
     <Win32UITasksAssembly Condition="'$(Win32UITasksAssembly)' == ''">$(MSBuildThisFileDirectory)/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
-
-    <RCToolPath32 Condition="'$(RCToolPath32)' == ''">rc.exe</RCToolPath32>
-    <RCToolPath64 Condition="'$(RCToolPath64)' == ''">rc.exe</RCToolPath64>
-    <LinkToolPath32 Condition="'$(LinkToolPath32)' == ''">link.exe</LinkToolPath32>
-    <LinkToolPath64 Condition="'$(LinkToolPath64)' == ''">link.exe</LinkToolPath64>
   </PropertyGroup>
 
   <UsingTask TaskName="GenerateResourceScript" AssemblyFile="$(Win32UITasksAssembly)" />
@@ -18,11 +13,11 @@
       <Output TaskParameter="ResourceScriptPath" ItemName="_ResourceScript" />
     </GenerateResourceScript>
 
-    <CompileResourceScript ResourceScripts="@(_ResourceScripts)" OutputDirectory="$(IntermediateOutputPath)" ToolPath32="$(RCToolPath32)" ToolPath64="$(RCToolPath64)">
+    <CompileResourceScript ResourceScripts="@(_ResourceScripts)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(RCToolPath)">
       <Output TaskParameter="ResourceObjects" ItemName="_ResourceObject" />
     </CompileResourceScript>
 
-    <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)" SxsReferences="@(SxsReference)" UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputDirectory="$(IntermediateOutputPath)" ToolPath32="$(LinkToolPath32)" ToolPath64="$(ToolPath64)">
+    <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)" SxsReferences="@(SxsReference)" UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(LinkToolPath)">
       <Output TaskParameter="OutputPath" ItemName="_ResourceLinkOutput" />
     </MsvcLink>
 
