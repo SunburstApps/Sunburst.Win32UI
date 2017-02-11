@@ -1,6 +1,11 @@
 <Project>
   <PropertyGroup>
     <Win32UITasksAssembly Condition="'$(Win32UITasksAssembly)' == ''">$(MSBuildThisFileDirectory)/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
+
+    <RCToolPath32 Condition="'$(RCToolPath32)' == ''">rc.exe</RCToolPath32>
+    <RCToolPath64 Condition="'$(RCToolPath64)' == ''">rc.exe</RCToolPath64>
+    <LinkToolPath32 Condition="'$(LinkToolPath32)' == ''">link.exe</LinkToolPath32>
+    <LinkToolPath64 Condition="'$(LinkToolPath64)' == ''">link.exe</LinkToolPath64>
   </PropertyGroup>
 
   <UsingTask TaskName="GenerateResourceScript" AssemblyFile="$(Win32UITasksAssembly)" />
