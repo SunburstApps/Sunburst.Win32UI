@@ -1,0 +1,26 @@
+<Project>
+  <PropertyGroup>
+    <Win32UITasksAssembly Condition="'$(Win32UITasksAssembly)' == ''">$(MSBuildThisFileDirectory)/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
+  </PropertyGroup>
+
+  <UsingTask TaskName="GenerateResourceScript" AssemblyFile="$(Win32UITasksAssembly)" />
+  <UsingTask TaskName="CompileResourceScript" AssemblyFile="$(Win32UITasksAssembly)" />
+  <UsingTask TaskName="MsvcLink" AssemblyFile="$(Win32UITasksAssembly)" />
+  <UsingTask TaskName="CopyResourceSegment" AssemblyFile="$(Win32UITasksAssembly)" />
+
+  <Target Name="UpdateEntryPointResources" AfterTargets="Build">
+    <GenerateResourceScript RuntimeIdentifier="$(RuntimeIdentifier)" ApplicationIcon="$(ApplicationIcon)" Icons="@(EntryPointIcon)" ScriptFragments="@(EntryPointResourceScriptFragment)" EmbeddedFiles="@(EntryPointResourceScriptFile)">
+      <Output TaskParameter="ResourceScriptPath" ItemName="_ResourceScript" />
+    </GenerateResourceScript>
+
+    <CompileResourceScript ResourceScripts="@(_ResourceScripts)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(RCToolPath)">
+      <Output TaskParameter="ResourceObjects" ItemName="_ResourceObject" />
+    </CompileResourceScript>
+
+    <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)" SxsReferences="@(SxsReference)" UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(LinkToolPath)">
+      <Output TaskParameter="OutputPath" ItemName="_ResourceLinkOutput" />
+    </MsvcLink>
+
+    <CopyResourceSegment InputFile="@(_ResourceLinkOutput)" OutputFile="$(TargetDir)$(TargetFileName).exe" />
+  </Target>
+</Project>
