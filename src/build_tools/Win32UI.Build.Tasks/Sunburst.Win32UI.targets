@@ -31,7 +31,7 @@
     <CopyResourceSegment InputFile="@(_ResourceLinkOutput)" OutputFile="$(TargetDir)$(TargetFileName).exe" />
   </Target>
 
-  <Target Name="MarkEntryPointAsGuiApp" AfterTargets="Build" Condition="'$(GuiEntryPoint)' == 'true'">
+  <Target Name="MarkEntryPointAsGuiApp" AfterTargets="Build" Condition="'$(GuiEntryPoint)' == 'true' and '$(OutputType)' == 'Exe'">
     <MarkExecutableAsGui ToolPath="$(EditbinToolPath)" Executable="$(TargetDir)$(TargetFileName).exe" />
   </Target>
 </Project>
