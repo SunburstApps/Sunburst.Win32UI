@@ -13,6 +13,7 @@
   <UsingTask TaskName="CompileResourceScript" AssemblyFile="$(Win32UITasksAssembly)" />
   <UsingTask TaskName="MsvcLink" AssemblyFile="$(Win32UITasksAssembly)" />
   <UsingTask TaskName="CopyResourceSegment" AssemblyFile="$(Win32UITasksAssembly)" />
+  <UsingTask TaskName="MarkExecutableAsGui" AssemblyFile="$(Win32UITasksAssembly) "/>
 
   <Target Name="UpdateEntryPointResources" AfterTargets="Build">
     <GenerateResourceScript Icons="@(EntryPointIcon)" ScriptFragments="@(EntryPointResourceScriptFragment)" EmbeddedFiles="@(EntryPointResourceScriptFile)" OutputDirectory="$(IntermediateOutputPath)">
@@ -28,5 +29,9 @@
     </MsvcLink>
 
     <CopyResourceSegment InputFile="@(_ResourceLinkOutput)" OutputFile="$(TargetDir)$(TargetFileName).exe" />
+  </Target>
+
+  <Target Name="MarkEntryPointAsGuiApp" AfterTargets="Build" Condition="'$(GuiEntryPoint)' == 'true'">
+    <MarkExecutableAsGui ToolPath="$(EditbinToolPath)" Executable="$(TargetDir)$(TargetFileName).exe" />
   </Target>
 </Project>
