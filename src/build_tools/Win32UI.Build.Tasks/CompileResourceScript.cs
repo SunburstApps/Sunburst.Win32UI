@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace Win32UI.Build.NativeResources
+namespace Win32UI.Build.Tasks
 {
     public sealed class CompileResourceScript : ToolTask
     {
