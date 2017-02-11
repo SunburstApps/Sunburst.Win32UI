@@ -21,6 +21,17 @@
     <ProjectReference Include="../../src/Win32UI.TaskDialogs/Win32UI.TaskDialogs.csproj" />
     <ProjectReference Include="../../src/Win32UI.Theming/Win32UI.Theming.csproj" />
 
+    <ProjectReference Include="../../src/build_tools/Win32UI.Build.NativeResources/Win32UI.Build.NativeResources.csproj">
+      <PackagePath>build</PackagePath>
+    </ProjectReference>
+    <ProjectReference Include="../../src/build_tools/Win32UI.Build.Tasks/Win32UI.Build.Tasks.csproj">
+      <PackagePath>build</PackagePath>
+    </ProjectReference>
+    <Content Include="../../src/build_tools/Win32UI.Build.Tasks/Sunburst.Win32UI.targets">
+      <Pack>true</Pack>
+      <PackagePath>build</PackagePath>
+    </Content>
+
     <ProjectReference Update="@(ProjectReference)" Pack="true" />
   </ItemGroup>
 
