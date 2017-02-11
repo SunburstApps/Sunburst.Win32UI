@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Win32.Primitives">
-      <Version>4.0.1</Version>
-    </PackageReference>
-
     <ProjectReference Include="../Win32UI.Controls/Win32UI.Controls.csproj" />
     <ProjectReference Include="../Win32UI.ImageList/Win32UI.ImageList.csproj" />
     <ProjectReference Include="../Win32UI.Graphics/Win32UI.Graphics.csproj" />

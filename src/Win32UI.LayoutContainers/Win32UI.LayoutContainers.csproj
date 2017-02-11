@@ -10,10 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Win32.Primitives">
-      <Version>4.0.1</Version>
-    </PackageReference>
-
     <ProjectReference Include="../Win32UI.Dialogs/Win32UI.Dialogs.csproj" />
     <ProjectReference Include="../Win32UI.Controls/Win32UI.Controls.csproj" />
     <ProjectReference Include="../Win32UI.CustomControl/Win32UI.CustomControl.csproj" />
