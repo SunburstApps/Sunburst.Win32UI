@@ -11,7 +11,6 @@ namespace Win32UI.Build.Tasks
         public string OutputDirectory { get; set; }
         [OutputAttribute]
         public ITaskItem ResourceScriptPath { get; set; }
-        public string RuntimeIdentifier { get; set; }
         public ITaskItem[] Icons { get; set; }
         public ITaskItem[] ScriptFragments { get; set; }
         public ITaskItem[] EmbeddedFiles { get; set; }
