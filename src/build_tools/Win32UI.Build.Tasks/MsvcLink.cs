@@ -18,7 +18,7 @@ namespace Win32UI.Build.Tasks
     public sealed class MsvcLink : ToolTask
     {
         [RequiredAttribute]
-        public string OutputDirectory { get; set; }
+        public string OutputFilePath { get; set; }
         [RequiredAttribute]
         public ITaskItem[] Objects { get; set; }
         public ITaskItem[] SxsManifestFragments { get; set; }
@@ -56,18 +56,11 @@ namespace Win32UI.Build.Tasks
 
         protected override string GenerateCommandLineCommands()
         {
-            string outputPath = Path.Combine(OutputDirectory, "Resources.dll");
-            int index = 0;
-            while (File.Exists(outputPath))
-            {
-                outputPath = Path.Combine(OutputDirectory, $"Resources.{index++}.dll");
-            }
-
             List<string> argv = new List<string>();
             argv.Add("/nologo");
             argv.Add("/dll");
             argv.Add("/noentry");
-            argv.Add($"/out:{outputPath}");
+            argv.Add($"/out:{OutputFilePath}");
             argv.Add("/manifest:embed,id=1");
             argv.Add($"/manifestuac:{GetManifestUacString()}");
             argv.AddRange(Objects.Select(item => item.GetMetadata("FullPath")));

@@ -24,11 +24,12 @@
       <Output TaskParameter="ResourceObjects" ItemName="_ResourceObject" />
     </CompileResourceScript>
 
-    <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)" SxsReferences="@(SxsReference)" UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(LinkToolPath)">
-      <Output TaskParameter="OutputPath" ItemName="_ResourceLinkOutput" />
-    </MsvcLink>
+    <PropertyGroup>
+      <_ResourceLinkOutput>$(IntermediateOutputPath)EntryPointResources.dll</_ResourceLinkOutput>
+    </PropertyGroup>
 
-    <CopyResourceSegment InputFile="@(_ResourceLinkOutput)" OutputFile="$(TargetDir)$(TargetFileName).exe" />
+    <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)" SxsReferences="@(SxsReference)" UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputFilePath="$(_ResourceLinkOutput)" ToolPath="$(LinkToolPath)" />
+    <CopyResourceSegment InputFile="$(_ResourceLinkOutput)" OutputFile="$(TargetDir)$(TargetFileName).exe" />
   </Target>
 
   <Target Name="MarkEntryPointAsGuiApp" AfterTargets="Build" Condition="'$(GuiEntryPoint)' == 'true' and '$(OutputType)' == 'Exe'">

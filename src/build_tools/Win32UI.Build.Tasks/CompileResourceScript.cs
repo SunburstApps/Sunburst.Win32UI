@@ -28,12 +28,8 @@ namespace Win32UI.Build.Tasks
 
         protected override string GenerateCommandLineCommands()
         {
-            string outputPath = Path.Combine(OutputDirectory, "Generated.res");
-            int index = 0;
-            while (File.Exists(outputPath))
-            {
-                outputPath = Path.Combine(OutputDirectory, $"Generated.{index++}.res");
-            }
+            string firstInputFile = Path.GetFileNameWithoutExtension(ResourceScripts[0].GetMetadata("FullPath"));
+            string outputPath = Path.Combine(OutputDirectory, Path.ChangeExtension(firstInputFile, "res"));
 
             List<string> argv = new List<string>();
             argv.Add("/nologo");

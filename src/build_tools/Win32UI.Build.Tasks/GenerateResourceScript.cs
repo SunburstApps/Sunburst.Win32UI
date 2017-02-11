@@ -73,11 +73,6 @@ namespace Win32UI.Build.Tasks
             if (!Log.HasLoggedErrors)
             {
                 string outputPath = Path.Combine(OutputDirectory, "Generated.rc");
-                int index = 0;
-                while (File.Exists(outputPath))
-                {
-                    outputPath = Path.Combine(OutputDirectory, $"Generated.{index++}.rc");
-                }
 
                 File.WriteAllText(outputPath, outputFile.ToString());
                 ResourceScriptPath = new TaskItem(outputPath);
