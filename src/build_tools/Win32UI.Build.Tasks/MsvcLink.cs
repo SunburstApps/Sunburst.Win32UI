@@ -71,7 +71,7 @@ namespace Win32UI.Build.Tasks
             argv.Add("/manifest:embed,id=1");
             argv.Add($"/manifestuac:{GetManifestUacString()}");
             argv.AddRange(Objects.Select(item => item.GetMetadata("FullPath")));
-            argv.AddRange(SxsManifestFragments.Select(item => item.GetMetadata("FullPath")));
+            argv.AddRange(SxsManifestFragments.Select(item => "/maifestinput:" + item.GetMetadata("FullPath")));
             argv.AddRange(SxsReferences.Select(item => GetManifestDependencyFlag(item)));
 
             return string.Join(" ", argv.Select(x => "\"" + x + "\""));
