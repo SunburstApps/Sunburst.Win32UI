@@ -14,7 +14,7 @@
   <UsingTask TaskName="CopyResourceSegment" AssemblyFile="$(Win32UITasksAssembly)" />
 
   <Target Name="UpdateEntryPointResources" AfterTargets="Build">
-    <GenerateResourceScript RuntimeIdentifier="$(RuntimeIdentifier)" ApplicationIcon="$(ApplicationIcon)" Icons="@(EntryPointIcon)" ScriptFragments="@(EntryPointResourceScriptFragment)" EmbeddedFiles="@(EntryPointResourceScriptFile)">
+    <GenerateResourceScript RuntimeIdentifier="$(RuntimeIdentifier)" Icons="@(EntryPointIcon)" ScriptFragments="@(EntryPointResourceScriptFragment)" EmbeddedFiles="@(EntryPointResourceScriptFile)" OutputDirectory="$(IntermediateOutputPath)">
       <Output TaskParameter="ResourceScriptPath" ItemName="_ResourceScript" />
     </GenerateResourceScript>
 
