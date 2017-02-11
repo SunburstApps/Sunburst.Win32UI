@@ -3,7 +3,7 @@
     <ItemGroup>
       <_PackableProjectReference Include="@(ProjectReference)" Condition="'%(ProjectReference.Pack)' == 'true' and '%(ProjectReference.PackagePath)' != ''" />
       <_PackableProjectReference Include="@(ProjectReference)" Condition="'%(ProjectReference.Pack)' == 'true' and '%(ProjectReference.PackagePath)' == ''">
-        <PackagePath>lib/$(TargetFramework)</PackagePath>
+        <PackagePath>lib\$(TargetFramework)</PackagePath>
       </_PackableProjectReference>
     </ItemGroup>
 

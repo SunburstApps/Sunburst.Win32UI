@@ -35,5 +35,12 @@
     <ProjectReference Update="@(ProjectReference)" Pack="true" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <Content Include="../../src/Win32UI.Native/x64/Release/Win32UI.Native.dll">
+      <Pack>true</Pack>
+      <PackagePath>contentFiles/win/any</PackagePath>
+    </Content>
+  </ItemGroup>
+
   <Import Project="../dir.targets" />
 </Project>
