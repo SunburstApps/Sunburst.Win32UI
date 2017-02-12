@@ -23,7 +23,7 @@ namespace Microsoft.Win32.UserInterface.Interop
             }
             catch (Exception ex)
             {
-                Application.OnUnhandledException(ex);
+                UnhandledExceptionProxy.OnUnhandledException(ex);
                 return IntPtr.Zero;
             }
         }

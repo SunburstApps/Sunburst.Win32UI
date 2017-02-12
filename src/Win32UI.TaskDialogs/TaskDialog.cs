@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.UserInterface.Graphics;
+using Microsoft.Win32.UserInterface.Interop;
 
 namespace Microsoft.Win32.UserInterface.TaskDialogs
 {
@@ -557,7 +558,7 @@ namespace Microsoft.Win32.UserInterface.TaskDialogs
             }
             catch (Exception ex)
             {
-                Application.OnUnhandledException(ex);
+                UnhandledExceptionProxy.OnUnhandledException(ex);
                 return IntPtr.Zero;
             }
         }

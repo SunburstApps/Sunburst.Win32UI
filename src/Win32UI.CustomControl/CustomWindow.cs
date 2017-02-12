@@ -52,7 +52,7 @@ namespace Microsoft.Win32.UserInterface
             }
             catch (Exception ex)
             {
-                Application.OnUnhandledException(ex);
+                UnhandledExceptionProxy.OnUnhandledException(ex);
                 return IntPtr.Zero;
             }
         }

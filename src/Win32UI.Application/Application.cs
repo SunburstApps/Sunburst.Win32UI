@@ -73,17 +73,6 @@ namespace Microsoft.Win32.UserInterface
             NativeMethods.PostQuitMessage(0);
         }
 
-        public static Action<Exception> UnhandledException;
-
-        public static void OnUnhandledException(Exception ex)
-        {
-            UnhandledException?.Invoke(ex);
-
-            // Don't ever return from this method, or else the program will most
-            // likely crash in a far less dignified method.
-            Environment.FailFast("Unhandled exception in .NET Core application", ex);
-        }
-
         public static bool CreateShutdownBlock(Window window, string reason)
         {
             return NativeMethods.ShutdownBlockReasonCreate(window.Handle, reason);
