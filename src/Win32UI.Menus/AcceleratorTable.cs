@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Microsoft.Win32.UserInterface.Handles;
 using Microsoft.Win32.UserInterface.Interop;
 
 namespace Microsoft.Win32.UserInterface
 {
-    public class AcceleratorTable : IAcceleratorTableHandle
+    public class AcceleratorTable
     {
         public AcceleratorTable(AcceleratorTableEntry[] entries) : this(NativeMethods.CreateAcceleratorTableW(entries, entries.Length)) { }
 

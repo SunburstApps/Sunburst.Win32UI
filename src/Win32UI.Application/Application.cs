@@ -8,11 +8,11 @@ namespace Microsoft.Win32.UserInterface
     public sealed class Application
     {
         private static Stack<Window> mDialogBoxes = new Stack<Window>();
-        private static Stack<Tuple<Window, IAcceleratorTableHandle>> mAcceleratorTables = new Stack<Tuple<Window, IAcceleratorTableHandle>>();
+        private static Stack<Tuple<Window, AcceleratorTable>> mAcceleratorTables = new Stack<Tuple<Window, AcceleratorTable>>();
 
-        public static void PushAcceleratorTable(Window hWnd, IAcceleratorTableHandle hAccel)
+        public static void PushAcceleratorTable(Window hWnd, AcceleratorTable hAccel)
         {
-            mAcceleratorTables.Push(new Tuple<Window, IAcceleratorTableHandle>(hWnd, hAccel));
+            mAcceleratorTables.Push(new Tuple<Window, AcceleratorTable>(hWnd, hAccel));
         }
 
         public static void PopAcceleratorTable()
