@@ -14,4 +14,21 @@
     <!-- not be present in that folder. This can be removed when targeting netcoreapp2.0. -->
     <PackageReference Include="Microsoft.DiaSymReader.Native" Version="1.4.2" />
   </ItemGroup>
+
+  <Target Name="PackProjectReferences" BeforeTargets="_GetPackageFiles">
+    <ItemGroup>
+      <_PackableProjectReference Include="@(ProjectReference)" Condition="'%(ProjectReference.Pack)' == 'true' and '%(ProjectReference.PackagePath)' != ''" />
+      <_PackableProjectReference Include="@(ProjectReference)" Condition="'%(ProjectReference.Pack)' == 'true' and '%(ProjectReference.PackagePath)' == ''">
+        <PackagePath>lib\$(TargetFramework)</PackagePath>
+      </_PackableProjectReference>
+    </ItemGroup>
+
+    <CreateItem Include="@(_PackableProjectReference -> '$(OutputPath)%(FileName).dll')" AdditionalMetadata="Pack=true; PackagePath=%(PackagePath)">
+      <Output TaskParameter="Include" ItemName="Content" />
+    </CreateItem>
+
+    <CreateItem Include="@(_PackableProjectReference -> '$(OutputPath)%(FileName).pdb')" AdditionalMetadata="Pack=true; PackagePath=%(PackagePath)" Condition="'$(IncludeSymbols)' == 'true'">
+      <Output TaskParameter="Include" ItemName="_TargetPathsToSymbols" />
+    </CreateItem>
+  </Target>
 </Project>
