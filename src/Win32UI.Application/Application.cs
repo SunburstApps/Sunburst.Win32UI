@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Win32.UserInterface.Events;
 using Microsoft.Win32.UserInterface.Handles;
 using Microsoft.Win32.UserInterface.Interop;
 
@@ -74,12 +73,11 @@ namespace Microsoft.Win32.UserInterface
             NativeMethods.PostQuitMessage(0);
         }
 
-        public static EventHandler<UnhandledExceptionEventArgs> UnhandledException;
+        public static Action<Exception> UnhandledException;
 
         public static void OnUnhandledException(Exception ex)
         {
-            var args = new UnhandledExceptionEventArgs(ex);
-            UnhandledException?.Invoke(null, args);
+            UnhandledException?.Invoke(ex);
 
             // Don't ever return from this method, or else the program will most
             // likely crash in a far less dignified method.
