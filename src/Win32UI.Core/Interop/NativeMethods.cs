@@ -6,6 +6,9 @@ using Microsoft.Win32.UserInterface.Graphics;
 
 namespace Microsoft.Win32.UserInterface.Interop
 {
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    internal delegate IntPtr WNDPROC(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
     internal static class NativeMethods
     {
         [DllImport("user32.dll")]
@@ -84,24 +87,6 @@ namespace Microsoft.Win32.UserInterface.Interop
 
         [DllImport("user32.dll")]
         public static extern bool UpdateWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        public static extern int GetMessageW(out MSG msg, IntPtr hWnd, int a, int b);
-
-        [DllImport("user32.dll")]
-        public static extern void TranslateMessage(ref MSG msg);
-
-        [DllImport("user32.dll")]
-        public static extern void DispatchMessageW(ref MSG msg);
-
-        [DllImport("user32.dll")]
-        public static extern void PostQuitMessage(int exitCode);
-
-        [DllImport("user32.dll")]
-        public static extern bool IsDialogMessage(IntPtr hDialog, ref MSG msg);
-
-        [DllImport("user32.dll")]
-        public static extern int TranslateAcceleratorW(IntPtr hWnd, IntPtr hAccel, ref MSG msg);
 
         [DllImport("user32.dll")]
         public static extern IntPtr CallWindowProc(WNDPROC wndProc, IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
