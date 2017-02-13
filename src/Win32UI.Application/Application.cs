@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Win32.UserInterface.Handles;
 using Microsoft.Win32.UserInterface.Interop;
 
 namespace Microsoft.Win32.UserInterface
