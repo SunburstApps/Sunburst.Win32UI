@@ -1,0 +1,29 @@
+<Project>
+  <ItemGroup>
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.Aero.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.Application.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.BufferedGraphics.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.Build.NativeResources.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.Build.Tasks.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.Controls.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.Core.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.CustomControl.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.Dialogs.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.EventedWindow.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.Graphics.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.ImageList.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.LayoutContainers.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.Menus.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.MessageBox.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.Support.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.TaskDialogs.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/Win32UI.Theming.dll" />
+
+    <Content Include="$(MSBuildThisFileDirectory)/Win32UI.Native.dll">
+      <Visible>false</Visible>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)Sunburst.Win32UI.Build.targets" />
+</Project>
