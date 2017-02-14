@@ -11,10 +11,6 @@ namespace Win32UI.Build.Tasks
     public sealed class CompileResourceScript : ToolTask
     {
         [RequiredAttribute]
-        public string ToolPath32 { get; set; }
-        [RequiredAttribute]
-        public string ToolPath64 { get; set; }
-        [RequiredAttribute]
         public ITaskItem[] ResourceScripts { get; set; }
         [RequiredAttribute]
         public string OutputDirectory { get; set; }
