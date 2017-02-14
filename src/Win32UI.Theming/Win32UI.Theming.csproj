@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup Label="Configuration">
     <RootNamespace>Microsoft.Win32.UserInterface</RootNamespace>
   </PropertyGroup>
@@ -15,4 +15,6 @@
     <ProjectReference Include="../Win32UI.ImageList/Win32UI.ImageList.csproj" />
     <ProjectReference Include="../Win32UI.Support/Win32UI.Support.csproj" />
   </ItemGroup>
+
+  <Import Project="../dir.targets" />
 </Project>
