@@ -22,7 +22,7 @@
     <ProjectReference Include="../Win32UI.Theming/Win32UI.Theming.csproj" />
     <ProjectReference Update="@(ProjectReference)" Pack="true" />
 
-    <_BuildContent Include="../build_tools/Win32UI.Build.Tasks/Sunburst.Win32UI.targets" />
+    <_BuildContent Include="../build_tools/Win32UI.Build.Tasks/Sunburst.Win32UI.Build.targets" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
