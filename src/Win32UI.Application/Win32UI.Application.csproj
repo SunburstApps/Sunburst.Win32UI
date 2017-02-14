@@ -38,7 +38,7 @@
     </MSBuild>
 
     <ItemGroup>
-      <Content Include="@(_BuildContent)" Pack="true" PackagePath="build/netcoreapp1.1" />
+      <Content Include="@(_BuildContent)" Pack="true" PackagePath="build\netcoreapp1.1" />
     </ItemGroup>
   </Target>
 
