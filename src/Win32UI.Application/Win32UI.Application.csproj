@@ -20,19 +20,9 @@
     <ProjectReference Include="../Win32UI.Support/Win32UI.Support.csproj" />
     <ProjectReference Include="../Win32UI.TaskDialogs/Win32UI.TaskDialogs.csproj" />
     <ProjectReference Include="../Win32UI.Theming/Win32UI.Theming.csproj" />
-
-    <ProjectReference Include="../build_tools/Win32UI.Build.NativeResources/Win32UI.Build.NativeResources.csproj">
-      <PackagePath>build</PackagePath>
-    </ProjectReference>
-    <ProjectReference Include="../build_tools/Win32UI.Build.Tasks/Win32UI.Build.Tasks.csproj">
-      <PackagePath>build</PackagePath>
-    </ProjectReference>
-    <Content Include="../build_tools/Win32UI.Build.Tasks/Sunburst.Win32UI.targets">
-      <Pack>true</Pack>
-      <PackagePath>build</PackagePath>
-    </Content>
-
     <ProjectReference Update="@(ProjectReference)" Pack="true" />
+
+    <_BuildContent Include="../build_tools/Win32UI.Build.Tasks/Sunburst.Win32UI.targets" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
@@ -41,6 +31,16 @@
       <PackagePath>contentFiles/win/any</PackagePath>
     </Content>
   </ItemGroup>
+
+  <Target Name="PackBuildAssemblies" BeforeTargets="_GetPackageFiles">
+    <MSBuild Projects="../build_tools/Win32UI.Build.Tasks/Win32UI.Build.Tasks.csproj; ../build_tools/Win32UI.Build.NativeResources/Win32UI.Build.NativeResources.csproj" Targets="Build">
+      <Output TaskParameter="TargetOutputs" ItemName="_BuildContent" />
+    </MSBuild>
+
+    <ItemGroup>
+      <Content Include="@(_BuildContent)" Pack="true" PackagePath="build/netcoreapp1.1" />
+    </ItemGroup>
+  </Target>
 
   <Import Project="../dir.targets" />
 </Project>
