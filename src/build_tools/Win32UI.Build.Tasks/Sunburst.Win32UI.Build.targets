@@ -20,7 +20,7 @@
       <Output TaskParameter="ResourceScriptPath" ItemName="_ResourceScript" />
     </GenerateResourceScript>
 
-    <CompileResourceScript ResourceScripts="@(_ResourceScripts)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(RCToolPath)">
+    <CompileResourceScript ResourceScripts="@(_ResourceScript)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(RCToolPath)">
       <Output TaskParameter="ResourceObjects" ItemName="_ResourceObject" />
     </CompileResourceScript>
 
