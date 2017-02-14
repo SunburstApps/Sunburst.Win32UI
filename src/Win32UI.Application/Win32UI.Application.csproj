@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
@@ -28,7 +28,7 @@
   <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
     <Content Include="../Win32UI.Native/x64/Release/Win32UI.Native.dll">
       <Pack>true</Pack>
-      <PackagePath>contentFiles/win/any</PackagePath>
+      <PackagePath>contentFiles\any\any</PackagePath>
     </Content>
   </ItemGroup>
 
@@ -38,7 +38,7 @@
     </MSBuild>
 
     <ItemGroup>
-      <Content Include="@(_BuildContent)" Pack="true" PackagePath="build\netcoreapp1.1" />
+      <Content Include="@(_BuildContent)" Pack="true" PackagePath="build" />
     </ItemGroup>
   </Target>
 
