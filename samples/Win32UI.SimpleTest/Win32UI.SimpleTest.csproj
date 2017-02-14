@@ -4,7 +4,6 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
     <GuiEntryPoint>true</GuiEntryPoint>
-    <UacPrivilegeLevel>AsInvoker</UacPrivilegeLevel>
   </PropertyGroup>
 
   <ItemGroup>

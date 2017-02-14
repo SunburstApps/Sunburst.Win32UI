@@ -3,6 +3,7 @@
     <Win32UITasksAssembly Condition="'$(Win32UITasksAssembly)' == ''">$(MSBuildThisFileDirectory)/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
 
     <GuiEntryPoint Condition="'$(GuiEntryPoint)' == ''">false</GuiEntryPoint>
+    <UacPrivilegeLevel Condition="'$(UacPrivilegeLevel)' == ''">AsInvoker</UacPrivilegeLevel>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(GuiEntryPont)' == 'true'">
