@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -21,7 +22,7 @@ namespace Win32UI.Build.Tasks
             outputFile.AppendLine("#include <Windows.h>");
             outputFile.AppendLine();
 
-            foreach (var icon in Icons)
+            foreach (var icon in Icons ?? Enumerable.Empty<ITaskItem>())
             {
                 string indexString = icon.GetMetadata("IconIndex");
                 if (!string.IsNullOrEmpty(indexString))
@@ -38,7 +39,7 @@ namespace Win32UI.Build.Tasks
 
             outputFile.AppendLine();
 
-            foreach (var file in EmbeddedFiles)
+            foreach (var file in EmbeddedFiles ?? Enumerable.Empty<ITaskItem>())
             {
                 string resourceType = file.GetMetadata("ResourceType");
                 string resourceName = file.GetMetadata("ResourceName");
@@ -60,7 +61,7 @@ namespace Win32UI.Build.Tasks
 
             outputFile.AppendLine();
 
-            foreach (var fragment in ScriptFragments)
+            foreach (var fragment in ScriptFragments ?? Enumerable.Empty<ITaskItem>())
             {
                 foreach (string line in File.ReadAllLines(fragment.GetMetadata("FullPath")))
                 {
