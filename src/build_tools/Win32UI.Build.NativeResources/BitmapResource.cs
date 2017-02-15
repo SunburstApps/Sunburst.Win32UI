@@ -1,56 +1,83 @@
-// Copyright (c) .NET Foundation and contributors. All rights reserved. Licensed under the Microsoft Reciprocal License. See LICENSE.TXT file in the project root for full license information.
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Xml;
 
-namespace Win32UI.Build.NativeResources
+namespace Vestris.ResourceLib
 {
-    using System;
-    using System.IO;
-
     /// <summary>
-    /// A subclass of Resource which provides specific methods for manipulating the resource data.
+    /// An embedded bitmap resource.
     /// </summary>
-    /// <remarks>
-    /// The resource is of type <see cref="ResourceType.Bitmap"/> (RT_GROUPICON).
-    /// </remarks>
-    public sealed class BitmapResource : Resource
+    public class BitmapResource : Resource
     {
-        private const int SizeOfBitmapFileHeader = 14; // this is the sizeof(BITMAPFILEHEADER)
+        private DeviceIndependentBitmap _bitmap = null;
 
         /// <summary>
-        /// Creates a new BitmapResource object without any data. The data can be later loaded from a file.
+        /// An existing bitmap resource.
         /// </summary>
-        /// <param name="name">Name of the resource. For a numeric resource identifier, prefix the decimal number with a "#".</param>
-        /// <param name="locale">Locale of the resource</param>
-        public BitmapResource(string name, int locale)
-            : this(name, locale, null)
+        /// <param name="hModule">Module handle.</param>
+        /// <param name="hResource">Resource ID.</param>
+        /// <param name="type">Resource type.</param>
+        /// <param name="name">Resource name.</param>
+        /// <param name="language">Language ID.</param>
+        /// <param name="size">Resource size.</param>
+        public BitmapResource(IntPtr hModule, IntPtr hResource, ResourceId type, ResourceId name, UInt16 language, int size)
+            : base(hModule, hResource, type, name, language, size)
         {
+
         }
 
         /// <summary>
-        /// Creates a new BitmapResource object with data. The data can be later saved to a file.
+        /// A new bitmap resource.
         /// </summary>
-        /// <param name="name">Name of the resource. For a numeric resource identifier, prefix the decimal number with a "#".</param>
-        /// <param name="locale">Locale of the resource</param>
-        /// <param name="data">Raw resource data</param>
-        public BitmapResource(string name, int locale, byte[] data)
-            : base(ResourceType.Bitmap, name, locale, data)
+        public BitmapResource()
+            : base(IntPtr.Zero,
+                IntPtr.Zero,
+                new ResourceId(Kernel32.ResourceTypes.RT_BITMAP),
+                new ResourceId(1),
+                Kernel32.LANG_NEUTRAL,
+                0)
         {
+
         }
 
         /// <summary>
-        /// Reads the bitmap from a .bmp file.
+        /// Read the resource.
         /// </summary>
-        /// <param name="path">Path to a bitmap file (.bmp).</param>
-        public void ReadFromFile(string path)
+        /// <param name="hModule">Module handle.</param>
+        /// <param name="lpRes">Pointer to the beginning of a resource.</param>
+        /// <returns>Pointer to the end of the resource.</returns>
+        internal override IntPtr Read(IntPtr hModule, IntPtr lpRes)
         {
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+            byte[] data = new byte[_size];
+            Marshal.Copy(lpRes, data, 0, data.Length);
+            _bitmap = new DeviceIndependentBitmap(data);
+            return new IntPtr(lpRes.ToInt64() + _size);
+        }
+
+        /// <summary>
+        /// Write the bitmap resource to a binary stream.
+        /// </summary>
+        /// <param name="w">Binary stream.</param>
+        internal override void Write(BinaryWriter w)
+        {
+            w.Write(_bitmap.Data);
+        }
+
+        /// <summary>
+        /// A device independent bitmap.
+        /// </summary>
+        public DeviceIndependentBitmap Bitmap
+        {
+            get
             {
-                // Move past the BITMAPFILEHEADER, and copy the rest of the bitmap as the resource data. Resource
-                // functions expect only the BITMAPINFO struct which exists just beyond the BITMAPFILEHEADER
-                // struct in bitmap files.
-                fs.Seek(BitmapResource.SizeOfBitmapFileHeader, SeekOrigin.Begin);
-
-                base.Data = new byte[fs.Length - BitmapResource.SizeOfBitmapFileHeader];
-                fs.Read(base.Data, 0, base.Data.Length);
+                return _bitmap;
+            }
+            set
+            {
+                _bitmap = value;
             }
         }
     }

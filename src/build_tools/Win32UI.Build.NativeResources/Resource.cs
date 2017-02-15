@@ -1,227 +1,379 @@
-// Copyright (c) .NET Foundation and contributors. All rights reserved. Licensed under the Microsoft Reciprocal License. See LICENSE.TXT file in the project root for full license information.
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Runtime.InteropServices;
+using System.ComponentModel;
+using System.IO;
 
-namespace Win32UI.Build.NativeResources
+namespace Vestris.ResourceLib
 {
-    using System;
-    using System.IO;
-    using System.Text;
-    using System.Reflection;
-    using System.Collections;
-    using System.Globalization;
-    using System.Runtime.InteropServices;
-    using System.Diagnostics.CodeAnalysis;
-
     /// <summary>
-    /// Represents a Win32 resource which can be loaded from and saved to a PE file.
+    /// A version resource.
     /// </summary>
-    public class Resource
+    public abstract class Resource
     {
-        private ResourceType type;
-        private string name;
-        private int locale;
-        private byte[] data;
+        /// <summary>
+        /// Resource type.
+        /// </summary>
+        protected ResourceId _type;
+        /// <summary>
+        /// Resource name.
+        /// </summary>
+        protected ResourceId _name;
+        /// <summary>
+        /// Resource language.
+        /// </summary>
+        protected UInt16 _language;
+        /// <summary>
+        /// Loaded binary nodule.
+        /// </summary>
+        protected IntPtr _hModule = IntPtr.Zero;
+        /// <summary>
+        /// Pointer to the resource.
+        /// </summary>
+        protected IntPtr _hResource = IntPtr.Zero;
+        /// <summary>
+        /// Resource size.
+        /// </summary>
+        protected int _size = 0;
 
         /// <summary>
-        /// Creates a new Resource object without any data. The data can be later loaded from a file.
+        /// Version resource size in bytes.
         /// </summary>
-        /// <param name="type">Type of the resource; may be one of the ResourceType constants or a user-defined type.</param>
-        /// <param name="name">Name of the resource. For a numeric resource identifier, prefix the decimal number with a "#".</param>
-        /// <param name="locale">Locale of the resource</param>
-        public Resource(ResourceType type, string name, int locale)
-            : this(type, name, locale, null)
-        {
-        }
-
-        /// <summary>
-        /// Creates a new Resource object with data. The data can be later saved to a file.
-        /// </summary>
-        /// <param name="type">Type of the resource; may be one of the ResourceType constants or a user-defined type.</param>
-        /// <param name="name">Name of the resource. For a numeric resource identifier, prefix the decimal number with a "#".</param>
-        /// <param name="locale">Locale of the resource</param>
-        /// <param name="data">Raw resource data</param>
-        public Resource(ResourceType type, string name, int locale, byte[] data)
-        {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
-
-            this.type = type;
-            this.name = name;
-            this.locale = locale;
-            this.data = data;
-        }
-
-        /// <summary>
-        /// Gets or sets the type of the resource.  This may be one of the ResourceType constants
-        /// or a user-defined type name.
-        /// </summary>
-        public ResourceType ResourceType
-        {
-            get { return this.type; }
-            set { this.type = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the resource.  For a numeric resource identifier, the decimal number is prefixed with a "#".
-        /// </summary>
-        public string Name
+        public int Size
         {
             get
             {
-                return this.name;
+                return _size;
             }
+        }
 
+        /// <summary>
+        /// Language ID.
+        /// </summary>
+        public UInt16 Language
+        {
+            get
+            {
+                return _language;
+            }
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value");
-                }
-
-                this.name = value;
+                _language = value;
             }
         }
 
         /// <summary>
-        /// Gets or sets the locale of the resource.
+        /// Resource type.
         /// </summary>
-        public int Locale
+        public ResourceId Type
         {
-            get { return this.locale; }
-            set { this.locale = value; }
+            get
+            {
+                return _type;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the raw data of the resource.
+        /// String representation of the resource type.
         /// </summary>
-        [SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
-        public virtual byte[] Data
+        public string TypeName
         {
-            get { return this.data; }
-            set { this.data = value; }
+            get
+            {
+                return _type.TypeName;
+            }
         }
 
         /// <summary>
-        /// Loads the resource data from a file.  The file is searched for a resource with matching type, name, and locale.
+        /// Resource name.
         /// </summary>
-        /// <param name="file">Win32 PE file containing the resource</param>
-        [SuppressMessage("Microsoft.Security", "CA2103:ReviewImperativeSecurity")]
-        public void Load(string file)
+        public ResourceId Name
         {
-            IntPtr module = NativeMethods.LoadLibraryEx(file, IntPtr.Zero, NativeMethods.LOAD_LIBRARY_AS_DATAFILE);
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+
+        /// <summary>
+        /// A new resource.
+        /// </summary>
+        internal Resource()
+        {
+
+        }
+
+        /// <summary>
+        /// A structured resource embedded in an executable module.
+        /// </summary>
+        /// <param name="hModule">Module handle.</param>
+        /// <param name="hResource">Resource handle.</param>
+        /// <param name="type">Resource type.</param>
+        /// <param name="name">Resource name.</param>
+        /// <param name="language">Language ID.</param>
+        /// <param name="size">Resource size.</param>
+        internal Resource(IntPtr hModule, IntPtr hResource, ResourceId type, ResourceId name, UInt16 language, int size)
+        {
+            _hModule = hModule;
+            _type = type;
+            _name = name;
+            _language = language;
+            _hResource = hResource;
+            _size = size;
+
+            LockAndReadResource(hModule, hResource);
+        }
+
+        /// <summary>
+        /// Lock and read the resource.
+        /// </summary>
+        /// <param name="hModule">Module handle.</param>
+        /// <param name="hResource">Resource handle.</param>
+        internal void LockAndReadResource(IntPtr hModule, IntPtr hResource)
+        {
+            if (hResource == IntPtr.Zero)
+                return;
+
+            IntPtr lpRes = Kernel32.LockResource(hResource);
+
+            if (lpRes == IntPtr.Zero)
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            Read(hModule, lpRes);
+        }
+
+        /// <summary>
+        /// Load a resource from an executable (.exe or .dll) file.
+        /// </summary>
+        /// <param name="filename">An executable (.exe or .dll) file.</param>
+        public virtual void LoadFrom(string filename)
+        {
+            LoadFrom(filename, _type, _name, _language);
+        }
+
+        /// <summary>
+        /// Load a resource from an executable (.exe or .dll) file.
+        /// </summary>
+        /// <param name="filename">An executable (.exe or .dll) file.</param>
+        /// <param name="name">Resource name.</param>
+        /// <param name="type">Resource type.</param>
+        /// <param name="lang">Resource language.</param>
+        internal void LoadFrom(string filename, ResourceId type, ResourceId name, UInt16 lang)
+        {
+            IntPtr hModule = IntPtr.Zero;
+
             try
             {
-                this.Load(module);
+                hModule = Kernel32.LoadLibraryEx(filename, IntPtr.Zero,
+                    Kernel32.DONT_RESOLVE_DLL_REFERENCES | Kernel32.LOAD_LIBRARY_AS_DATAFILE);
+
+                LoadFrom(hModule, type, name, lang);
             }
             finally
             {
-                NativeMethods.FreeLibrary(module);
-            }
-        }
-
-        internal void Load(IntPtr module)
-        {
-            IntPtr resourceInfo = NativeMethods.FindResourceEx(module, (string) this.ResourceType, this.Name, (ushort) this.Locale);
-            if (resourceInfo != IntPtr.Zero)
-            {
-                uint resourceLength = NativeMethods.SizeofResource(module, resourceInfo);
-                IntPtr resourceData = NativeMethods.LoadResource(module, resourceInfo);
-                IntPtr resourcePtr = NativeMethods.LockResource(resourceData);
-                byte[] resourceBytes = new byte[resourceLength];
-                Marshal.Copy(resourcePtr, resourceBytes, 0, resourceBytes.Length);
-                this.Data = resourceBytes;
-            }
-            else
-            {
-                this.Data = null;
+                if (hModule != IntPtr.Zero)
+                    Kernel32.FreeLibrary(hModule);
             }
         }
 
         /// <summary>
-        /// Saves the resource to a file.  Any existing resource data with matching type, name, and locale is overwritten.
+        /// Load a resource from an executable (.exe or .dll) module.
         /// </summary>
-        /// <param name="file">Win32 PE file to contain the resource</param>
-        [SuppressMessage("Microsoft.Security", "CA2103:ReviewImperativeSecurity")]
-        public void Save(string file)
+        /// <param name="hModule">An executable (.exe or .dll) module.</param>
+        /// <param name="type">Resource type.</param>
+        /// <param name="name">Resource name.</param>
+        /// <param name="lang">Resource language.</param>
+        internal void LoadFrom(IntPtr hModule, ResourceId type, ResourceId name, UInt16 lang)
         {
-            IntPtr updateHandle = IntPtr.Zero;
+            if (IntPtr.Zero == hModule)
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            IntPtr hRes = Kernel32.FindResourceEx(hModule, type.Id, name.Id, lang);
+            if (IntPtr.Zero == hRes)
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            IntPtr hGlobal = Kernel32.LoadResource(hModule, hRes);
+            if (IntPtr.Zero == hGlobal)
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            IntPtr lpRes = Kernel32.LockResource(hGlobal);
+
+            if (lpRes == IntPtr.Zero)
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            _size = Kernel32.SizeofResource(hModule, hRes);
+            if (_size <= 0)
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            _type = type;
+            _name = name;
+            _language = lang;
+
+            Read(hModule, lpRes);
+        }
+
+        /// <summary>
+        /// Read a resource from a previously loaded module.
+        /// </summary>
+        /// <param name="hModule">Module handle.</param>
+        /// <param name="lpRes">Pointer to the beginning of the resource.</param>
+        /// <returns>Pointer to the end of the resource.</returns>
+        internal abstract IntPtr Read(IntPtr hModule, IntPtr lpRes);
+
+        /// <summary>
+        /// Write the resource to a memory stream.
+        /// </summary>
+        /// <param name="w">Binary stream.</param>
+        internal abstract void Write(BinaryWriter w);
+
+        /// <summary>
+        /// Return resource data.
+        /// </summary>
+        /// <returns>Resource data.</returns>
+        public byte[] WriteAndGetBytes()
+        {
+            MemoryStream ms = new MemoryStream();
+            BinaryWriter w = new BinaryWriter(ms, Encoding.UTF8);
+            Write(w);
+            w.Dispose();
+            return ms.ToArray();
+        }
+
+        /// <summary>
+        /// Save a resource.
+        /// </summary>
+        /// <param name="filename">Name of an executable file (.exe or .dll).</param>
+        public virtual void SaveTo(string filename)
+        {
+            SaveTo(filename, _type, _name, _language);
+        }
+
+        /// <summary>
+        /// Save a resource to an executable (.exe or .dll) file.
+        /// </summary>
+        /// <param name="filename">Path to an executable file.</param>
+        /// <param name="name">Resource name.</param>
+        /// <param name="type">Resource type.</param>
+        /// <param name="langid">Language id.</param>
+        internal void SaveTo(string filename, ResourceId type, ResourceId name, UInt16 langid)
+        {
+            byte[] data = WriteAndGetBytes();
+            SaveTo(filename, type, name, langid, data);
+        }
+
+        /// <summary>
+        /// Delete a resource from an executable (.exe or .dll) file.
+        /// </summary>
+        /// <param name="filename">Path to an executable file.</param>
+        public virtual void DeleteFrom(string filename)
+        {
+            Delete(filename, _type, _name, _language);
+        }
+
+        /// <summary>
+        /// Delete a resource from an executable (.exe or .dll) file.
+        /// </summary>
+        /// <param name="filename">Path to an executable file.</param>
+        /// <param name="name">Resource name.</param>
+        /// <param name="type">Resource type.</param>
+        /// <param name="lang">Resource language.</param>
+        internal static void Delete(string filename, ResourceId type, ResourceId name, UInt16 lang)
+        {
+            SaveTo(filename, type, name, lang, null);
+        }
+
+        /// <summary>
+        /// Save a resource to an executable (.exe or .dll) file.
+        /// </summary>
+        /// <param name="filename">Path to an executable file.</param>
+        /// <param name="name">Resource name.</param>
+        /// <param name="type">Resource type.</param>
+        /// <param name="lang">Resource language.</param>
+        /// <param name="data">Resource data.</param>
+        internal static void SaveTo(string filename, ResourceId type, ResourceId name, UInt16 lang, byte[] data)
+        {
+            IntPtr h = Kernel32.BeginUpdateResource(filename, false);
+
+            if (h == IntPtr.Zero)
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
             try
             {
-                updateHandle = NativeMethods.BeginUpdateResource(file, false);
-                this.Save(updateHandle);
-                if (!NativeMethods.EndUpdateResource(updateHandle, false))
+                if (data != null && data.Length == 0)
                 {
-                    int err = Marshal.GetLastWin32Error();
-                    throw new IOException(String.Format(CultureInfo.InvariantCulture, "Failed to save resource. Error code: {0}", err));
+                    data = null;
                 }
-                updateHandle = IntPtr.Zero;
+                if (!Kernel32.UpdateResource(h, type.Id, name.Id,
+                    lang, data, (data == null ? 0 : (uint)data.Length)))
+                {
+                    throw new Win32Exception(Marshal.GetLastWin32Error());
+                }
             }
-            finally
+            catch
             {
-                if (updateHandle != IntPtr.Zero)
-                {
-                    NativeMethods.EndUpdateResource(updateHandle, true);
-                }
+                Kernel32.EndUpdateResource(h, true);
+                throw;
             }
+
+            if (!Kernel32.EndUpdateResource(h, false))
+                throw new Win32Exception(Marshal.GetLastWin32Error());
         }
 
-        internal void Save(IntPtr updateHandle)
+
+        /// <summary>
+        /// Save a batch of resources to a given file.
+        /// </summary>
+        /// <param name="filename">Path to an executable file.</param>
+        /// <param name="resources">The resources to write.</param>
+        public static void Save(string filename, IEnumerable<Resource> resources)
         {
-            IntPtr dataPtr = IntPtr.Zero;
+            IntPtr h = Kernel32.BeginUpdateResource(filename, false);
+
+            if (h == IntPtr.Zero)
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
             try
             {
-                int dataLength = 0;
-                if (this.Data != null)
+                foreach (var resource in resources)
                 {
-                    dataLength = this.Data.Length;
-                    dataPtr = Marshal.AllocHGlobal(dataLength);
-                    Marshal.Copy(this.Data, 0, dataPtr, dataLength);
-                }
-                bool updateSuccess;
-                if (this.Name.StartsWith("#", StringComparison.Ordinal))
-                {
-                    // A numeric-named resource must be saved via the integer version of UpdateResource.
-                    IntPtr intName = new IntPtr(Int32.Parse(this.Name.Substring(1), CultureInfo.InvariantCulture));
-                    updateSuccess = NativeMethods.UpdateResource(updateHandle, new IntPtr(this.ResourceType.IntegerValue), intName, (ushort) this.Locale, dataPtr, (uint) dataLength);
-                }
-                else
-                {
-                    updateSuccess = NativeMethods.UpdateResource(updateHandle, (string) this.ResourceType, this.Name, (ushort) this.Locale, dataPtr, (uint) dataLength);
-                }
-                if (!updateSuccess)
-                {
-                    throw new IOException("Failed to save resource. Error: " + Marshal.GetLastWin32Error());
+                    var imageResource = resource as IconImageResource;
+                    if (imageResource != null)
+                    {
+                        var bytes = imageResource.Image == null ? null : imageResource.Image.Data;
+                        if (!Kernel32.UpdateResource(h, imageResource.Type.Id, new IntPtr(imageResource.Id),
+                            imageResource.Language, bytes, (bytes == null ? 0 : (uint)bytes.Length)))
+                        {
+                            throw new Win32Exception(Marshal.GetLastWin32Error());
+                        }
+                    }
+                    else
+                    {
+                        var bytes = resource.WriteAndGetBytes();
+                        if (bytes != null && bytes.Length == 0)
+                        {
+                            bytes = null;
+                        }
+                        if (!Kernel32.UpdateResource(h, resource.Type.Id, resource.Name.Id,
+                            resource.Language, bytes, (bytes == null ? 0 : (uint)bytes.Length)))
+                        {
+                            throw new Win32Exception(Marshal.GetLastWin32Error());
+                        }
+                    }
                 }
             }
-            finally
+            catch
             {
-                if (dataPtr != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(dataPtr);
-                }
+                Kernel32.EndUpdateResource(h, true);
+                throw;
             }
-        }
 
-        /// <summary>
-        /// Tests if type, name, and locale of this Resource object match another Resource object.
-        /// </summary>
-        /// <param name="obj">Resource object to be compared</param>
-        /// <returns>True if the objects represent the same resource; false otherwise.</returns>
-        public override bool Equals(object obj)
-        {
-            Resource res = obj as Resource;
-            if (res == null) return false;
-            return this.ResourceType == res.ResourceType && this.Name == res.Name && this.Locale == res.Locale;
-        }
-
-        /// <summary>
-        /// Gets a hash code for this Resource object.
-        /// </summary>
-        /// <returns>Hash code generated from the resource type, name, and locale.</returns>
-        public override int GetHashCode()
-        {
-            return this.ResourceType.GetHashCode() ^ this.Name.GetHashCode() ^ this.Locale.GetHashCode();
+            if (!Kernel32.EndUpdateResource(h, false))
+                throw new Win32Exception(Marshal.GetLastWin32Error());
         }
     }
 }
