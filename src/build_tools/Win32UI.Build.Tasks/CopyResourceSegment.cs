@@ -15,11 +15,13 @@ namespace Win32UI.Build.Tasks
 
         public override bool Execute()
         {
+#if IS_CORECLR
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 Log.LogWarning("Skipping task on non-Windows platform");
                 return true;
             }
+#endif
 
             ResourceCollection inputResources = new ResourceCollection();
             inputResources.Load(InputFile.GetMetadata("FullPath"));

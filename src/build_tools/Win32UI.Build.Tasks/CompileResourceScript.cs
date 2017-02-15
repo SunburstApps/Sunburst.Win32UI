@@ -38,11 +38,13 @@ namespace Win32UI.Build.Tasks
 
         public override bool Execute()
         {
+#if IS_CORECLR
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 Log.LogWarning("Skipping CompileResourceScript task on non-Windows platform");
                 return true;
             }
+#endif
 
             bool success = base.Execute();
 

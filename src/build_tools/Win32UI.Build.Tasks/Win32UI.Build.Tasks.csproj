@@ -1,12 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFrameworks>netcoreapp1.1; net45</TargetFrameworks>
+    <DefineConstants Condition="'$(TargetFramework)' == 'netcoreapp1.1'">IS_CORECLR</DefineConstants>
+    <DefineConstants Condition="'$(TargetFramework)' == 'net45'">IS_FULL_FRAMEWORK</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">
     <PackageReference Include="Microsoft.Build.Framework" Version="15.1.0-preview-*" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.0-preview-*" />
+  </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="../Win32UI.Build.NativeResources/Win32UI.Build.NativeResources.csproj" />
   </ItemGroup>
 
