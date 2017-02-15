@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.1; net45</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.1; net46</TargetFrameworks>
     <DefineConstants Condition="'$(TargetFramework)' == 'netcoreapp1.1'">IS_CORECLR</DefineConstants>
-    <DefineConstants Condition="'$(TargetFramework)' == 'net45'">IS_FULL_FRAMEWORK</DefineConstants>
+    <DefineConstants Condition="'$(TargetFramework)' == 'net46'">IS_FULL_FRAMEWORK</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">
