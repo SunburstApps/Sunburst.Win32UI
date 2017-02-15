@@ -23,7 +23,6 @@
     <ProjectReference Update="@(ProjectReference)" Pack="true" />
 
     <_BuildContent Include="../build_tools/Win32UI.Build.Tasks/Sunburst.Win32UI.Build.targets" />
-    <Content Include="Sunburst.Win32UI.targets" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
