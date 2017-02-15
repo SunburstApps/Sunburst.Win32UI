@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
   </PropertyGroup>
@@ -11,4 +11,15 @@
   </ItemGroup>
 
   <Import Project="../../dir.targets" />
+
+  <Target Name="_CopyBuildOutputs" AfterTargets="AfterBuild">
+    <ItemGroup>
+      <_BuildOutput Include="$(TargetPath)" />
+      <_BuildOutput Include="@(ProjectReference -> '$(OutputPath)%(FileName).dll')" />
+      <_BuildOutput Include="Sunburst.Win32UI.Build.targets" />
+    </ItemGroup>
+
+    <MakeDir Directories="../../bin/BuildTasks" />
+    <Copy SourceFiles="@(_BuildOutput)" DestinationFolder="../../bin/BuildTasks" />
+  </Target>
 </Project>
