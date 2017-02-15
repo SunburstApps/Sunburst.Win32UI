@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
-    <Win32UITasksAssembly Condition="'$(Win32UITasksAssembly)' == ''">$(MSBuildThisFileDirectory)/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
+    <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)/netcoreapp1.1/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
+    <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)/net45/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
 
     <GuiEntryPoint Condition="'$(GuiEntryPoint)' == ''">false</GuiEntryPoint>
     <UacPrivilegeLevel Condition="'$(UacPrivilegeLevel)' == ''">AsInvoker</UacPrivilegeLevel>
