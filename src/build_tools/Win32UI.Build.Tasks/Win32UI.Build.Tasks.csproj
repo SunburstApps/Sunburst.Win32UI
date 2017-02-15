@@ -19,7 +19,11 @@
       <_BuildOutput Include="Sunburst.Win32UI.Build.targets" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_BuildOutputToCopy Include="@(_BuildOutput)" Condition="!Exists('../../bin/BuildTasks/%(FileName)%(Extension)')" />
+    </ItemGroup>
+
     <MakeDir Directories="../../bin/BuildTasks" />
-    <Copy SourceFiles="@(_BuildOutput)" DestinationFolder="../../bin/BuildTasks" />
+    <Copy SourceFiles="@(_BuildOutputToCopy)" DestinationFolder="../../bin/BuildTasks" SkipUnchangedFiles="true" />
   </Target>
 </Project>
