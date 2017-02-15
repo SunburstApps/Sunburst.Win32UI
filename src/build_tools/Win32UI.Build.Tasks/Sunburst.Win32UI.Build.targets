@@ -4,6 +4,27 @@
 
     <GuiEntryPoint Condition="'$(GuiEntryPoint)' == ''">false</GuiEntryPoint>
     <UacPrivilegeLevel Condition="'$(UacPrivilegeLevel)' == ''">AsInvoker</UacPrivilegeLevel>
+
+    <LinkerPlatform Condition="$(RuntimeIdentifier.EndsWith('x64'))">x64</LinkerPlatform>
+    <LinkerPlatform Condition="$(RuntimeIdentifier.EndsWith('x86'))">x86</LinkerPlatform>
+
+    <!-- Note: These paths are specific to my machine. You may have to modify them for yours. -->
+    <RCIncludePaths>
+      C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.24930\ATLMFC\include;
+      C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.24930\include;
+      C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um;
+      C:\Program Files (x86)\Windows Kits\10\include\10.0.14393.0\ucrt;
+      C:\Program Files (x86)\Windows Kits\10\include\10.0.14393.0\shared;
+      C:\Program Files (x86)\Windows Kits\10\include\10.0.14393.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.14393.0\winrt;
+    </RCIncludePaths>
+
+    <LinkLibraryPaths>
+      C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.24930\ATLMFC\lib\$(LinkerPlatform);
+      C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.24930\lib\$(LinkerPlatform);
+      C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\lib\um\$(LinkerPlatform);
+      C:\Program Files (x86)\Windows Kits\10\lib\10.0.14393.0\ucrt\$(LinkerPlatform);
+      C:\Program Files (x86)\Windows Kits\10\lib\10.0.14393.0\um\$(LinkerPlatform);
+    </LinkLibraryPaths>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(GuiEntryPont)' == 'true'">
@@ -21,7 +42,7 @@
       <Output TaskParameter="ResourceScriptPath" ItemName="_ResourceScript" />
     </GenerateResourceScript>
 
-    <CompileResourceScript ResourceScripts="@(_ResourceScript)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(RCToolPath)" />
+    <CompileResourceScript ResourceScripts="@(_ResourceScript)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(RCToolPath)" IncludePaths="$(RCIncludePaths)" />
     <ItemGroup>
       <_ResourceObject Include="@(_ResourceScript -> '%(Directory)%(FileName).res')" />
     </ItemGroup>
@@ -30,7 +51,7 @@
       <_ResourceLinkOutput>$(IntermediateOutputPath)EntryPointResources.dll</_ResourceLinkOutput>
     </PropertyGroup>
 
-    <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)" SxsReferences="@(SxsReference)" UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputFilePath="$(_ResourceLinkOutput)" ToolPath="$(LinkToolPath)" />
+    <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)" SxsReferences="@(SxsReference)" UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputFilePath="$(_ResourceLinkOutput)" ToolPath="$(LinkToolPath)" LibraryPaths="$(LinkLibraryPaths)" />
     <CopyResourceSegment InputFile="$(_ResourceLinkOutput)" OutputFile="$(TargetDir)$(TargetFileName).exe" />
   </Target>
 

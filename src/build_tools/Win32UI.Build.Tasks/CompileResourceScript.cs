@@ -14,6 +14,7 @@ namespace Win32UI.Build.Tasks
         public ITaskItem[] ResourceScripts { get; set; }
         [RequiredAttribute]
         public string OutputDirectory { get; set; }
+        public string[] IncludePaths { get; set; }
 
         protected override string ToolName => "rc.exe";
 
@@ -31,6 +32,7 @@ namespace Win32UI.Build.Tasks
             argv.Add("/nologo");
             argv.Add("/Fo");
             argv.Add(outputPath);
+            argv.AddRange(IncludePaths.Select(path => "/i" + path));
             argv.AddRange(ResourceScripts.Select(item => item.GetMetadata("FullPath")));
 
             return string.Join(" ", argv.Select(x => "\"" + x + "\""));

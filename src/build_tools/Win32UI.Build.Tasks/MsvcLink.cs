@@ -24,6 +24,7 @@ namespace Win32UI.Build.Tasks
         public ITaskItem[] SxsManifestFragments { get; set; }
         public ITaskItem[] SxsReferences { get; set; }
         public MsvcLinkUacPrivilegeLevel UacPrivilegeLevel { get; set; }
+        public string[] LibraryPaths { get; set; }
 
         public override bool Execute()
         {
@@ -68,6 +69,7 @@ namespace Win32UI.Build.Tasks
             argv.AddRange(Objects.Select(item => item.GetMetadata("FullPath")));
             argv.AddRange(SxsManifestFragments.Select(item => "/maifestinput:" + item.GetMetadata("FullPath")));
             argv.AddRange(SxsReferences.Select(item => GetManifestDependencyFlag(item)));
+            argv.AddRange(LibraryPaths.Select(path => "/libpath:" + path));
 
             return string.Join(" ", argv.Select(x => "\"" + x + "\""));
         }
