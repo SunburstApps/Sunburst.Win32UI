@@ -66,10 +66,10 @@ namespace Win32UI.Build.Tasks
             argv.Add($"/out:{OutputFilePath}");
             argv.Add("/manifest:embed,id=1");
             argv.Add($"/manifestuac:{GetManifestUacString()}");
-            argv.AddRange(Objects.Select(item => item.GetMetadata("FullPath")));
-            argv.AddRange(SxsManifestFragments.Select(item => "/maifestinput:" + item.GetMetadata("FullPath")));
-            argv.AddRange(SxsReferences.Select(item => GetManifestDependencyFlag(item)));
-            argv.AddRange(LibraryPaths.Select(path => "/libpath:" + path));
+            argv.AddRange(Objects?.Select(item => item.GetMetadata("FullPath")) ?? Enumerable.Empty<string>());
+            argv.AddRange(SxsManifestFragments?.Select(item => "/maifestinput:" + item.GetMetadata("FullPath")) ?? Enumerable.Empty<string>());
+            argv.AddRange(SxsReferences?.Select(item => GetManifestDependencyFlag(item)) ?? Enumerable.Empty<string>());
+            argv.AddRange(LibraryPaths?.Select(path => "/libpath:" + path) ?? Enumerable.Empty<string>());
 
             return string.Join(" ", argv.Select(x => "\"" + x + "\""));
         }
