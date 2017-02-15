@@ -4,5 +4,6 @@
 mkdir ..\..\bin\BuildTasks -ea 0 > $null
 copy bin\Debug\netstandard1.3\publish\System.*.dll, `
      bin\Debug\netstandard1.3\publish\Win32UI.Build.*.dll, `
+     bin\Debug\netstandard1.3\publish\runtimes\win\lib\*\*.dll, `
      Sunburst.Win32UI.Build.targets `
      ..\..\bin\BuildTasks
