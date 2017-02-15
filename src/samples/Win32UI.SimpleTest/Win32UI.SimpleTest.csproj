@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../../Win32UI.Application/Win32UI.Application.csproj" />
+    <ProjectReference Include="../../Win32UI.MessageBox/Win32UI.MessageBox.csproj" />
+    <ProjectReference Include="../../Win32UI.TaskDialogs/Win32UI.TaskDialogs.csproj" />
+
     <EntryPointResourceScriptFragment Include="RCVersionInfo.txt" />
   </ItemGroup>
+
+  <Import Project="../../dir.targets" />
+  <Import Project="../../bin/BuildTasks/Sunburst.Win32UI.Build.targets" />
 </Project>
