@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">
+    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
     <PackageReference Include="Microsoft.Build.Framework" Version="15.1.0-preview-*" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.0-preview-*" />
   </ItemGroup>
