@@ -23,7 +23,7 @@ namespace Win32UI.Build.Tasks
         public ITaskItem[] Objects { get; set; }
         public ITaskItem[] SxsManifestFragments { get; set; }
         public ITaskItem[] SxsReferences { get; set; }
-        public MsvcLinkUacPrivilegeLevel UacPrivilegeLevel { get; set; }
+        public string UacPrivilegeLevel { get; set; }
         public string[] LibraryPaths { get; set; }
 
         public override bool Execute()
@@ -84,7 +84,8 @@ namespace Win32UI.Build.Tasks
 
         private string GetManifestUacString()
         {
-            switch (UacPrivilegeLevel)
+            var levelEnum = Enum.Parse(typeof(MsvcLinkUacPrivilegeLevel), UacPrivilegeLevel, true);
+            switch (levelEnum)
             {
                 case MsvcLinkUacPrivilegeLevel.AsInvoker: return "asInvoker";
                 case MsvcLinkUacPrivilegeLevel.HighestAvailable: return "highestAvailable";
