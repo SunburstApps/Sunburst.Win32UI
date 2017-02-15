@@ -45,9 +45,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{73118EA4-2427-4522-8C8A-6C85B6C39CA6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32UI.SimpleTest", "src\samples\Win32UI.SimpleTest\Win32UI.SimpleTest.csproj", "{4D5BCAFD-BEC1-41D7-9311-AE3F9C813B75}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C48B540D-3EB6-433A-A048-E1B84152DBFE} = {C48B540D-3EB6-433A-A048-E1B84152DBFE}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
