@@ -6,7 +6,7 @@ namespace Microsoft.Win32.UserInterface
     public static class MessageBox
     {
         [DllImport("user32.dll", CharSet = CharSet.Unicode, EntryPoint = "MessageBoxW")]
-        public static extern int NativeMessageBox(IntPtr hWnd, string lpText, string lpCaption, uint flags);
+        private static extern int NativeMessageBox(IntPtr hWnd, string lpText, string lpCaption, uint flags);
 
         public static MessageBoxButton Show(string text, string caption, MessageBoxFlags flags, Window parent = null)
         {
