@@ -45,24 +45,5 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="CopyOutputsToPrebuiltDirectory" AfterTargets="AfterBuild">
-    <PropertyGroup>
-      <PrebuiltDirectory Condition="'$(PrebuiltDirectory)' == ''">$(MSBuildThisFileDirectory)/../../bin/prebuilt_dependencies</PrebuiltDirectory>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <_PrebuiltContent Include="$(TargetPath)" />
-      <_PrebuiltContent Include="@(ProjectReference -> '$(OutputPath)%(FileName).dll')" />
-      <_PrebuiltContent Include="@(Content)" Condition="'%(Content.CopyToOutputDirectory)' == 'Always' or '%(Content.CopyToOutputDirectory)' == 'PreserveNewest'" />
-      <_PrebuiltContent Include="../build_tools/Win32UI.Build.Tasks/Sunburst.Win32UI.Build.targets" />
-    </ItemGroup>
-    <MSBuild Projects="../build_tools/Win32UI.Build.Tasks/Win32UI.Build.Tasks.csproj; ../build_tools/Win32UI.Build.NativeResources/Win32UI.Build.NativeResources.csproj" Targets="Build">
-      <Output TaskParameter="TargetOutputs" ItemName="_PrebuiltContent" />
-    </MSBuild>
-
-    <MakeDir Directories="$(PrebuiltDirectory)" />
-    <Copy SourceFiles="@(_PrebuiltContent)" DestinationFolder="$(PrebuiltDirectory)" />
-  </Target>
-
   <Import Project="../dir.targets" />
 </Project>
