@@ -1,9 +1,7 @@
 & dotnet restore
-& dotnet publish
+& dotnet build
 
 mkdir ..\..\bin\BuildTasks -ea 0 > $null
-copy bin\Debug\netstandard1.3\publish\System.*.dll, `
-     bin\Debug\netstandard1.3\publish\Win32UI.Build.*.dll, `
-     bin\Debug\netstandard1.3\publish\runtimes\win\lib\*\*.dll, `
+copy bin\Debug\net45\Win32UI.*.dll, `
      Sunburst.Win32UI.Build.targets `
      ..\..\bin\BuildTasks
