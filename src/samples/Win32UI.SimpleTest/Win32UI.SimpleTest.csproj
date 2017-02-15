@@ -9,9 +9,4 @@
   <ItemGroup>
     <EntryPointResourceScriptFragment Include="RCVersionInfo.txt" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <PrebuiltDependenciesDir>$(MSBuildThisFileDirectory)/../../bin/prebuilt_dependencies</PrebuiltDependenciesDir>
-  </PropertyGroup>
-  <Import Project="$(PrebuiltDependenciesDir)/Sunburst.Win32UI.targets" />
 </Project>
