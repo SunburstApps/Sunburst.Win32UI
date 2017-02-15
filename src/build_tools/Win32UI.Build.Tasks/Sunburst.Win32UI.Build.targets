@@ -21,9 +21,10 @@
       <Output TaskParameter="ResourceScriptPath" ItemName="_ResourceScript" />
     </GenerateResourceScript>
 
-    <CompileResourceScript ResourceScripts="@(_ResourceScript)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(RCToolPath)">
-      <Output TaskParameter="ResourceObjects" ItemName="_ResourceObject" />
-    </CompileResourceScript>
+    <CompileResourceScript ResourceScripts="@(_ResourceScript)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(RCToolPath)" />
+    <ItemGroup>
+      <_ResourceObject Include="@(_ResourceScript -> '%(Directory)%(FileName).res')" />
+    </ItemGroup>
 
     <PropertyGroup>
       <_ResourceLinkOutput>$(IntermediateOutputPath)EntryPointResources.dll</_ResourceLinkOutput>
