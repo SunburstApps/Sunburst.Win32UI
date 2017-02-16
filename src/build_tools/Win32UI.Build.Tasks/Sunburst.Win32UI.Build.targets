@@ -59,7 +59,7 @@
       <_SystemPath>$([System.Environment]::GetEnvironmentVariable('PATH'))</_SystemPath>
     </PropertyGroup>
 
-    <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)"
+    <MsvcLink Objects="@(_ResourceObject)" SxsReferences="@(SxsReference)"
               UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputFilePath="$(_ResourceLinkOutput)" OutputArchitecture="$(LinkerPlatform)"
               ToolPath="$(LinkToolPath)" LibraryPaths="$(LinkLibraryPaths)" EnvironmentVariables="PATH=$(RCToolPath)%3B$(LinkToolPath)%3B$(_SystemPath)" />
     <MsvcSxsManifestTool InputAssembly="$(_ResourceLinkOutput)" OutputManifestFile="$(IntermediateOutputPath)EntryPoint.manifest" ToolPath="$(SxsManifestToolPath)" />
