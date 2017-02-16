@@ -25,6 +25,7 @@ namespace Win32UI.Build.Tasks
         public ITaskItem[] SxsReferences { get; set; }
         public string UacPrivilegeLevel { get; set; }
         public string[] LibraryPaths { get; set; }
+        public string[] LinkerRuntimePaths { get; set; }
 
         public override bool Execute()
         {
@@ -71,12 +72,13 @@ namespace Win32UI.Build.Tasks
             argv.AddRange(SxsReferences?.Select(item => GetManifestDependencyFlag(item)) ?? Enumerable.Empty<string>());
             argv.AddRange(LibraryPaths?.Select(path => "/libpath:" + path) ?? Enumerable.Empty<string>());
 
-            if (!string.IsNullOrEmpty(ToolPath) && Path.IsPathRooted(ToolPath))
+            string extraPathVars = string.Join(";", LinkerRuntimePaths ?? Enumerable.Empty<string>());
+            if (!string.IsNullOrEmpty(extraPathVars))
             {
                 string existingPath = Environment.GetEnvironmentVariable("PATH");
                 EnvironmentVariables = new[]
                 {
-                    $"{ToolPath};{existingPath}"
+                    $"PATH={extraPathVars};{existingPath}"
                 };
             }
 
