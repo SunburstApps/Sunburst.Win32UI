@@ -98,14 +98,18 @@ namespace Win32UI.Build.Tasks
 
         private string GetManifestUacString()
         {
+            string privilegeLevel = null;
+
             var levelEnum = Enum.Parse(typeof(MsvcLinkUacPrivilegeLevel), UacPrivilegeLevel, true);
             switch (levelEnum)
             {
-                case MsvcLinkUacPrivilegeLevel.AsInvoker: return "asInvoker";
-                case MsvcLinkUacPrivilegeLevel.HighestAvailable: return "highestAvailable";
-                case MsvcLinkUacPrivilegeLevel.RequireAdministrator: return "requireAdministrator";
+                case MsvcLinkUacPrivilegeLevel.AsInvoker: privilegeLevel = "asInvoker"; break;
+                case MsvcLinkUacPrivilegeLevel.HighestAvailable: privilegeLevel = "highestAvailable"; break;
+                case MsvcLinkUacPrivilegeLevel.RequireAdministrator: privilegeLevel = "requireAdministrator"; break;
                 default: throw new ArgumentException("Unrecognized UacPrivilegeLevel");
             }
+
+            return $"level='{privilegeLevel}' uiAccess='false'";
         }
     }
 }
