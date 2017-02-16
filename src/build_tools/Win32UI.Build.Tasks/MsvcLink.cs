@@ -25,7 +25,6 @@ namespace Win32UI.Build.Tasks
         public ITaskItem[] SxsReferences { get; set; }
         public string UacPrivilegeLevel { get; set; }
         public string[] LibraryPaths { get; set; }
-        public string[] LinkerRuntimePaths { get; set; }
         [Required]
         public string OutputArchitecture { get; set; }
 
