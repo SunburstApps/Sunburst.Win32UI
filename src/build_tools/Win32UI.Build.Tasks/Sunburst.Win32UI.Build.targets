@@ -54,11 +54,13 @@
 
     <PropertyGroup>
       <_ResourceLinkOutput>$(IntermediateOutputPath)EntryPointResources.dll</_ResourceLinkOutput>
+      <_SystemPath>$([System.Environment]::GetEnvironmentVariable('PATH'))</_SystemPath>
     </PropertyGroup>
 
     <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)" SxsReferences="@(SxsReference)"
               UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputFilePath="$(_ResourceLinkOutput)" OutputArchitecture="$(LinkerPlatform)"
-              ToolPath="$(LinkToolPath)" LibraryPaths="$(LinkLibraryPaths)" LinkerRuntimePaths="$(LinkToolPath);$(RCToolPath)" />
+              ToolPath="$(LinkToolPath)" LibraryPaths="$(LinkLibraryPaths)" LinkerRuntimePaths="$(LinkToolPath);$(RCToolPath)"
+              EnvironmentVariables="PATH=$(RCToolPath)%3B$(LinkToolPath)%3B$(_SystemPath)" />
     <CopyResourceSegment InputFile="$(_ResourceLinkOutput)" OutputFile="$(TargetDir)$(TargetFileName).exe" />
   </Target>
 
