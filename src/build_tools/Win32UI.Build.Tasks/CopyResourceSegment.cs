@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using Win32UI.Build.NativeResources;
+using Vestris.ResourceLib;
 
 namespace Win32UI.Build.Tasks
 {
@@ -23,9 +23,16 @@ namespace Win32UI.Build.Tasks
             }
 #endif
 
-            ResourceCollection inputResources = new ResourceCollection();
+            string outputPath = OutputFile.GetMetadata("FullPath");
+            ResourceInfo inputResources = new ResourceInfo();
             inputResources.Load(InputFile.GetMetadata("FullPath"));
-            inputResources.Save(OutputFile.GetMetadata("FullPath"));
+
+            // ResourceInfo.Save() is not implemented, so I must save each resource one at a time.
+            foreach (var rsrc in inputResources)
+            {
+                rsrc.SaveTo(outputPath);
+            }
+
             return true;
         }
     }
