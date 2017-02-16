@@ -79,7 +79,7 @@ namespace Win32UI.Build.Tasks
 
         private string GetManifestDependencyFlag(ITaskItem item)
         {
-            string name = item.ItemSpec;
+            string name = item.GetMetadata("Identity");
             string version = item.GetMetadata("Version");
             string publicKeyToken = item.GetMetadata("PublicKeyToken");
             return $"/manifestDependency:type='win32' name='{name}' version='{version}' processorArchitecture='*' publicKeyToken='{publicKeyToken}' language='*'";
