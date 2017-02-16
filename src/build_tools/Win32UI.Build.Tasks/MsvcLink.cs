@@ -71,6 +71,15 @@ namespace Win32UI.Build.Tasks
             argv.AddRange(SxsReferences?.Select(item => GetManifestDependencyFlag(item)) ?? Enumerable.Empty<string>());
             argv.AddRange(LibraryPaths?.Select(path => "/libpath:" + path) ?? Enumerable.Empty<string>());
 
+            if (!string.IsNullOrEmpty(ToolPath) && Path.IsPathRooted(ToolPath))
+            {
+                string existingPath = Environment.GetEnvironmentVariable("PATH");
+                EnvironmentVariables = new[]
+                {
+                    $"{ToolPath};{existingPath}"
+                };
+            }
+
             return string.Join(" ", argv.Select(x => "\"" + x + "\""));
         }
 
