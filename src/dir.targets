@@ -8,13 +8,6 @@
     <Description Condition="'$(Description)' == '' and '$(AssemblyTitle)' != ''">$(AssemblyTitle)</Description>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <RCToolPath Condition="$(RuntimeIdentifier.EndsWith('x86'))">C:\Program Files (x86)\Windows Kits\10\bin\x86</RCToolPath>
-    <RCToolPath Condition="$(RuntimeIdentifier.EndsWith('x64'))">C:\Program Files (x86)\Windows Kits\10\bin\x64</RCToolPath>
-    <LinkToolPath Condition="$(RuntimeIdentifier.EndsWith('x86'))">C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.24930\bin\HostX86\x86</LinkToolPath>
-    <LinkToolPath Condition="$(RuntimeIdentifier.EndsWith('x64'))">C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.24930\bin\HostX86\x64</LinkToolPath>
-  </PropertyGroup>
-
   <ItemGroup>
     <!-- Referencing this package works around a bug wherein 'dotnet pack' output -->
     <!-- would contain content files from Microsoft.DiaSymReader.Native that should -->
