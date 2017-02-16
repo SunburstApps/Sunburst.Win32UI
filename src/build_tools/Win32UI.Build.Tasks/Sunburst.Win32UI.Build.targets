@@ -62,7 +62,10 @@
     <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)"
               UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputFilePath="$(_ResourceLinkOutput)" OutputArchitecture="$(LinkerPlatform)"
               ToolPath="$(LinkToolPath)" LibraryPaths="$(LinkLibraryPaths)" EnvironmentVariables="PATH=$(RCToolPath)%3B$(LinkToolPath)%3B$(_SystemPath)" />
-    <MsvcSxsManifestTool FilePath="$(_ResourceLinkOutput)" ManifestFragments="@(SxsManifestFragment)" ToolPath="$(SxsManifestToolPath)" />
+    <MsvcSxsManifestTool InputAssembly="$(_ResourceLinkOutput)" OutputManifestFile="$(IntermediateOutputPath)EntryPoint.manifest" ToolPath="$(SxsManifestToolPath)" />
+    <MsvcSxsManifestTool InputManifestFile="$(IntermediateOutputPath)EntryPoint.manifest" OutputAssembly="$(_ResourceLinkOutput)"
+                         ManifestFragments="@(SxsManifestFragment)" CanonicalizeXml="true" ToolPath="$(SxsManifestToolPath)" />
+
     <CopyResourceSegment InputFile="$(_ResourceLinkOutput)" OutputFile="$(TargetDir)$(TargetFileName).exe" />
   </Target>
 

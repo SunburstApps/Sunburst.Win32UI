@@ -9,9 +9,12 @@ namespace Win32UI.Build.Tasks
 {
     public sealed class MsvcSxsManifestTool : ToolTask
     {
-        [Required]
-        public string FilePath { get; set; }
+        public string InputManifestFile { get; set; }
+        public string InputAssembly { get; set; }
+        public string OutputManifestFile { get; set; }
+        public string OutputAssembly { get; set; }
         public ITaskItem[] ManifestFragments { get; set; }
+        public bool CanonicalizeXml { get; set; }
 
         protected override string ToolName => "mt.exe";
 
@@ -24,8 +27,25 @@ namespace Win32UI.Build.Tasks
         {
             List<string> argv = new List<string>();
             argv.Add("-nologo");
-            argv.Add("-canonicalize");
-            argv.Add("-updateresource:" + FilePath);
+
+            if (InputManifestFile != null)
+            {
+                argv.Add("-manifest");
+                argv.Add(InputManifestFile);
+            }
+            else if (InputAssembly != null)
+            {
+                argv.Add("-inputresource:" + InputAssembly + ";#1");
+            }
+
+            if (OutputManifestFile != null)
+            {
+                argv.Add("-out:" + OutputManifestFile);
+            }
+            else if (OutputAssembly != null)
+            {
+                argv.Add("-outputresource:" + OutputAssembly + ";#1");
+            }
 
             if (ManifestFragments != null && ManifestFragments.Length > 0)
             {
@@ -33,6 +53,7 @@ namespace Win32UI.Build.Tasks
                 foreach (var item in ManifestFragments) argv.Add(item.GetMetadata("FullPath"));
             }
 
+            if (CanonicalizeXml) argv.Add("-canonicalize");
             return string.Join(" ", argv.Select(x => "\"" + x + "\""));
         }
 
@@ -45,6 +66,26 @@ namespace Win32UI.Build.Tasks
                 return true;
             }
 #endif
+
+            if (InputManifestFile == null && InputAssembly == null)
+            {
+                Log.LogError("Either InputManifestFile or InputAssembly must be specified");
+                return false;
+            }
+            else if (InputManifestFile != null && InputAssembly != null)
+            {
+                Log.LogError("You cannot specify both InputManifestFile and InputAssembly");
+            }
+
+            if (OutputManifestFile == null && OutputAssembly == null)
+            {
+                Log.LogError("Either OutputManifestFile or OutputAssembly must be specified");
+                return false;
+            }
+            else if (OutputManifestFile != null && OutputAssembly != null)
+            {
+                Log.LogError("You cannot specify both OutputManifestFile and OutputAssembly");
+            }
 
             return base.Execute();
         }
