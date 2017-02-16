@@ -26,6 +26,8 @@ namespace Win32UI.Build.Tasks
         public string UacPrivilegeLevel { get; set; }
         public string[] LibraryPaths { get; set; }
         public string[] LinkerRuntimePaths { get; set; }
+        [Required]
+        public string OutputArchitecture { get; set; }
 
         public override bool Execute()
         {
@@ -67,6 +69,7 @@ namespace Win32UI.Build.Tasks
             argv.Add($"/out:{OutputFilePath}");
             argv.Add("/manifest:embed,id=1");
             argv.Add($"/manifestuac:{GetManifestUacString()}");
+            argv.Add($"/machine:{OutputArchitecture}");
             argv.AddRange(Objects?.Select(item => item.GetMetadata("Identity")) ?? Enumerable.Empty<string>());
             argv.AddRange(SxsManifestFragments?.Select(item => "/maifestinput:" + item.GetMetadata("Identity")) ?? Enumerable.Empty<string>());
             argv.AddRange(SxsReferences?.Select(item => GetManifestDependencyFlag(item)) ?? Enumerable.Empty<string>());

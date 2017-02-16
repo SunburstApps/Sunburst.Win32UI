@@ -56,8 +56,8 @@
     </PropertyGroup>
 
     <MsvcLink Objects="@(_ResourceObject)" SxsManifestFragments="@(SxsManifestFragment)" SxsReferences="@(SxsReference)"
-              UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputFilePath="$(_ResourceLinkOutput)" ToolPath="$(LinkToolPath)"
-              LibraryPaths="$(LinkLibraryPaths)" LinkerRuntimePaths="$(LinkToolPath);$(RCToolPath)" />
+              UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputFilePath="$(_ResourceLinkOutput)" OutputArchitecture="$(LinkerPlatform)"
+              ToolPath="$(LinkToolPath)" LibraryPaths="$(LinkLibraryPaths)" LinkerRuntimePaths="$(LinkToolPath);$(RCToolPath)" />
     <CopyResourceSegment InputFile="$(_ResourceLinkOutput)" OutputFile="$(TargetDir)$(TargetFileName).exe" />
   </Target>
 
