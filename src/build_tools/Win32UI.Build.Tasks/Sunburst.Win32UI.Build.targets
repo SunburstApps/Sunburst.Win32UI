@@ -33,7 +33,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(GuiEntryPont)' == 'true'">
-    <SxsDependency Include="Microsoft.Windows.Common-Controls" Version="6.0.0.0" PublicKeyToken="6595b64144ccf1df" />
+    <SxsReference Include="Microsoft.Windows.Common-Controls" Version="6.0.0.0" PublicKeyToken="6595b64144ccf1df" />
   </ItemGroup>
 
   <UsingTask TaskName="GenerateResourceScript" AssemblyFile="$(Win32UITasksAssembly)" />
