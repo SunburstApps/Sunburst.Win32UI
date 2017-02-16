@@ -48,7 +48,7 @@
 
     <CompileResourceScript ResourceScripts="@(_ResourceScript)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(RCToolPath)" IncludePaths="$(RCIncludePaths)" />
     <ItemGroup>
-      <_ResourceObject Include="@(_ResourceScript -> '%(Directory)%(FileName).res')" />
+      <_ResourceObject Include="@(_ResourceScript -> '%(RelativeDir)%(FileName).res')" />
     </ItemGroup>
 
     <PropertyGroup>
