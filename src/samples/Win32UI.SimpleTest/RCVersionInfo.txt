@@ -9,9 +9,9 @@ BEGIN
 			VALUE "CompanyName", "William Kent"
             VALUE "FileDescription", "Win32 User Interface Sample Application"
             VALUE "FileVersion", "1.0.0.0"
-            VALUE "InternalName", "Win32UI.SimpleTest.dll"
+            VALUE "InternalName", "Win32UI.SimpleTest.exe"
             VALUE "LegalCopyright", "Copyright © 2017 William Kent. All rights reserved."
-            VALUE "OriginalFilename", "Win32UI.SimpleTest.dll"
+            VALUE "OriginalFilename", "Win32UI.SimpleTest.exe"
             VALUE "ProductName", "Win32 User Interface"
             VALUE "ProductVersion", "1.0.0.0"
 		END
