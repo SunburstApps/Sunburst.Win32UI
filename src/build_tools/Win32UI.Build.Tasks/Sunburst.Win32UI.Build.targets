@@ -66,10 +66,10 @@
     <MsvcSxsManifestTool InputManifestFile="$(IntermediateOutputPath)EntryPoint.manifest" OutputAssembly="$(_ResourceLinkOutput)"
                          ManifestFragments="@(SxsManifestFragment)" CanonicalizeXml="true" ToolPath="$(SxsManifestToolPath)" />
 
-    <CopyResourceSegment InputFile="$(_ResourceLinkOutput)" OutputFile="$(TargetDir)$(TargetFileName).exe" />
+    <CopyResourceSegment InputFile="$(_ResourceLinkOutput)" OutputFile="$(OutputPath)$(TargetName).exe" />
   </Target>
 
   <Target Name="MarkEntryPointAsGuiApp" AfterTargets="Build" Condition="'$(GuiEntryPoint)' == 'true' and '$(OutputType)' == 'Exe'">
-    <MarkExecutableAsGui ToolPath="$(EditbinToolPath)" Executable="$(TargetDir)$(TargetFileName).exe" />
+    <MarkExecutableAsGui ToolPath="$(EditbinToolPath)" Executable="$(OutputPath)$(TargetName).exe" />
   </Target>
 </Project>
