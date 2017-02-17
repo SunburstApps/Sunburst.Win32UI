@@ -517,7 +517,7 @@ namespace Microsoft.Win32.UserInterface.Layout
                     {
                         if (Orientation == SplitContainerOrientation.Vertical)
                         {
-                            Point pt; NativeMethods.GetCursorPos(out pt);
+                            NativeMethods.GetCursorPos(out Point pt);
 
                             int xyPos = (mSplitterPosition ?? 0) + ((key == VirtualKeys.VK_LEFT) ? -SplitterStep : SplitterStep);
                             if (xyPos < mSplitterRect.Width + mSplitterBarEdge)
@@ -537,7 +537,7 @@ namespace Microsoft.Win32.UserInterface.Layout
                     {
                         if (Orientation != SplitContainerOrientation.Vertical)
                         {
-                            Point pt; NativeMethods.GetCursorPos(out pt);
+                            NativeMethods.GetCursorPos(out Point pt);
 
                             int xyPos = (mSplitterPosition ?? 0) + ((key == VirtualKeys.VK_UP) ? -SplitterStep : SplitterStep);
                             if (xyPos < mSplitterRect.Height + mSplitterBarEdge)
@@ -605,8 +605,7 @@ namespace Microsoft.Win32.UserInterface.Layout
                 {
                     foreach (var pane in new[] { SplitContainerPane.LeftTop, SplitContainerPane.RightBottom })
                     {
-                        Rect paneRect;
-                        if (GetSplitterPaneRect(pane, out paneRect))
+                        if (GetSplitterPaneRect(pane, out Rect paneRect))
                         {
                             if (mSplitPanes[pane].Handle != IntPtr.Zero)
                             {
@@ -622,8 +621,7 @@ namespace Microsoft.Win32.UserInterface.Layout
             }
             else
             {
-                Rect paneRect;
-                if (GetSplitterPaneRect(mDefaultSinglePane, out paneRect))
+                if (GetSplitterPaneRect(mDefaultSinglePane, out Rect paneRect))
                 {
                     if (mSplitPanes[mDefaultSinglePane].Handle != IntPtr.Zero) mSplitPanes[mDefaultSinglePane].Move(paneRect);
                     else Invalidate(paneRect);
