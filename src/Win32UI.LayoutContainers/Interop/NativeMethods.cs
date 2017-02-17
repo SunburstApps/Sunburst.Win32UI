@@ -64,6 +64,9 @@ namespace Microsoft.Win32.UserInterface.Interop
         public static extern bool ScreenToClient(IntPtr hWnd, ref Point pt);
 
         [DllImport("user32.dll")]
+        public static extern void GetCursorPos(out Point pt);
+
+        [DllImport("user32.dll")]
         public static extern bool SetCursorPos(int x, int y);
 
         [DllImport("user32.dll")]
@@ -74,5 +77,8 @@ namespace Microsoft.Win32.UserInterface.Interop
 
         [DllImport("user32.dll")]
         public static extern void SetCapture(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern void ReleaseCapture();
     }
 }

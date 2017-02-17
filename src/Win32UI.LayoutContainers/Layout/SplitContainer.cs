@@ -9,6 +9,8 @@ namespace Microsoft.Win32.UserInterface.Layout
 {
     public class SplitContainer : CustomWindow
     {
+        // Continue at: UpdateSplitterLayout() method [atlsplit.h line 810]
+
         public bool ScaleSplitProportionally { get; set; } = true;
         public bool FavorRightPane { get; set; } = false; // ignored if ScaleSplitProportionally is true
         public bool AllowUserResize { get; set; } = true;
@@ -405,6 +407,49 @@ namespace Microsoft.Win32.UserInterface.Layout
             }
         }
 
+        protected override void OnMouseLeftButtonDown(MouseEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+
+            if (NativeMethods.GetCapture() != Handle && IsOverSplitterBar(e.MouseLocation))
+            {
+                mNewSplitterPosition = mSplitterPosition;
+                NativeMethods.SetCapture(Handle);
+                mSavedFocusWindow = new Window(NativeMethods.GetFocus());
+                NativeMethods.SetFocus(Handle);
+                Cursor.Current = mCursor;
+
+                if (!mFullDrag) DrawGhostBar();
+                if (Orientation == SplitContainerOrientation.Vertical) mDragOffset = e.MouseLocation.x - mSplitterRect.left - (mSplitterPosition ?? 0);
+                else mDragOffset = e.MouseLocation.y - mSplitterRect.top - (mSplitterPosition ?? 0);
+            }
+            else if (NativeMethods.GetCapture() == Handle && !IsOverSplitterBar(e.MouseLocation))
+            {
+                NativeMethods.ReleaseCapture();
+            }
+
+            e.Handled = false;
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseEventArgs e)
+        {
+            base.OnMouseLeftButtonUp(e);
+
+            if (NativeMethods.GetCapture() == Handle)
+            {
+                mNewSplitterPosition = mSplitterPosition;
+                NativeMethods.ReleaseCapture();
+            }
+
+            e.Handled = false;
+        }
+
+        protected override void OnMouseLeftButtonDoubleClick(MouseEventArgs e)
+        {
+            base.OnMouseLeftButtonDoubleClick(e);
+            SetSplitterPosition(null);
+        }
+
         protected override IntPtr ProcessMessage(uint msg, IntPtr wParam, IntPtr lParam)
         {
             if (msg == WindowMessages.WM_SETCURSOR)
@@ -415,6 +460,95 @@ namespace Microsoft.Win32.UserInterface.Layout
                     int position = NativeMethods.GetMessagePos();
                     Point pt = new Point((position & 0xFFFF), (position >> 16) & 0xFFFF);
                     if (IsOverSplitterBar(pt)) return (IntPtr)1;
+                }
+            }
+            else if (msg == WindowMessages.WM_CAPTURECHANGED)
+            {
+                if (!mFullDrag) DrawGhostBar();
+
+                if (mSplitterPosition.HasValue && (!mFullDrag || (mSplitterPosition != mNewSplitterPosition)))
+                {
+                    mSplitterPosition = mNewSplitterPosition;
+                    mNewSplitterPosition = null;
+
+                    UpdateSplitterLayout();
+                    Invalidate();
+                }
+
+                if (mSavedFocusWindow != null) NativeMethods.SetFocus(mSavedFocusWindow.Handle);
+            }
+            else if (msg == WindowMessages.WM_KEYDOWN)
+            {
+                if (NativeMethods.GetCapture() == Handle)
+                {
+                    ushort keyCode = (ushort)(int)wParam;
+                    VirtualKeys key = (VirtualKeys)keyCode;
+                    if (key == VirtualKeys.VK_RETURN)
+                    {
+                        mNewSplitterPosition = mSplitterPosition;
+                        NativeMethods.ReleaseCapture();
+                    }
+                    else if (key == VirtualKeys.VK_ESCAPE)
+                    {
+                        NativeMethods.ReleaseCapture();
+                    }
+                    else if (key == VirtualKeys.VK_LEFT || key == VirtualKeys.VK_RIGHT)
+                    {
+                        if (Orientation == SplitContainerOrientation.Vertical)
+                        {
+                            Point pt; NativeMethods.GetCursorPos(out pt);
+
+                            int xyPos = (mSplitterPosition ?? 0) + ((key == VirtualKeys.VK_LEFT) ? -SplitterStep : SplitterStep);
+                            if (xyPos < mSplitterRect.Width + mSplitterBarEdge)
+                            {
+                                xyPos = mSplitterRect.Width;
+                            }
+                            else if (xyPos > (mSplitterRect.Width - mSplitterBarThickness - mSplitterBarEdge - mMinPaneSize))
+                            {
+                                xyPos = mSplitterRect.Width - mSplitterBarThickness - mSplitterBarEdge - mMinPaneSize;
+                            }
+
+                            pt.x += xyPos - (mSplitterPosition ?? 0);
+                            NativeMethods.SetCursorPos(pt.x, pt.y);
+                        }
+                    }
+                    else if (key == VirtualKeys.VK_UP || key == VirtualKeys.VK_DOWN)
+                    {
+                        if (Orientation != SplitContainerOrientation.Vertical)
+                        {
+                            Point pt; NativeMethods.GetCursorPos(out pt);
+
+                            int xyPos = (mSplitterPosition ?? 0) + ((key == VirtualKeys.VK_UP) ? -SplitterStep : SplitterStep);
+                            if (xyPos < mSplitterRect.Height + mSplitterBarEdge)
+                            {
+                                xyPos = mSplitterRect.Height;
+                            }
+                            else if (xyPos > (mSplitterRect.Height - mSplitterBarThickness - mSplitterBarEdge - mMinPaneSize))
+                            {
+                                xyPos = mSplitterRect.Height - mSplitterBarThickness - mSplitterBarEdge - mMinPaneSize;
+                            }
+
+                            pt.y += xyPos - (mSplitterPosition ?? 0);
+                            NativeMethods.SetCursorPos(pt.x, pt.y);
+                        }
+                    }
+                }
+            }
+            else if (msg == WindowMessages.WM_SETFOCUS)
+            {
+                if (NativeMethods.GetCapture() != Handle)
+                {
+                    if (mDefaultSinglePane == SplitContainerPane.None)
+                    {
+                        if (mDefaultActivePane == SplitContainerPane.LeftTop || mDefaultActivePane == SplitContainerPane.RightBottom)
+                        {
+                            NativeMethods.SetFocus(mSplitPanes[mDefaultActivePane].Handle);
+                        }
+                    }
+                    else
+                    {
+                        NativeMethods.SetFocus(mSplitPanes[mDefaultSinglePane].Handle);
+                    }
                 }
             }
 

@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../Win32UI.Menus/Win32UI.Menus.csproj" />
     <ProjectReference Include="../Win32UI.Dialogs/Win32UI.Dialogs.csproj" />
     <ProjectReference Include="../Win32UI.Controls/Win32UI.Controls.csproj" />
     <ProjectReference Include="../Win32UI.CustomControl/Win32UI.CustomControl.csproj" />
