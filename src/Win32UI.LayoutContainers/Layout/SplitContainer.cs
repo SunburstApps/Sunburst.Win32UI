@@ -572,6 +572,15 @@ namespace Microsoft.Win32.UserInterface.Layout
                     }
                 }
             }
+            else if (msg == WindowMessages.WM_CREATE)
+            {
+                const uint SPI_GETDRAGFULLWINDOWS = 0x26;
+                using (HGlobal ptr = new HGlobal(Marshal.SizeOf<int>()))
+                {
+                    NativeMethods.SystemParametersInfoW(SPI_GETDRAGFULLWINDOWS, 0, ptr.Handle, 0);
+                    mFullDrag = Marshal.ReadInt32(ptr.Handle) != 0;
+                }
+            }
 
             return base.ProcessMessage(msg, wParam, lParam);
         }
