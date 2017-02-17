@@ -12,6 +12,7 @@
     <!-- Note: These paths are specific to my machine. You may have to modify them for yours. -->
     <RCToolPath>C:\Program Files (x86)\Windows Kits\10\bin\$(LinkerPlatform)</RCToolPath>
     <LinkToolPath>C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.24930\bin\Host$(LinkerPlatform.ToUpperInvariant())\$(LinkerPlatform)</LinkToolPath>
+    <EditbinToolPath>C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.24930\bin\Host$(LinkerPlatform.ToUpperInvariant())\$(LinkerPlatform)</EditbinToolPath>
     <SxsManifestToolPath>C:\Program Files (x86)\Windows Kits\10\bin\$(LinkerPlatform)</SxsManifestToolPath>
 
     <RCIncludePaths>
