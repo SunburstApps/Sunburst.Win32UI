@@ -80,5 +80,14 @@ namespace Microsoft.Win32.UserInterface.Interop
 
         [DllImport("user32.dll")]
         public static extern void ReleaseCapture();
+
+        [DllImport("gdi32.dll")]
+        public static extern IntPtr CreateBitmap(int width, int height, int planes, int bitsPerPixel, IntPtr pattern);
+
+        [DllImport("gdi32.dll")]
+        public static extern IntPtr CreatePatternBrush(IntPtr hBitmap);
+
+        [DllImport("gdi32.dll")]
+        public static extern IntPtr PatBlt(IntPtr hDC, int x, int y, int width, int height, int rop);
     }
 }

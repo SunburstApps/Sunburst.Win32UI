@@ -9,7 +9,7 @@ namespace Microsoft.Win32.UserInterface.Layout
 {
     public class SplitContainer : CustomWindow
     {
-        // Continue at: UpdateSplitterLayout() method [atlsplit.h line 810]
+        // Continue at: GetSystemSettings() method [atlsplit.h line 966]
 
         public bool ScaleSplitProportionally { get; set; } = true;
         public bool FavorRightPane { get; set; } = false; // ignored if ScaleSplitProportionally is true
@@ -327,8 +327,8 @@ namespace Microsoft.Win32.UserInterface.Layout
 
         protected virtual void DrawSplitterBarContent(NonOwnedGraphicsContext dc)
         {
-            Rect barRect = GetSplitterBarRect();
-            dc.FillRect(barRect, SystemBrushes.WindowBackground);
+            Rect? barRect = GetSplitterBarRect();
+            if (barRect.HasValue) dc.FillRect(barRect.Value, SystemBrushes.WindowBackground);
         }
 
         protected virtual void DrawEmptyPaneContent(NonOwnedGraphicsContext dc, SplitContainerPane pane)
@@ -337,9 +337,30 @@ namespace Microsoft.Win32.UserInterface.Layout
             dc.FillRect(paneRect, SystemBrushes.ControlBackground);
         }
 
-        protected Rect GetSplitterBarRect()
+        protected Rect? GetSplitterBarRect()
         {
-            throw new NotImplementedException();
+            if (mDefaultSinglePane != SplitContainerPane.None || !mSplitterPosition.HasValue) return null;
+
+            if (Orientation == SplitContainerOrientation.Vertical)
+            {
+                return new Rect
+                {
+                    top = mSplitterRect.top,
+                    left = mSplitterRect.left + (mSplitterPosition ?? 0),
+                    right = mSplitterRect.left + (mSplitterPosition ?? 0) + mSplitterBarThickness + mSplitterBarEdge,
+                    bottom = mSplitterRect.bottom
+                };
+            }
+            else
+            {
+                return new Rect
+                {
+                    top = mSplitterRect.top + (mSplitterPosition ?? 0),
+                    left = mSplitterRect.left,
+                    right = mSplitterRect.right,
+                    bottom = mSplitterRect.bottom + (mSplitterPosition ?? 0) + mSplitterBarThickness + mSplitterBarEdge
+                };
+            }
         }
 
         protected Rect GetPaneRect(SplitContainerPane pane)
@@ -400,7 +421,7 @@ namespace Microsoft.Win32.UserInterface.Layout
             }
             else
             {
-                if (IsOverSplitterBar(e.MouseLocation))
+                if (IsOverSplitterBar(e.MouseLocation.x, e.MouseLocation.y))
                 {
                     Cursor.Current = mCursor;
                 }
@@ -411,7 +432,7 @@ namespace Microsoft.Win32.UserInterface.Layout
         {
             base.OnMouseLeftButtonDown(e);
 
-            if (NativeMethods.GetCapture() != Handle && IsOverSplitterBar(e.MouseLocation))
+            if (NativeMethods.GetCapture() != Handle && IsOverSplitterBar(e.MouseLocation.x, e.MouseLocation.y))
             {
                 mNewSplitterPosition = mSplitterPosition;
                 NativeMethods.SetCapture(Handle);
@@ -423,7 +444,7 @@ namespace Microsoft.Win32.UserInterface.Layout
                 if (Orientation == SplitContainerOrientation.Vertical) mDragOffset = e.MouseLocation.x - mSplitterRect.left - (mSplitterPosition ?? 0);
                 else mDragOffset = e.MouseLocation.y - mSplitterRect.top - (mSplitterPosition ?? 0);
             }
-            else if (NativeMethods.GetCapture() == Handle && !IsOverSplitterBar(e.MouseLocation))
+            else if (NativeMethods.GetCapture() == Handle && !IsOverSplitterBar(e.MouseLocation.x, e.MouseLocation.y))
             {
                 NativeMethods.ReleaseCapture();
             }
@@ -459,7 +480,7 @@ namespace Microsoft.Win32.UserInterface.Layout
                 {
                     int position = NativeMethods.GetMessagePos();
                     Point pt = new Point((position & 0xFFFF), (position >> 16) & 0xFFFF);
-                    if (IsOverSplitterBar(pt)) return (IntPtr)1;
+                    if (IsOverSplitterBar(pt.x, pt.y)) return (IntPtr)1;
                 }
             }
             else if (msg == WindowMessages.WM_CAPTURECHANGED)
@@ -555,16 +576,173 @@ namespace Microsoft.Win32.UserInterface.Layout
             return base.ProcessMessage(msg, wParam, lParam);
         }
 
-        private bool IsOverSplitterBar(Point pt)
+        private bool IsOverSplitterRect(int? x, int? y)
         {
-            throw new NotImplementedException();
+            return ((!x.HasValue || (x.Value >= mSplitterRect.left && x.Value <= mSplitterRect.right)) && (!y.HasValue || (y.Value >= mSplitterRect.top && y.Value <= mSplitterRect.bottom)));
         }
 
-        private void DrawGhostBar() => throw new NotImplementedException();
-        private void UpdateSplitterLayout() => throw new NotImplementedException();
+        private bool IsOverSplitterBar(int x, int y)
+        {
+            if (mDefaultSinglePane == SplitContainerPane.None) return false;
+            if (!mSplitterPosition.HasValue || !IsOverSplitterRect(x, y)) return false;
+
+            int xy = Orientation == SplitContainerOrientation.Vertical ? x : y;
+            int xyOff = Orientation == SplitContainerOrientation.Vertical ? mSplitterRect.left : mSplitterRect.top;
+
+            return ((xy >= (xyOff + mSplitterPosition)) && (xy < xyOff + mSplitterPosition + mSplitterBarThickness + mSplitterBarEdge));
+        }
+
+        private void UpdateSplitterLayout()
+        {
+            if (mDefaultSinglePane == SplitContainerPane.None && !mSplitterPosition.HasValue) return;
+
+            if (mDefaultSinglePane == SplitContainerPane.None)
+            {
+                var barRect = GetSplitterBarRect();
+                if (barRect.HasValue) Invalidate(barRect.Value);
+
+                using (DeferWindowPos dwp = new DeferWindowPos(2))
+                {
+                    foreach (var pane in new[] { SplitContainerPane.LeftTop, SplitContainerPane.RightBottom })
+                    {
+                        Rect paneRect;
+                        if (GetSplitterPaneRect(pane, out paneRect))
+                        {
+                            if (mSplitPanes[pane].Handle != IntPtr.Zero)
+                            {
+                                dwp.AddControl(mSplitPanes[pane], paneRect);
+                            }
+                            else
+                            {
+                                Invalidate(paneRect);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Rect paneRect;
+                if (GetSplitterPaneRect(mDefaultSinglePane, out paneRect))
+                {
+                    if (mSplitPanes[mDefaultSinglePane].Handle != IntPtr.Zero) mSplitPanes[mDefaultSinglePane].Move(paneRect);
+                    else Invalidate(paneRect);
+                }
+            }
+        }
+
+        private static NonOwnedBrush GetHalftoneBrush()
+        {
+            short[] grayPattern = new short[8];
+            for (int i = 0; i < 8; i++) grayPattern[i] = (short)(0x5555 << (i & 1));
+
+            using (HGlobal bits = new HGlobal(Marshal.SizeOf<short>() * grayPattern.Length))
+            {
+                for (int i = 0; i < 8; i++) Marshal.WriteInt16(bits.Handle, i * Marshal.SizeOf<short>(), (short)(0x5555 << (i & 1)));
+
+                using (Bitmap bmp = new Bitmap(NativeMethods.CreateBitmap(8, 8, 1, 1, bits.Handle)))
+                {
+                    IntPtr hBrush = NativeMethods.CreatePatternBrush(bmp.Handle);
+                    return new NonOwnedBrush(hBrush);
+                }
+            }
+        }
+
+        private void DrawGhostBar()
+        {
+            Rect? rectValue = GetSplitterBarRect();
+            if (!rectValue.HasValue) return;
+            Rect rect = rectValue.Value;
+
+            Rect windowRect = this.WindowRect;
+            Point[] pt = new Point[]
+            {
+                new Point(windowRect.left, windowRect.top),
+                new Point(windowRect.right, windowRect.bottom)
+            };
+            NativeMethods.MapWindowPoints(IntPtr.Zero, Handle, pt, pt.Length);
+
+            using (WindowGraphicsContext dc = new WindowGraphicsContext(this))
+            {
+                dc.Select(GetHalftoneBrush(), () =>
+                {
+                    const int PATINVERT = 0x005A0049;
+                    NativeMethods.PatBlt(dc.Handle, rect.left, rect.top, rect.Width, rect.Height, PATINVERT);
+                });
+            }
+        }
+
         private void UpdateProportionalPosition() => throw new NotImplementedException();
         private void UpdateRightAlignPosition() => throw new NotImplementedException();
         private void UpdateSplitterPosition() => throw new NotImplementedException();
+
+        private bool GetSplitterPaneRect(SplitContainerPane pane, out Rect rect)
+        {
+            rect = Rect.Zero;
+
+            if (mDefaultSinglePane != SplitContainerPane.None)
+            {
+                if (pane == mDefaultSinglePane)
+                {
+                    rect = mSplitterRect;
+                    return true;
+                }
+
+                return false;
+            }
+            else if (pane == SplitContainerPane.LeftTop)
+            {
+                if (Orientation == SplitContainerOrientation.Vertical)
+                {
+                    rect = new Rect
+                    {
+                        top = mSplitterRect.top,
+                        left = mSplitterRect.left,
+                        right = mSplitterRect.left + (mSplitterPosition ?? 0),
+                        bottom = mSplitterRect.bottom
+                    };
+                }
+                else
+                {
+                    rect = new Rect
+                    {
+                        top = mSplitterRect.top,
+                        left = mSplitterRect.left,
+                        right = mSplitterRect.right,
+                        bottom = mSplitterRect.top + (mSplitterPosition ?? 0)
+                    };
+                }
+            }
+            else if (pane == SplitContainerPane.RightBottom)
+            {
+                if (Orientation == SplitContainerOrientation.Vertical)
+                {
+                    rect = new Rect
+                    {
+                        top = mSplitterRect.top,
+                        left = mSplitterRect.left + (mSplitterPosition ?? 0) + mSplitterBarThickness + mSplitterBarEdge,
+                        right = mSplitterRect.right,
+                        bottom = mSplitterRect.bottom
+                    };
+                }
+                else
+                {
+                    rect = new Rect
+                    {
+                        top = mSplitterRect.top + (mSplitterPosition ?? 0) + mSplitterBarThickness + mSplitterBarEdge,
+                        left = mSplitterRect.left,
+                        right = mSplitterRect.right,
+                        bottom = mSplitterRect.bottom
+                    };
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 
     public enum SplitContainerOrientation
