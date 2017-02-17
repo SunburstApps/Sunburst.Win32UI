@@ -75,7 +75,7 @@ namespace Win32UI.Build.Tasks
             {
                 string outputPath = Path.Combine(OutputDirectory, "Generated.rc");
 
-                File.WriteAllText(outputPath, outputFile.ToString());
+                File.WriteAllText(outputPath, outputFile.ToString(), Encoding.Unicode);
                 ResourceScriptPath = new TaskItem(outputPath);
             }
 
