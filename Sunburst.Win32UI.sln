@@ -46,6 +46,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{7311
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32UI.SimpleTest", "src\samples\Win32UI.SimpleTest\Win32UI.SimpleTest.csproj", "{4D5BCAFD-BEC1-41D7-9311-AE3F9C813B75}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32UI.WindowsShell", "src\Win32UI.WindowsShell\Win32UI.WindowsShell.csproj", "{94AF155E-0622-4A8C-9539-1972F96F7583}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -296,6 +298,18 @@ Global
 		{4D5BCAFD-BEC1-41D7-9311-AE3F9C813B75}.Release|x64.Build.0 = Release|x64
 		{4D5BCAFD-BEC1-41D7-9311-AE3F9C813B75}.Release|x86.ActiveCfg = Release|x86
 		{4D5BCAFD-BEC1-41D7-9311-AE3F9C813B75}.Release|x86.Build.0 = Release|x86
+		{94AF155E-0622-4A8C-9539-1972F96F7583}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94AF155E-0622-4A8C-9539-1972F96F7583}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94AF155E-0622-4A8C-9539-1972F96F7583}.Debug|x64.ActiveCfg = Debug|x64
+		{94AF155E-0622-4A8C-9539-1972F96F7583}.Debug|x64.Build.0 = Debug|x64
+		{94AF155E-0622-4A8C-9539-1972F96F7583}.Debug|x86.ActiveCfg = Debug|x86
+		{94AF155E-0622-4A8C-9539-1972F96F7583}.Debug|x86.Build.0 = Debug|x86
+		{94AF155E-0622-4A8C-9539-1972F96F7583}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94AF155E-0622-4A8C-9539-1972F96F7583}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94AF155E-0622-4A8C-9539-1972F96F7583}.Release|x64.ActiveCfg = Release|x64
+		{94AF155E-0622-4A8C-9539-1972F96F7583}.Release|x64.Build.0 = Release|x64
+		{94AF155E-0622-4A8C-9539-1972F96F7583}.Release|x86.ActiveCfg = Release|x86
+		{94AF155E-0622-4A8C-9539-1972F96F7583}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
