@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <AssemblyTitle>Win32UI.WindowsShell</AssemblyTitle>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Win32UI.Support/Win32UI.Support.csproj" />
+    <ProjectReference Include="../Win32UI.Core/Win32UI.Core.csproj" />
+  </ItemGroup>
+
+  <Import Project="../dir.targets" />
+</Project>
