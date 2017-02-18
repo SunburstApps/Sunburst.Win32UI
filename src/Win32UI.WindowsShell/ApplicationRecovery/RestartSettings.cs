@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
 
 namespace Microsoft.Win32.ApplicationRecovery
 {
