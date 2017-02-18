@@ -25,7 +25,7 @@ namespace Microsoft.Win32.ApplicationRecovery
         internal static extern int ApplicationRecoveryInProgress([Out, MarshalAsAttribute(UnmanagedType.Bool)] out bool cancelled);
         [DllImportAttribute("kernel32.dll"), PreserveSigAttribute]
         internal static extern int RegisterApplicationRecoveryCallback(NativeRecoveryCallback callback, IntPtr param, uint pingInterval, uint unusedFlags);
-        [DllImportAttribute("kernel32.dll")]
+        [DllImportAttribute("kernel32.dll"), PreserveSigAttribute]
         internal static extern int UnregisterApplicationRecoveryCallback();
     }
 }
