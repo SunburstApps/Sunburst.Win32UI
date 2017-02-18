@@ -30,6 +30,10 @@
     <CreateItem Include="@(_PackableProjectReference -> '$(OutputPath)%(FileName).pdb')" AdditionalMetadata="Pack=true; PackagePath=%(PackagePath)" Condition="'$(IncludeSymbols)' == 'true'">
       <Output TaskParameter="Include" ItemName="_TargetPathsToSymbols" />
     </CreateItem>
+
+    <ItemGroup>
+      <ProjectReference Update="@(ProjectReference)" PrivateAssets="all" Condition="'%(ProjectReference.Pack)' == 'true'" />
+    </ItemGroup>
   </Target>
 
   <PropertyGroup>
