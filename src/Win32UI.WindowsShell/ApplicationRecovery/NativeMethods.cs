@@ -27,5 +27,10 @@ namespace Microsoft.Win32.ApplicationRecovery
         internal static extern int RegisterApplicationRecoveryCallback(NativeRecoveryCallback callback, IntPtr param, uint pingInterval, uint unusedFlags);
         [DllImportAttribute("kernel32.dll"), PreserveSigAttribute]
         internal static extern int UnregisterApplicationRecoveryCallback();
+
+        [DllImportAttribute("kernel32.dll"), PreserveSigAttribute]
+        internal static extern int RegisterApplicationRestart([MarshalAsAttribute(UnmanagedType.BStr)] string commandLineArgs, RestartRestrictions flags);
+        [DllImportAttribute("kernel32.dll"), PreserveSigAttribute]
+        internal static extern int UnregisterApplicationRestart();
     }
 }
