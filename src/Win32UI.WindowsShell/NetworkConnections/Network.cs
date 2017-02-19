@@ -5,10 +5,27 @@ namespace Microsoft.Win32.WindowsShell.NetworkConnections
 {
     public sealed class Network
     {
+        internal static INetworkListManager NativeNetworkListManager => NativeManager.Value;
+        private static readonly Lazy<INetworkListManager> NativeManager = new Lazy<INetworkListManager>(() => (INetworkListManager)new CNetworkListManager());
+
+        public static bool MachineHasInternetConnectivity => NativeNetworkListManager.IsConnectedToInternet;
+        public static bool MachineHasNetworkConnectivity => NativeNetworkListManager.IsConnected;
+        public static ConnectivityState MachineConnectivityState => NativeNetworkListManager.GetConnectivity();
+
+        public static IEnumerable<Network> GetAllNetworks(GetNetworksFlags flags)
+        {
+            return new NetworkCollection(NativeNetworkListManager.GetNetworks(flags));
+        }
+
         private INetwork network;
         internal Network(INetwork iface)
         {
             network = iface;
+        }
+
+        public Network(Guid networkId)
+        {
+            network = NativeNetworkListManager.GetNetwork(networkId);
         }
 
         public NetworkTrustLevel TrustLevel
