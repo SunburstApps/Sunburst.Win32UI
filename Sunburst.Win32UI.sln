@@ -2,11 +2,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26206.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build_tools", "build_tools", "{FE883911-3D18-4C71-B682-B9847CCE2634}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{FE883911-3D18-4C71-B682-B9847CCE2634}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32UI.Build.NativeResources", "src\build_tools\Win32UI.Build.NativeResources\Win32UI.Build.NativeResources.csproj", "{7980DAA5-281A-49DE-AFE5-F31A50759A37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32UI.Build.NativeResources", "tools\Win32UI.Build.NativeResources\Win32UI.Build.NativeResources.csproj", "{7980DAA5-281A-49DE-AFE5-F31A50759A37}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32UI.Build.Tasks", "src\build_tools\Win32UI.Build.Tasks\Win32UI.Build.Tasks.csproj", "{C48B540D-3EB6-433A-A048-E1B84152DBFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32UI.Build.Tasks", "tools\Win32UI.Build.Tasks\Win32UI.Build.Tasks.csproj", "{C48B540D-3EB6-433A-A048-E1B84152DBFE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.GDIPlus", "src\Microsoft.GDIPlus\Microsoft.GDIPlus.csproj", "{AAB1FDF6-B75A-4503-B074-81C13D763B5F}"
 EndProject
