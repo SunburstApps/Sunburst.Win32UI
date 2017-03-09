@@ -16,5 +16,5 @@
     <ProjectReference Include="../Win32UI.Support/Win32UI.Support.csproj" />
   </ItemGroup>
 
-  <Import Project="../dir.targets" />
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
