@@ -1,0 +1,108 @@
+<Project>
+  <PropertyGroup>
+    <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)tools/Win32UI.Build.Tasks/bin/$(Configuration)/netcoreapp1.1/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
+    <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)tools/Win32UI.Build.Tasks/bin/$(Configuration)/net46/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
+
+    <GuiEntryPoint Condition="'$(GuiEntryPoint)' == ''">false</GuiEntryPoint>
+    <UpdateEntryPointResources Condition="'$(UpdateEntryPointResources)' == '' and '$(GuiEntryPoint)' == 'true'">true</UpdateEntryPointResources>
+    <UacPrivilegeLevel Condition="'$(UacPrivilegeLevel)' == ''">AsInvoker</UacPrivilegeLevel>
+
+    <LinkerPlatform Condition="$(RuntimeIdentifier.EndsWith('x64'))">x64</LinkerPlatform>
+    <LinkerPlatform Condition="$(RuntimeIdentifier.EndsWith('x86'))">x86</LinkerPlatform>
+
+    <!-- Note: These paths are specific to my machine. You may have to modify them for yours. -->
+    <RCToolPath>C:\Program Files (x86)\Windows Kits\10\bin\$(LinkerPlatform)</RCToolPath>
+    <SxsManifestToolPath>C:\Program Files (x86)\Windows Kits\10\bin\$(LinkerPlatform)</SxsManifestToolPath>
+
+    <RCIncludePaths>
+      C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um;
+      C:\Program Files (x86)\Windows Kits\10\include\10.0.14393.0\ucrt;
+      C:\Program Files (x86)\Windows Kits\10\include\10.0.14393.0\shared;
+      C:\Program Files (x86)\Windows Kits\10\include\10.0.14393.0\um;
+      C:\Program Files (x86)\Windows Kits\10\include\10.0.14393.0\winrt;
+    </RCIncludePaths>
+
+    <LinkLibraryPaths>
+      C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\lib\um\$(LinkerPlatform);
+      C:\Program Files (x86)\Windows Kits\10\lib\10.0.14393.0\ucrt\$(LinkerPlatform);
+      C:\Program Files (x86)\Windows Kits\10\lib\10.0.14393.0\um\$(LinkerPlatform);
+    </LinkLibraryPaths>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(GuiEntryPoint)' == 'true'">
+    <SxsReference Include="Microsoft.Windows.Common-Controls" Version="6.0.0.0" PublicKeyToken="6595b64144ccf1df" />
+  </ItemGroup>
+
+  <UsingTask TaskName="GenerateResourceScript" AssemblyFile="$(Win32UITasksAssembly)" />
+  <UsingTask TaskName="CompileResourceScript" AssemblyFile="$(Win32UITasksAssembly)" />
+  <UsingTask TaskName="MsvcLink" AssemblyFile="$(Win32UITasksAssembly)" />
+  <UsingTask TaskName="MsvcSxsManifestTool" AssemblyFile="$(Win32UITasksAssembly)" />
+  <UsingTask TaskName="CopyResourceSegment" AssemblyFile="$(Win32UITasksAssembly)" />
+  <UsingTask TaskName="MarkExecutableAsGui" AssemblyFile="$(Win32UITasksAssembly)" />
+
+  <Target Name="UpdateEntryPointResources" AfterTargets="Build" DependsOnTargets="_CompileGuiEntryPointTasks; _GuiEntryPointGetMsvcPath" Condition="'$(OutputType)' == 'Exe' and '$(UpdateEntryPointResources)' == 'true'">
+    <GenerateResourceScript Icons="@(EntryPointIcon)" ScriptFragments="@(EntryPointScriptFragment)" EmbeddedFiles="@(EntryPointEmbeddedFile)" OutputDirectory="$(IntermediateOutputPath)">
+      <Output TaskParameter="ResourceScriptPath" ItemName="_ResourceScript" />
+    </GenerateResourceScript>
+
+    <CompileResourceScript ResourceScripts="@(_ResourceScript)" OutputDirectory="$(IntermediateOutputPath)" ToolPath="$(RCToolPath)" IncludePaths="$(RCIncludePaths)" />
+    <ItemGroup>
+      <_ResourceObject Include="@(_ResourceScript -> '%(RelativeDir)%(FileName).res')" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <_ResourceLinkOutput>$(IntermediateOutputPath)EntryPointResources.dll</_ResourceLinkOutput>
+      <_SystemPath>$([System.Environment]::GetEnvironmentVariable('PATH'))</_SystemPath>
+    </PropertyGroup>
+
+    <MsvcLink Objects="@(_ResourceObject)" SxsReferences="@(SxsReference)" UacPrivilegeLevel="$(UacPrivilegeLevel)" OutputFilePath="$(_ResourceLinkOutput)" OutputArchitecture="$(LinkerPlatform)" ToolPath="$(LinkToolPath)" LibraryPaths="$(LinkLibraryPaths)" EnvironmentVariables="PATH=$(RCToolPath)%3B$(LinkToolPath)%3B$(_SystemPath)" />
+    <MsvcSxsManifestTool InputAssembly="$(_ResourceLinkOutput)" OutputManifestFile="$(IntermediateOutputPath)EntryPoint.manifest" ToolPath="$(SxsManifestToolPath)" />
+    <MsvcSxsManifestTool InputManifestFile="$(IntermediateOutputPath)EntryPoint.manifest" OutputAssembly="$(_ResourceLinkOutput)" ManifestFragments="@(SxsManifestFragment)" CanonicalizeXml="true" ToolPath="$(SxsManifestToolPath)" />
+
+    <CopyResourceSegment InputFile="$(_ResourceLinkOutput)" OutputFile="$(OutputPath)$(TargetName).exe" />
+
+    <ItemGroup>
+      <FileWrites Include="@(_ResourceScript)" />
+      <FileWrites Include="@(_ResourceObject)" />
+      <FileWrites Include="$(_ResourceLinkOutput)" />
+      <FileWrites Include="$(IntermediateOutputPath)EntryPoint.manifest" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="MarkEntryPointAsGuiApp" AfterTargets="Build" DependsOnTargets="_CompileGuiEntryPointTasks; _GuiEntryPointGetMsvcPath" Condition="'$(GuiEntryPoint)' == 'true' and '$(OutputType)' == 'Exe'">
+    <MarkExecutableAsGui ToolPath="$(EditbinToolPath)" Executable="$(OutputPath)$(TargetName).exe" />
+  </Target>
+
+  <PropertyGroup>
+    <_VSLocateTargetsFile>VSLocateTask/VSLocateTask.targets</_VSLocateTargetsFile>
+    <_VSLocateTargetsFile>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), external/$(_VSLocateTargetsFile)))/external/$(_VSLocateTargetsFile)</_VSLocateTargetsFile>
+  </PropertyGroup>
+  <Import Project="$(_VSLocateTargetsFile)" />
+
+  <Target Name="_GuiEntryPointGetMsvcPath" DependsOnTargets="CompileVSLocateTask" Condition="'$(OS)' == 'Windows_NT'">
+    <GetVisualStudioPath VSWhereDownloadDirectory="$(_NTTREE)/ndp.core/tools/VSLocateTask/bin" RequiredWorkloads="Microsoft.VisualCpp.Tools.Host$(LinkerPlatform.ToUpperInvariant()).Target$(LinkerPlatform.ToUpperInvariant())">
+      <Output TaskParameter="VisualStudioPath" PropertyName="_VisualStudioPath" />
+    </GetVisualStudioPath>
+
+    <PropertyGroup>
+      <LinkToolPath>$(_VisualStudioPath)\VC\Tools\MSVC\14.10.24930\bin\Host$(LinkerPlatform.ToUpperInvariant())\$(LinkerPlatform)</LinkToolPath>
+      <EditbinToolPath>$(_VisualStudioPath)\VC\Tools\MSVC\14.10.24930\bin\Host$(LinkerPlatform.ToUpperInvariant())\$(LinkerPlatform)</EditbinToolPath>
+
+      <RCIncludePaths>
+        $(_VisualStudioPath)\VC\Tools\MSVC\14.10.24930\ATLMFC\include;
+        $(_VisualStudioPath)\VC\Tools\MSVC\14.10.24930\include;
+        $(RCIncludePaths)
+      </RCIncludePaths>
+
+      <LinkLibraryPaths>
+        $(_VisualStudioPath)\VC\Tools\MSVC\14.10.24930\ATLMFC\lib\$(LinkerPlatform);
+        $(_VisualStudioPath)\VC\Tools\MSVC\14.10.24930\lib\$(LinkerPlatform);
+        $(LinkLibraryPaths)
+      </LinkLibraryPaths>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="_CompileGuiEntryPointTasks" Condition="!Exists($(Win32UITasksAssembly))">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)tools/Win32UI.Build.Tasks/Win32UI.Build.Tasks.csproj" Properties="Configuration=$(Configuration)" Targets="Restore; Build" />
+  </Target>
+</Project>
