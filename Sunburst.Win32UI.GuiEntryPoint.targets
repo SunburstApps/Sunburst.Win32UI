@@ -80,7 +80,7 @@
   <Import Project="$(_VSLocateTargetsFile)" />
 
   <Target Name="_GuiEntryPointGetMsvcPath" DependsOnTargets="CompileVSLocateTask" Condition="'$(OS)' == 'Windows_NT'">
-    <GetVisualStudioPath VSWhereDownloadDirectory="$(_NTTREE)/ndp.core/tools/VSLocateTask/bin" RequiredWorkloads="Microsoft.VisualCpp.Tools.Host$(LinkerPlatform.ToUpperInvariant()).Target$(LinkerPlatform.ToUpperInvariant())">
+    <GetVisualStudioPath VSWhereDownloadDirectory="$(IntermediateOutputPath)" RequiredWorkloads="Microsoft.VisualCpp.Tools.Host$(LinkerPlatform.ToUpperInvariant()).Target$(LinkerPlatform.ToUpperInvariant())">
       <Output TaskParameter="VisualStudioPath" PropertyName="_VisualStudioPath" />
     </GetVisualStudioPath>
 
