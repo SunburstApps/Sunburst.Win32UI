@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <GuiEntryPoint>true</GuiEntryPoint>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Win32UI.Application/Win32UI.Application.csproj" />
+    <ProjectReference Include="../../src/Win32UI.MessageBox/Win32UI.MessageBox.csproj" />
+    <ProjectReference Include="../../src/Win32UI.TaskDialogs/Win32UI.TaskDialogs.csproj" />
+
+    <EntryPointResourceScriptFragment Include="RCVersionInfo.txt" />
+  </ItemGroup>
+
+  <Import Project="../../dir.targets" />
+  <Import Project="../../Sunburst.Win32UI.GuiEntryPoint.targets" />
+</Project>
