@@ -33,6 +33,7 @@ namespace Win32UI.Build.Tasks
                 rsrc.SaveTo(outputPath);
             }
 
+            inputResources.Dispose();
             return true;
         }
     }
