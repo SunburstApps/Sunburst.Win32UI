@@ -11,7 +11,7 @@
     <ProjectReference Include="../../src/Win32UI.MessageBox/Win32UI.MessageBox.csproj" />
     <ProjectReference Include="../../src/Win32UI.TaskDialogs/Win32UI.TaskDialogs.csproj" />
 
-    <EntryPointResourceScriptFragment Include="RCVersionInfo.txt" />
+    <EntryPointRCFragment Include="RCVersionInfo.txt" />
   </ItemGroup>
 
   <Import Project="../../dir.targets" />

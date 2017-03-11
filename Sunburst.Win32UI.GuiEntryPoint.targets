@@ -41,7 +41,7 @@
   <UsingTask TaskName="MarkExecutableAsGui" AssemblyFile="$(Win32UITasksAssembly)" />
 
   <Target Name="UpdateEntryPointResources" AfterTargets="Build" DependsOnTargets="_CompileGuiEntryPointTasks; _GuiEntryPointGetMsvcPath" Condition="'$(OutputType)' == 'Exe' and '$(UpdateEntryPointResources)' == 'true'">
-    <GenerateResourceScript Icons="@(EntryPointIcon)" ScriptFragments="@(EntryPointScriptFragment)" EmbeddedFiles="@(EntryPointEmbeddedFile)" OutputDirectory="$(IntermediateOutputPath)">
+    <GenerateResourceScript Icons="@(EntryPointIcon)" ScriptFragments="@(EntryPointRCFragment)" EmbeddedFiles="@(EntryPointRCEmbeddedFile)" OutputDirectory="$(IntermediateOutputPath)">
       <Output TaskParameter="ResourceScriptPath" ItemName="_ResourceScript" />
     </GenerateResourceScript>
 
