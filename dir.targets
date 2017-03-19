@@ -35,17 +35,4 @@
       <ProjectReference Update="@(ProjectReference)" PrivateAssets="all" Condition="'%(ProjectReference.Pack)' == 'true'" />
     </ItemGroup>
   </Target>
-
-  <PropertyGroup>
-    <NuGetFeedDirectory Condition="'$(NuGetFeedDirectory)' == ''">$(MSBuildThisFileDirectory)/../bin/package_feed</NuGetFeedDirectory>
-  </PropertyGroup>
-
-  <Target Name="_CopyNupkgToFeedDirectory" AfterTargets="Pack">
-    <ItemGroup>
-      <_NupkgFiles Include="$(PackageOutputPath)*.nupkg" />
-    </ItemGroup>
-
-    <MakeDir Directories="$(NuGetFeedDirectory)" />
-    <Copy SourceFiles="@(_NupkgFiles)" DestinationFolder="$(NuGetFeedDirectory)" SkipUnchangedFiles="true" />
-  </Target>
 </Project>
