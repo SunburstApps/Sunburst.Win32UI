@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <AssemblyTitle Condition="'$(AssemblyTitle)' == '' and '$(TargetName)' != ''">$(TargetName)</AssemblyTitle>
+    <Description Condition="'$(Description)' == '' and '$(AssemblyTitle)' != ''">$(AssemblyTitle)</Description>
+
+    <Authors Condition="'$(Authors)' == ''">William Kent</Authors>
+    <Copyright Condition="'$(Copyright)' == ''">Copyright © 2016 William Kent. All rights reserved.</Copyright>
+    <Product Condition="'$(Product)' == ''">.NET Core User Interface Build Tools</Product>
+
+    <Version Condition="'$(Version)' == ''">1.0.0.0</Version>
+    <FileVersion Condition="'$(FileVersion)' == '' and '$(Version)' != ''">$(Version)</FileVersion>
+  </PropertyGroup>
+</Project>

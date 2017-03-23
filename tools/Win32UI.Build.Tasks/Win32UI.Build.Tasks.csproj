@@ -20,5 +20,5 @@
     <ProjectReference Include="../Win32UI.Build.NativeResources/Win32UI.Build.NativeResources.csproj" />
   </ItemGroup>
 
-  <Import Project="../../dir.targets" />
+  <Import Project="../dir.targets" />
 </Project>

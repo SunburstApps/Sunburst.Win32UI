@@ -9,5 +9,5 @@
     <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
   </ItemGroup>
 
-  <Import Project="../../dir.targets" />
+  <Import Project="../dir.targets" />
 </Project>
