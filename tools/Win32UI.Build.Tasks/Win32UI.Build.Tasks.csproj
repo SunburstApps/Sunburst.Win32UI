@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Win32UI.Build.NativeResources/Win32UI.Build.NativeResources.csproj" />
+    <ProjectReference Include="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), external/RCSharp/src/Vestris.ResourceLib/Vestris.ResourceLib.csproj))/external/RCSharp/src/Vestris.ResourceLib/Vestris.ResourceLib.csproj" />
   </ItemGroup>
 
   <Import Project="../dir.targets" />
