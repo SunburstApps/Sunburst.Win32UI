@@ -163,7 +163,11 @@ namespace Microsoft.Win32.UserInterface
 
             IntPtr tag = CreateTag();
             IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
-            Handle = NativeMethods.CreateDialogIndirectParamW(IntPtr.Zero, template.GetTemplatePointer(), parentHandle, wndProcPtr, tag);
+
+            using (HGlobal ptr = template.GetTemplatePointer())
+            {
+                Handle = NativeMethods.CreateDialogIndirectParamW(IntPtr.Zero, ptr.Handle, parentHandle, wndProcPtr, tag);
+            }
         }
 
         public void RunModal(DialogTemplate template, Window parent = null)
@@ -182,7 +186,11 @@ namespace Microsoft.Win32.UserInterface
 
             IntPtr tag = CreateTag();
             IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
-            NativeMethods.DialogBoxIndirectParamW(IntPtr.Zero, template.GetTemplatePointer(), parentHandle, wndProcPtr, tag);
+
+            using (HGlobal ptr = template.GetTemplatePointer())
+            {
+                NativeMethods.DialogBoxIndirectParamW(IntPtr.Zero, ptr.Handle, parentHandle, wndProcPtr, tag);
+            }
         }
 
         public void RunModal(ResourceLoader module, uint dialogId, Window parent = null)
