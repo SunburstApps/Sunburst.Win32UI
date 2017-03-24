@@ -6,36 +6,6 @@ namespace Microsoft.Win32.UserInterface.Interop
 {
     internal static class NativeMethods
     {
-        #region Win32UI.Native
-
-        private const string UINativeLibrary = "Win32UI.Native.dll";
-
-        [DllImport(UINativeLibrary)]
-        public static extern IntPtr LayoutCreate();
-
-        [DllImport(UINativeLibrary)]
-        public static extern void LayoutDestroy(IntPtr hLayout);
-
-        [DllImport(UINativeLibrary,CharSet = CharSet.Unicode)]
-        public static extern void LayoutInitialize(IntPtr hLayout, string caption, [In] ref Rect rc, int style, int exStyle, string className);
-
-        [DllImport(UINativeLibrary, CharSet = CharSet.Unicode)]
-        public static extern void LayoutInitializeWithFont(IntPtr hLayout, string caption, [In] ref Rect rc, uint style, uint exStyle, string className, string fontName, [MarshalAs(UnmanagedType.U2)] int fontSize);
-
-        [DllImport(UINativeLibrary, CharSet = CharSet.Unicode)]
-        public static extern void LayoutAddControl(IntPtr hLayout, string className, ushort controlId, [In] ref Rect rc, [MarshalAs(UnmanagedType.U4)] int style, [MarshalAs(UnmanagedType.U4)] int exStyle, string text);
-
-        [DllImport(UINativeLibrary)]
-        public static extern IntPtr LayoutCreateDialog(IntPtr hLayout, IntPtr hWndParent, IntPtr dlgProc, IntPtr createParam);
-
-        [DllImport(UINativeLibrary)]
-        public static extern IntPtr LayoutRunModally(IntPtr hLayout, IntPtr hWndParent, IntPtr dlgProc, IntPtr createParam);
-
-        [DllImport(UINativeLibrary)]
-        public static extern IntPtr LayoutGetDataPointer(IntPtr hLayout);
-
-        #endregion
-
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr CreateDialogIndirectParamW(IntPtr hInstance, IntPtr lpTemplate, IntPtr hWndParent, IntPtr dlgProc, IntPtr createParam);
 
