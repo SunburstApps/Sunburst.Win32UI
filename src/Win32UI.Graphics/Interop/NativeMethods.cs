@@ -247,39 +247,26 @@ namespace Microsoft.Win32.UserInterface.Interop
         [ComImport, Guid("9EDDE9E7-8DEE-47ea-99DF-E6FAF2ED44BF")]
         public interface IWICBitmapDecoder
         {
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder0();
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder1();
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder2();
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder3();
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder4();
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder5();
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder6();
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder7();
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder8();
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder9();
-            IWICBitmapFrameDecode GetFrame(uint index);
+            void QueryCapability(IStream stream, out int capability);
+            void Initialize(IStream stream, WICDecodeOptions options);
+            void GetContainerFormat(out Guid formatGuid);
+            void GetDecoderInfo([MarshalAs(UnmanagedType.Interface)] out object decoderInfo);
+            void CopyPalette([MarshalAs(UnmanagedType.Interface)] object palette);
+            void GetMetadataQueryReader([MarshalAs(UnmanagedType.Interface)] out object queryReader);
+            void GetPreview(out IWICBitmapSource source);
+            void GetColorContexts(uint count, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 0)] object[] colorContexts, out uint actualCount);
+            void GetThumbnail(out IWICBitmapSource thumbnail);
+            void GetFrameCount(out uint count);
+            void GetFrame(uint index, out IWICBitmapFrameDecode frame);
         }
 
         [ComImport, Guid("00000120-a8f2-4877-ba0a-fd2b6645fb94")]
         public interface IWICBitmapSource
         {
             void GetSize(out int width, out int height);
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder0();
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder1();
-            [Obsolete("Do not call placeholder", true)]
-            void VTablePlaceholder2();
+            void GetPixelFormat(IntPtr pPixelFormat);
+            void GetResolution(out double dpX, out double dpiY);
+            void CopyPalette([MarshalAs(UnmanagedType.Interface)] object palette);
             void CopyPixels(IntPtr pWicRect, int stride, int bufferSize, IntPtr pbBuffer);
         }
 
