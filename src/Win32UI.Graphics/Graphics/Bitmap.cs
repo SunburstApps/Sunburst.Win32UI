@@ -63,13 +63,7 @@ namespace Microsoft.Win32.UserInterface.Graphics
         public static Bitmap LoadImageFromFile(string path)
         {
             if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-            {
-                IntPtr hBitmap;
-                int hr = NativeMethods.ImageCodecCreateBitmapFromFile(path, out hBitmap);
-                if (hr != 0) Marshal.ThrowExceptionForHR(hr);
-
-                return new Bitmap(hBitmap);
-            }
+                throw new PlatformNotSupportedException();
 
             NativeMethods.IWICImagingFactory factory = (NativeMethods.IWICImagingFactory)new NativeMethods.WICImagingFactory();
             NativeMethods.IWICBitmapDecoder decoder = factory.CreateBitmapFromFilename(path, desiredAccess: 0, options: NativeMethods.WICDecodeOptions.WICDecodeMetadataCacheOnDemand);
@@ -101,11 +95,7 @@ namespace Microsoft.Win32.UserInterface.Graphics
 
             if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
             {
-                IntPtr hBitmap;
-                int hr = NativeMethods.ImageCodecCreateBitmapFromMemory(data, Convert.ToUInt32(size), out hBitmap);
-                if (hr != 0) Marshal.ThrowExceptionForHR(hr);
-
-                return new Bitmap(hBitmap);
+                throw new PlatformNotSupportedException();
             }
             else
             {
@@ -163,11 +153,7 @@ namespace Microsoft.Win32.UserInterface.Graphics
 
             if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
             {
-                IntPtr hBitmap;
-                int hr = NativeMethods.ImageCodecCreateBitmapFromMemory(data, Convert.ToUInt64(size), out hBitmap);
-                if (hr != 0) Marshal.ThrowExceptionForHR(hr);
-
-                return new Bitmap(hBitmap);
+                throw new PlatformNotSupportedException();
             }
             else
             {

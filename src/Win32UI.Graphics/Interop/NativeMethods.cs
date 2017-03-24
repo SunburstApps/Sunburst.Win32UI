@@ -22,15 +22,6 @@ namespace Microsoft.Win32.UserInterface.Interop
 
         #endregion
 
-        #region Win32UI.Native
-
-        [DllImport("Win32UI.Native.dll")]
-        public static extern int ImageCodecCreateBitmapFromMemory(IntPtr memory, ulong size, out IntPtr hBitmap);
-        [DllImport("Win32UI.Native.dll", CharSet = CharSet.Unicode)]
-        public static extern int ImageCodecCreateBitmapFromFile(string filePath, out IntPtr hBitmap);
-
-        #endregion
-
         [DllImport("ole32.dll", PreserveSig = true)]
         public static extern int CreateStreamOnHGlobal(IntPtr hGlobal, bool deleteOnFree, [MarshalAs(UnmanagedType.Interface)] out IStream stream);
 
