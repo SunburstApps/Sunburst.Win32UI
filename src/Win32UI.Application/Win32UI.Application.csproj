@@ -9,13 +9,5 @@
     <ProjectReference Include="../Win32UI.Menus/Win32UI.Menus.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
-    <Content Include="../Win32UI.Native/x64/Release/Win32UI.Native.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>Win32UI.Native.dll</Link>
-      <Visible>false</Visible>
-    </Content>
-  </ItemGroup>
-
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>
