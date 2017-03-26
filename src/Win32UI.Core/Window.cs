@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.UserInterface.Graphics;
 using Microsoft.Win32.UserInterface.Handles;
