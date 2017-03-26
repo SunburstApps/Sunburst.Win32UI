@@ -31,7 +31,7 @@ using Microsoft.Win32.UserInterface.Interop;
 
 namespace Microsoft.Win32.UserInterface.Layout
 {
-    public class TableLayoutPanel : Window
+    public partial class TableLayoutPanel : Window
     {
     }
 }
