@@ -33,5 +33,12 @@ namespace Microsoft.Win32.UserInterface.Layout
 {
     public partial class TableLayoutPanel : Window
     {
+        public bool SuspendLayout { get; set; } = false;
+
+        private void PerformLayout()
+        {
+            if (SuspendLayout) return;
+            throw new NotImplementedException();
+        }
     }
 }
