@@ -108,7 +108,12 @@ namespace Microsoft.Win32.UserInterface
             }
         }
 
-        public Window Parent => new Window(NativeMethods.GetParent(Handle));
+        public Window Parent
+        {
+            get => new Window(NativeMethods.GetParent(Handle));
+            set => NativeMethods.SetParent(Handle, value.Handle);
+        }
+
         public IntPtr GetWindowLongPtr(int index) => NativeMethods.GetWindowLongPtr(Handle, index);
         public void SetWindowLongPtr(int index, IntPtr value) => NativeMethods.SetWindowLongPtr(Handle, index, value);
         public int GetStyle() => (int)GetWindowLongPtr(-16);

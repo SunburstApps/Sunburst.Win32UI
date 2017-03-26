@@ -106,6 +106,9 @@ namespace Microsoft.Win32.UserInterface.Interop
         [DllImport("user32.dll")]
         public static extern IntPtr GetParent(IntPtr hWnd);
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern bool ShutdownBlockReasonCreate(IntPtr hWnd, string reason);
 
