@@ -115,5 +115,8 @@ namespace Microsoft.Win32.UserInterface.Interop
         [DllImport("user32.dll")]
         public static extern bool ShutdownBlockReasonDestroy(IntPtr hWnd);
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindow(IntPtr hWnd, int relationship);
+        public const int GW_CHILD = 5, GW_HWNDNEXT = 2;
     }
 }

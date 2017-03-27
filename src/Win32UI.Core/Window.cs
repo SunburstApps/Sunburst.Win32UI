@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.UserInterface.Graphics;
 using Microsoft.Win32.UserInterface.Handles;
@@ -112,6 +113,21 @@ namespace Microsoft.Win32.UserInterface
         {
             get => new Window(NativeMethods.GetParent(Handle));
             set => NativeMethods.SetParent(Handle, value.Handle);
+        }
+
+        public IEnumerable<Window> ChildWindows
+        {
+            get
+            {
+                List<Window> children = new List<Window>();
+
+                for (IntPtr child = NativeMethods.GetWindow(Handle, NativeMethods.GW_CHILD); child != IntPtr.Zero; child = NativeMethods.GetWindow(child, NativeMethods.GW_HWNDNEXT))
+                {
+                    children.Add(new Window(child));
+                }
+
+                return children;
+            }
         }
 
         public IntPtr GetWindowLongPtr(int index) => NativeMethods.GetWindowLongPtr(Handle, index);
