@@ -368,7 +368,7 @@ namespace Microsoft.Win32.UserInterface
                     bar.Handle = lParam;
                 }
 
-                ScrollEventArgs args = new ScrollEventArgs((ScrollEventType)((int)wParam & 0xFFFF), (int)((int)wParam & 0xFFFF0000) >> 16, bar);
+                ScrollEventArgs args = new ScrollEventArgs((ScrollEventType)((int)wParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF, bar);
                 OnHorizontalScroll(args);
                 handled = args.Handled;
                 if (handled) return IntPtr.Zero;
@@ -382,14 +382,14 @@ namespace Microsoft.Win32.UserInterface
                     bar.Handle = lParam;
                 }
 
-                ScrollEventArgs args = new ScrollEventArgs((ScrollEventType)((int)wParam & 0xFFFF), (int)((int)wParam & 0xFFFF0000) >> 16, bar);
+                ScrollEventArgs args = new ScrollEventArgs((ScrollEventType)((int)wParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF, bar);
                 OnVerticalScroll(args);
                 handled = args.Handled;
                 if (handled) return IntPtr.Zero;
             }
             else if (msg == WindowMessages.WM_MOUSEMOVE)
             {
-                Point location = new Point(((int)lParam & 0xFFFF), (int)((int)lParam & 0xFFFF0000) >> 16);
+                Point location = new Point(((int)lParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF);
                 MouseEventFlags flags = (MouseEventFlags)((int)wParam & 0xFFFF);
                 MouseEventArgs args = new MouseEventArgs(location, flags);
                 OnMouseMove(args);
@@ -398,16 +398,16 @@ namespace Microsoft.Win32.UserInterface
             }
             else if (msg == WindowMessages.WM_MOUSEWHEEL)
             {
-                Point location = new Point(((int)lParam & 0xFFFF), (int)((int)lParam & 0xFFFF0000) >> 16);
+                Point location = new Point(((int)lParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF);
                 MouseEventFlags flags = (MouseEventFlags)((int)wParam & 0xFFFF);
-                MouseWheelEventArgs args = new MouseWheelEventArgs(location, flags, (short)(((int)wParam & 0xFFFF0000) >> 16));
+                MouseWheelEventArgs args = new MouseWheelEventArgs(location, flags, (short)(((int)wParam >> 16) & 0xFFFF));
                 OnMouseWheel(args);
                 handled = args.Handled;
                 if (handled) return IntPtr.Zero;
             }
             else if (msg == WindowMessages.WM_LBUTTONDOWN)
             {
-                Point location = new Point(((int)lParam & 0xFFFF), (int)((int)lParam & 0xFFFF0000) >> 16);
+                Point location = new Point(((int)lParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF);
                 MouseEventFlags flags = (MouseEventFlags)((int)wParam & 0xFFFF);
                 MouseEventArgs args = new MouseEventArgs(location, flags);
                 OnMouseLeftButtonDown(args);
@@ -416,7 +416,7 @@ namespace Microsoft.Win32.UserInterface
             }
             else if (msg == WindowMessages.WM_LBUTTONUP)
             {
-                Point location = new Point(((int)lParam & 0xFFFF), (int)((int)lParam & 0xFFFF0000) >> 16);
+                Point location = new Point(((int)lParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF);
                 MouseEventFlags flags = (MouseEventFlags)((int)wParam & 0xFFFF);
                 MouseEventArgs args = new MouseEventArgs(location, flags);
                 OnMouseLeftButtonUp(args);
@@ -425,7 +425,7 @@ namespace Microsoft.Win32.UserInterface
             }
             else if (msg == WindowMessages.WM_LBUTTONDBLCLK)
             {
-                Point location = new Point(((int)lParam & 0xFFFF), (int)((int)lParam & 0xFFFF0000) >> 16);
+                Point location = new Point(((int)lParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF);
                 MouseEventFlags flags = (MouseEventFlags)((int)wParam & 0xFFFF);
                 MouseEventArgs args = new MouseEventArgs(location, flags);
                 OnMouseLeftButtonDoubleClick(args);
@@ -434,7 +434,7 @@ namespace Microsoft.Win32.UserInterface
             }
             else if (msg == WindowMessages.WM_RBUTTONDOWN)
             {
-                Point location = new Point(((int)lParam & 0xFFFF), (int)((int)lParam & 0xFFFF0000) >> 16);
+                Point location = new Point(((int)lParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF);
                 MouseEventFlags flags = (MouseEventFlags)((int)wParam & 0xFFFF);
                 MouseEventArgs args = new MouseEventArgs(location, flags);
                 OnMouseRightButtonDown(args);
@@ -443,7 +443,7 @@ namespace Microsoft.Win32.UserInterface
             }
             else if (msg == WindowMessages.WM_RBUTTONUP)
             {
-                Point location = new Point(((int)lParam & 0xFFFF), (int)((int)lParam & 0xFFFF0000) >> 16);
+                Point location = new Point(((int)lParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF);
                 MouseEventFlags flags = (MouseEventFlags)((int)wParam & 0xFFFF);
                 MouseEventArgs args = new MouseEventArgs(location, flags);
                 OnMouseRightButtonUp(args);
@@ -452,7 +452,7 @@ namespace Microsoft.Win32.UserInterface
             }
             else if (msg == WindowMessages.WM_RBUTTONDBLCLK)
             {
-                Point location = new Point(((int)lParam & 0xFFFF), (int)((int)lParam & 0xFFFF0000) >> 16);
+                Point location = new Point(((int)lParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF);
                 MouseEventFlags flags = (MouseEventFlags)((int)wParam & 0xFFFF);
                 MouseEventArgs args = new MouseEventArgs(location, flags);
                 OnMouseRightButtonDoubleClick(args);
@@ -461,7 +461,7 @@ namespace Microsoft.Win32.UserInterface
             }
             else if (msg == WindowMessages.WM_MBUTTONDOWN)
             {
-                Point location = new Point(((int)lParam & 0xFFFF), (int)((int)lParam & 0xFFFF0000) >> 16);
+                Point location = new Point(((int)lParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF);
                 MouseEventFlags flags = (MouseEventFlags)((int)wParam & 0xFFFF);
                 MouseEventArgs args = new MouseEventArgs(location, flags);
                 OnMouseMiddleButtonDown(args);
@@ -470,7 +470,7 @@ namespace Microsoft.Win32.UserInterface
             }
             else if (msg == WindowMessages.WM_MBUTTONUP)
             {
-                Point location = new Point(((int)lParam & 0xFFFF), (int)((int)lParam & 0xFFFF0000) >> 16);
+                Point location = new Point(((int)lParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF);
                 MouseEventFlags flags = (MouseEventFlags)((int)wParam & 0xFFFF);
                 MouseEventArgs args = new MouseEventArgs(location, flags);
                 OnMouseMiddleButtonUp(args);
@@ -479,7 +479,7 @@ namespace Microsoft.Win32.UserInterface
             }
             else if (msg == WindowMessages.WM_MBUTTONDBLCLK)
             {
-                Point location = new Point(((int)lParam & 0xFFFF), (int)((int)lParam & 0xFFFF0000) >> 16);
+                Point location = new Point(((int)lParam & 0xFFFF), ((int)wParam >> 16) & 0xFFFF);
                 MouseEventFlags flags = (MouseEventFlags)((int)wParam & 0xFFFF);
                 MouseEventArgs args = new MouseEventArgs(location, flags);
                 OnMouseMiddleButtonDoubleClick(args);

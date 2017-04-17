@@ -125,7 +125,7 @@ namespace Microsoft.Win32.UserInterface.CommonControls
             get
             {
                 int combined = (int)SendMessage(CB_GETEDITSEL, IntPtr.Zero, IntPtr.Zero);
-                return new Range(Convert.ToUInt32(combined & 0xFFFF), Convert.ToUInt32((combined & 0xFFFF0000) >> 16));
+                return new Range(Convert.ToUInt32(combined & 0xFFFF), Convert.ToUInt32((combined >> 16) & 0xFFFF));
             }
 
             set

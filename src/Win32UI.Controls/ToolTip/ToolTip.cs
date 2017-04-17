@@ -237,7 +237,7 @@ namespace Microsoft.Win32.UserInterface.CommonControls
             {
                 ptr.Value = info.ToNativeStruct();
                 int combined = (int)SendMessage(TTM_GETBUBBLESIZE, IntPtr.Zero, ptr.Handle);
-                return new Size((combined & 0xFFFF), (int)((combined & 0xFFFF0000) >> 16));
+                return new Size((combined & 0xFFFF), (int)((combined >> 16) & 0xFFFF));
             }
         }
 

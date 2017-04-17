@@ -243,7 +243,7 @@ namespace Microsoft.Win32.UserInterface.CommonControls
         {
             int lParam = (pt.x & 0xFFFF) | ((pt.y & 0xFFFF) << 16);
             int dw = (int)SendMessage(LB_ITEMFROMPOINT, IntPtr.Zero, (IntPtr)lParam);
-            outside = ((dw & 0xFFFF0000) >> 16) == 1;
+            outside = (((int)dw >> 16) & 0xFFFF) == 1;
             return dw & 0xFFFF;
         }
 
