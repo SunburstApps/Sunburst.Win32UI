@@ -104,17 +104,8 @@ namespace Microsoft.Win32.UserInterface
 
             using (HGlobal buffer = HGlobal.WithStringUni(dialogName))
             {
-                IntPtr wndProcPtr;
-
-                if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-                {
-                    wndProcPtr = McgIntrinsics.AddrOf<DLGPROC>(DialogProc);
-                }
-                else
-                {
-                    DLGPROC callback = DialogProc;
-                    wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
-                }
+                DLGPROC callback = DialogProc;
+                IntPtr wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
 
                 IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
                 Handle = NativeMethods.CreateDialogParamW(module.ModuleHandle, buffer.Handle,
@@ -124,17 +115,8 @@ namespace Microsoft.Win32.UserInterface
 
         public void Load(ResourceLoader module, int dialogId, Window parent = null)
         {
-            IntPtr wndProcPtr;
-
-            if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-            {
-                wndProcPtr = McgIntrinsics.AddrOf<DLGPROC>(DialogProc);
-            }
-            else
-            {
-                DLGPROC callback = DialogProc;
-                wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
-            }
+            DLGPROC callback = DialogProc;
+            IntPtr wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
 
             var tag = CreateTag();
 
@@ -149,18 +131,9 @@ namespace Microsoft.Win32.UserInterface
 
         public void CreateFromTemplate(DialogTemplate template, Window parent = null)
         {
-            IntPtr wndProcPtr;
-
-            if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-            {
-                wndProcPtr = McgIntrinsics.AddrOf<DLGPROC>(DialogProc);
-            }
-            else
-            {
-                DLGPROC callback = DialogProc;
-                wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
-            }
-
+            DLGPROC callback = DialogProc;
+            IntPtr wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
+            
             IntPtr tag = CreateTag();
             IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
 
@@ -172,17 +145,8 @@ namespace Microsoft.Win32.UserInterface
 
         public void RunModal(DialogTemplate template, Window parent = null)
         {
-            IntPtr wndProcPtr;
-
-            if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-            {
-                wndProcPtr = McgIntrinsics.AddrOf<DLGPROC>(DialogProc);
-            }
-            else
-            {
-                DLGPROC callback = DialogProc;
-                wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
-            }
+            DLGPROC callback = DialogProc;
+            IntPtr wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
 
             IntPtr tag = CreateTag();
             IntPtr parentHandle = parent?.Handle ?? IntPtr.Zero;
@@ -195,17 +159,8 @@ namespace Microsoft.Win32.UserInterface
 
         public void RunModal(ResourceLoader module, uint dialogId, Window parent = null)
         {
-            IntPtr wndProcPtr;
-
-            if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-            {
-                wndProcPtr = McgIntrinsics.AddrOf<DLGPROC>(DialogProc);
-            }
-            else
-            {
-                DLGPROC callback = DialogProc;
-                wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
-            }
+            DLGPROC callback = DialogProc;
+            IntPtr wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
 
             int tag = mTopmostDialogTag++;
             mDialogs[tag] = this;

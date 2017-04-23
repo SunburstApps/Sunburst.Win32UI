@@ -33,17 +33,8 @@ namespace Microsoft.Win32.UserInterface
 
             using (HGlobal ptr = HGlobal.WithStringUni(ClassName))
             {
-                IntPtr wndProcPtr;
-
-                if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-                {
-                    wndProcPtr = McgIntrinsics.AddrOf<WndProc>(CustomWindow.WndProc);
-                }
-                else
-                {
-                    WndProc callback = CustomWindow.WndProc;
-                    wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
-                }
+                WndProc callback = CustomWindow.WndProc;
+                IntPtr wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
 
                 WNDCLASSEXW nativeClass = new WNDCLASSEXW();
                 nativeClass.cbSize = Convert.ToUInt32(Marshal.SizeOf<WNDCLASSEXW>());

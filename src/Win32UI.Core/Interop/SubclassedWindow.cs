@@ -49,17 +49,8 @@ namespace Microsoft.Win32.UserInterface.Interop
 
                 OriginalWndProc = NativeMethods.GetWindowLongPtr(Owner.Handle, GWLP_WNDPROC);
 
-                IntPtr wndProcPtr;
-
-                if (RuntimeInformation.FrameworkDescription.Contains(".NET Native"))
-                {
-                    wndProcPtr = McgIntrinsics.AddrOf<WNDPROC>(WndProc);
-                }
-                else
-                {
-                    WNDPROC wndProc = WndProc;
-                    wndProcPtr = Marshal.GetFunctionPointerForDelegate(wndProc);
-                }
+                WNDPROC wndProc = WndProc;
+                IntPtr wndProcPtr = Marshal.GetFunctionPointerForDelegate(wndProc);
 
                 NativeMethods.SetWindowLongPtr(Owner.Handle, GWLP_WNDPROC, wndProcPtr);
                 AlreadySubclassed = true;
