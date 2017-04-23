@@ -14,6 +14,5 @@
     <EntryPointRCFragment Include="RCVersionInfo.txt" />
   </ItemGroup>
 
-  <Import Project="../dir.targets" />
   <Import Project="../../Sunburst.Win32UI.GuiEntryPoint.targets" />
 </Project>
