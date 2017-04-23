@@ -75,6 +75,7 @@ namespace Win32UI.Build.Tasks
             else if (InputManifestFile != null && InputAssembly != null)
             {
                 Log.LogError("You cannot specify both InputManifestFile and InputAssembly");
+                return false;
             }
 
             if (OutputManifestFile == null && OutputAssembly == null)
@@ -85,6 +86,7 @@ namespace Win32UI.Build.Tasks
             else if (OutputManifestFile != null && OutputAssembly != null)
             {
                 Log.LogError("You cannot specify both OutputManifestFile and OutputAssembly");
+                return false;
             }
 
             return base.Execute();
