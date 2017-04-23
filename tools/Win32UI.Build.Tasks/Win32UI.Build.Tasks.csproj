@@ -19,6 +19,4 @@
   <ItemGroup>
     <ProjectReference Include="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), external/RCSharp/src/Vestris.ResourceLib/Vestris.ResourceLib.csproj))/external/RCSharp/src/Vestris.ResourceLib/Vestris.ResourceLib.csproj" />
   </ItemGroup>
-
-  <Import Project="../dir.targets" />
 </Project>
