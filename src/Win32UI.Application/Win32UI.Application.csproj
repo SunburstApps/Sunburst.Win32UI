@@ -8,6 +8,4 @@
     <ProjectReference Include="../Win32UI.Core/Win32UI.Core.csproj" />
     <ProjectReference Include="../Win32UI.Menus/Win32UI.Menus.csproj" />
   </ItemGroup>
-
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

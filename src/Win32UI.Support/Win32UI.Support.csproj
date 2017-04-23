@@ -5,6 +5,4 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyTitle>Win32UI.Support</AssemblyTitle>
   </PropertyGroup>
-
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory)/.., dir.targets))\dir.targets" />
 </Project>
