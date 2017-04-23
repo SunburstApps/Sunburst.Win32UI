@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard1.7</TargetFramework>
+    <TargetFrameworks>netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">$(TargetFrameworks); net46</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
