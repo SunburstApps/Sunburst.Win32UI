@@ -39,6 +39,7 @@
   <UsingTask TaskName="MsvcSxsManifestTool" AssemblyFile="$(Win32UITasksAssembly)" />
   <UsingTask TaskName="CopyResourceSegment" AssemblyFile="$(Win32UITasksAssembly)" />
   <UsingTask TaskName="MarkExecutableAsGui" AssemblyFile="$(Win32UITasksAssembly)" />
+  <UsingTask TaskName="GetVisualStudioPath" AssemblyFile="$(Win32UITasksAssembly)" />
 
   <Target Name="UpdateEntryPointResources" AfterTargets="Build" DependsOnTargets="_CompileGuiEntryPointTasks; _GuiEntryPointGetMsvcPath" Condition="'$(OutputType)' == 'Exe' and '$(UpdateEntryPointResources)' == 'true'">
     <GenerateResourceScript Icons="@(EntryPointIcon)" ScriptFragments="@(EntryPointRCFragment)" EmbeddedFiles="@(EntryPointRCEmbeddedFile)" OutputDirectory="$(IntermediateOutputPath)">
@@ -73,14 +74,8 @@
     <MarkExecutableAsGui ToolPath="$(EditbinToolPath)" Executable="$(OutputPath)$(TargetName).exe" />
   </Target>
 
-  <PropertyGroup>
-    <_VSLocateTargetsFile>VSLocateTask/VSLocateTask.targets</_VSLocateTargetsFile>
-    <_VSLocateTargetsFile>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), external/$(_VSLocateTargetsFile)))/external/$(_VSLocateTargetsFile)</_VSLocateTargetsFile>
-  </PropertyGroup>
-  <Import Project="$(_VSLocateTargetsFile)" />
-
-  <Target Name="_GuiEntryPointGetMsvcPath" DependsOnTargets="CompileVSLocateTask" Condition="'$(OS)' == 'Windows_NT'">
-    <GetVisualStudioPath VSWhereDownloadDirectory="$(IntermediateOutputPath)" RequiredWorkloads="Microsoft.VisualCpp.Tools.Host$(LinkerPlatform.ToUpperInvariant()).Target$(LinkerPlatform.ToUpperInvariant())">
+  <Target Name="_GuiEntryPointGetMsvcPath" Condition="'$(OS)' == 'Windows_NT'">
+    <GetVisualStudioPath RequiredWorkloads="Microsoft.VisualCpp.Tools.Host$(LinkerPlatform.ToUpperInvariant()).Target$(LinkerPlatform.ToUpperInvariant())">
       <Output TaskParameter="VisualStudioPath" PropertyName="_VisualStudioPath" />
     </GetVisualStudioPath>
 
