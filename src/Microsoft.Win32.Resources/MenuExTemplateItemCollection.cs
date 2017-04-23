@@ -30,8 +30,7 @@ namespace Microsoft.Win32.Resources
             {
                 lpRes = ResourceUtil.Align(lpRes.ToInt64());
 
-                User32.MENUEXITEMTEMPLATE childItem = (User32.MENUEXITEMTEMPLATE)Marshal.PtrToStructure(
-                    lpRes, typeof(User32.MENUEXITEMTEMPLATE));
+                User32.MENUEXITEMTEMPLATE childItem = Marshal.PtrToStructure<User32.MENUEXITEMTEMPLATE>(lpRes);
 
                 MenuExTemplateItem childMenu = null;
                 if ((childItem.bResInfo & (uint) User32.MenuResourceType.Sub) > 0)

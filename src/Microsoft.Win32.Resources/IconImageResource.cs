@@ -91,7 +91,7 @@ namespace Microsoft.Win32.Resources
                 type,
                 new ResourceId(IntPtr.Zero),
                 ResourceUtil.NEUTRALLANGID, 
-                Marshal.SizeOf(typeof(Kernel32.GRPICONDIRENTRY)))
+                Marshal.SizeOf<Kernel32.GRPICONDIRENTRY>())
         {
 
         }
@@ -172,8 +172,7 @@ namespace Microsoft.Win32.Resources
         /// <returns>Pointer to the end of the icon resource.</returns>
         internal override IntPtr Read(IntPtr hModule, IntPtr lpRes)
         {
-            _header = (Kernel32.GRPICONDIRENTRY)Marshal.PtrToStructure(
-                lpRes, typeof(Kernel32.GRPICONDIRENTRY));
+            _header = Marshal.PtrToStructure<Kernel32.GRPICONDIRENTRY>(lpRes);
 
             IntPtr hIconInfo = Kernel32.FindResourceEx(
                 hModule, _type.Id, (IntPtr) _header.nID, _language);

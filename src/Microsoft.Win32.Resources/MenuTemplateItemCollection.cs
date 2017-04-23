@@ -28,8 +28,7 @@ namespace Microsoft.Win32.Resources
         {
             while(true)
             {
-                User32.MENUITEMTEMPLATE childItem = (User32.MENUITEMTEMPLATE)Marshal.PtrToStructure(
-                    lpRes, typeof(User32.MENUITEMTEMPLATE));
+                User32.MENUITEMTEMPLATE childItem = Marshal.PtrToStructure<User32.MENUITEMTEMPLATE>(lpRes);
 
                 MenuTemplateItem childMenu = null;
                 if ((childItem.mtOption & (uint)User32.MenuFlags.MF_POPUP) > 0)

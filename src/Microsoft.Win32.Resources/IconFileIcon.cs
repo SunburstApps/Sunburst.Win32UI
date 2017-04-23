@@ -90,8 +90,7 @@ namespace Microsoft.Win32.Resources
         /// <returns>Pointer to the end of this icon's data.</returns>
         internal IntPtr Read(IntPtr lpData, IntPtr lpAllData)
         {
-            _header = (Kernel32.FILEGRPICONDIRENTRY)Marshal.PtrToStructure(
-                lpData, typeof(Kernel32.FILEGRPICONDIRENTRY));
+            _header = Marshal.PtrToStructure<Kernel32.FILEGRPICONDIRENTRY>(lpData);
 
             IntPtr lpImage = new IntPtr(lpAllData.ToInt64() + _header.dwFileOffset);
             _image.Read(lpImage, _header.dwImageSize);

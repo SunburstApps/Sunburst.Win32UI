@@ -38,8 +38,7 @@ namespace Microsoft.Win32.Resources
         /// <param name="lpRes">Address in memory.</param>
         internal void Read(IntPtr lpRes)
         {
-            _fixedfileinfo = (Kernel32.VS_FIXEDFILEINFO)Marshal.PtrToStructure(
-                lpRes, typeof(Kernel32.VS_FIXEDFILEINFO));
+            _fixedfileinfo = Marshal.PtrToStructure<Kernel32.VS_FIXEDFILEINFO>(lpRes);
         }
 
         /// <summary>

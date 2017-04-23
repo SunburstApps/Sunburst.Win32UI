@@ -96,8 +96,7 @@ namespace Microsoft.Win32.Resources
             _fontOrdinal = (UInt16) Marshal.ReadInt16(lpRes);
             lpRes = new IntPtr(lpRes.ToInt64() + 2);
 
-            _font = (User32.FONTDIRENTRY)Marshal.PtrToStructure(
-                lpRes, typeof(User32.FONTDIRENTRY));
+            _font = Marshal.PtrToStructure<User32.FONTDIRENTRY>(lpRes);
 
             lpRes = new IntPtr(lpRes.ToInt64() + Marshal.SizeOf(_font));
 

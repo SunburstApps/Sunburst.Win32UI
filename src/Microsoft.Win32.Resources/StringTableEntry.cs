@@ -113,8 +113,7 @@ namespace Microsoft.Win32.Resources
         /// <param name="lpRes">Pointer to the beginning of a string resource.</param>
         internal void Read(IntPtr lpRes)
         {
-            _header = (Kernel32.RESOURCE_HEADER)Marshal.PtrToStructure(
-                lpRes, typeof(Kernel32.RESOURCE_HEADER));
+            _header = Marshal.PtrToStructure<Kernel32.RESOURCE_HEADER>(lpRes);
 
             IntPtr pKey = new IntPtr(lpRes.ToInt64() + Marshal.SizeOf(_header));
             _key = Marshal.PtrToStringUni(pKey);

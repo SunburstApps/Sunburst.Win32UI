@@ -35,8 +35,7 @@ namespace Microsoft.Win32.Resources
             try
             {
                 Marshal.Copy(data, 0, pFileHeaderData, Marshal.SizeOf(_header));
-                _header = (Gdi32.BITMAPFILEHEADER)Marshal.PtrToStructure(
-                    pFileHeaderData, typeof(Gdi32.BITMAPFILEHEADER));
+                _header = Marshal.PtrToStructure<Gdi32.BITMAPFILEHEADER>(pFileHeaderData);
             }
             finally
             {

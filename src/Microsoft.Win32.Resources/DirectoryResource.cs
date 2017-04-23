@@ -74,7 +74,7 @@ namespace Microsoft.Win32.Resources
                 new ResourceId(resourceType),
                 new ResourceId(1),
                 ResourceUtil.NEUTRALLANGID,
-                Marshal.SizeOf(typeof(Kernel32.GRPICONDIR)))
+                Marshal.SizeOf<Kernel32.GRPICONDIR>())
         {
             switch(resourceType)
             {
@@ -113,8 +113,7 @@ namespace Microsoft.Win32.Resources
         {
             _icons.Clear();
 
-            _header = (Kernel32.GRPICONDIR)Marshal.PtrToStructure(
-                lpRes, typeof(Kernel32.GRPICONDIR));
+            _header = Marshal.PtrToStructure<Kernel32.GRPICONDIR>(lpRes);
 
             IntPtr pEntry = new IntPtr(lpRes.ToInt64() + Marshal.SizeOf(_header));
 

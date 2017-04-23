@@ -34,8 +34,7 @@ namespace Microsoft.Win32.Resources
         /// <param name="lpRes">Address in memory.</param>
         internal override IntPtr Read(IntPtr lpRes)
         {
-            _header = (User32.MENUEXTEMPLATE) Marshal.PtrToStructure(
-                lpRes, typeof(User32.MENUEXTEMPLATE));
+            _header = Marshal.PtrToStructure<User32.MENUEXTEMPLATE>(lpRes);
 
             IntPtr lpMenuItem = ResourceUtil.Align(lpRes.ToInt64() 
                 + Marshal.SizeOf(_header) 

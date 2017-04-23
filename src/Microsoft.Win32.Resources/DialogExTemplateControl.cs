@@ -132,8 +132,7 @@ namespace Microsoft.Win32.Resources
         /// <param name="lpRes">Pointer to the beginning of the dialog structure.</param>
         internal override IntPtr Read(IntPtr lpRes)
         {
-            _header = (User32.DIALOGEXITEMTEMPLATE)Marshal.PtrToStructure(
-                lpRes, typeof(User32.DIALOGEXITEMTEMPLATE));
+            _header = Marshal.PtrToStructure<User32.DIALOGEXITEMTEMPLATE>(lpRes);
 
             lpRes = new IntPtr(lpRes.ToInt64() + Marshal.SizeOf(_header));
             return base.Read(lpRes);

@@ -128,8 +128,7 @@ namespace Microsoft.Win32.Resources
 
         internal override IntPtr Read(IntPtr lpRes)
         {
-            _header = (User32.DIALOGITEMTEMPLATE)Marshal.PtrToStructure(
-                lpRes, typeof(User32.DIALOGITEMTEMPLATE));
+            _header = Marshal.PtrToStructure<User32.DIALOGITEMTEMPLATE>(lpRes);
 
             lpRes = new IntPtr(lpRes.ToInt64() + 18); // Marshal.SizeOf(_header)
             lpRes = base.Read(lpRes);

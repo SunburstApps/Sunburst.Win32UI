@@ -19,8 +19,7 @@ namespace Microsoft.Win32.Resources
         /// <param name="lpRes">Address in memory.</param>
         internal IntPtr Read(IntPtr lpRes)
         {
-            _accel = (User32.ACCEL) Marshal.PtrToStructure(
-                lpRes, typeof(User32.ACCEL));
+            _accel = Marshal.PtrToStructure<User32.ACCEL>(lpRes);
 
             return new IntPtr(lpRes.ToInt64() + Marshal.SizeOf(_accel));
         }

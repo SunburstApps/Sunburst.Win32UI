@@ -42,8 +42,7 @@ namespace Microsoft.Win32.Resources
         /// <returns>End of the menu item structure.</returns>
         internal virtual IntPtr Read(IntPtr lpRes)
         {
-            _header = (User32.MENUEXITEMTEMPLATE) Marshal.PtrToStructure(
-                lpRes, typeof(User32.MENUEXITEMTEMPLATE));
+            _header = Marshal.PtrToStructure<User32.MENUEXITEMTEMPLATE>(lpRes);
 
             lpRes = new IntPtr(lpRes.ToInt64() 
                 + Marshal.SizeOf(_header));

@@ -80,8 +80,7 @@ namespace Microsoft.Win32.Resources
         /// <returns>End of header, after the key, aligned at a 32 bit boundary.</returns>
         internal virtual IntPtr Read(IntPtr lpRes)
         {
-            _header = (Kernel32.RESOURCE_HEADER) Marshal.PtrToStructure(
-                lpRes, typeof(Kernel32.RESOURCE_HEADER));
+            _header = Marshal.PtrToStructure<Kernel32.RESOURCE_HEADER>(lpRes);
 
             IntPtr pBlockKey = new IntPtr(lpRes.ToInt64() + Marshal.SizeOf(_header));
             _key = Marshal.PtrToStringUni(pBlockKey);

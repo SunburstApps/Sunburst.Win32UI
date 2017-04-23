@@ -98,8 +98,7 @@ namespace Microsoft.Win32.Resources
         {
             _icons.Clear();
 
-            _header = (Kernel32.FILEGRPICONDIR)Marshal.PtrToStructure(
-                lpData, typeof(Kernel32.FILEGRPICONDIR));
+            _header = Marshal.PtrToStructure<Kernel32.FILEGRPICONDIR>(lpData);
 
             IntPtr lpEntry = new IntPtr(lpData.ToInt64() + Marshal.SizeOf(_header));
 

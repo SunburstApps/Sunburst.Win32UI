@@ -66,7 +66,7 @@ namespace Microsoft.Win32.Resources
         /// <returns>Address of the end of the accelerator table.</returns>
         internal override IntPtr Read(IntPtr hModule, IntPtr lpRes)
         {
-            long count = _size / Marshal.SizeOf(typeof(User32.ACCEL));
+            long count = _size / Marshal.SizeOf<User32.ACCEL>();
             for (long i = 0; i < count; i++)
             {
                 Accelerator accelerator = new Accelerator();

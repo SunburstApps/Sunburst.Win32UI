@@ -35,8 +35,7 @@ namespace Microsoft.Win32.Resources
                 try
                 {
                     Marshal.Copy(_data, 0, pData, Marshal.SizeOf(_header));
-                    _header = (Gdi32.BITMAPINFOHEADER)Marshal.PtrToStructure(
-                        pData, typeof(Gdi32.BITMAPINFOHEADER));
+                    _header = Marshal.PtrToStructure<Gdi32.BITMAPINFOHEADER>(pData);
                 }
                 finally
                 {
@@ -102,8 +101,7 @@ namespace Microsoft.Win32.Resources
         /// <param name="size">Icon data size.</param>
         internal void Read(IntPtr lpData, uint size)
         {
-            _header = (Gdi32.BITMAPINFOHEADER)Marshal.PtrToStructure(
-                lpData, typeof(Gdi32.BITMAPINFOHEADER));
+            _header = Marshal.PtrToStructure<Gdi32.BITMAPINFOHEADER>(lpData);
 
             _data = new byte[size];
             Marshal.Copy(lpData, _data, 0, _data.Length);

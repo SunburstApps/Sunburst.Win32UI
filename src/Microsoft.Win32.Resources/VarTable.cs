@@ -65,8 +65,7 @@ namespace Microsoft.Win32.Resources
 
             while (pVar.ToInt64() < (lpRes.ToInt64() + _header.wLength))
             {
-                Kernel32.VAR_HEADER var = (Kernel32.VAR_HEADER) Marshal.PtrToStructure(
-                    pVar, typeof(Kernel32.VAR_HEADER));
+                Kernel32.VAR_HEADER var = Marshal.PtrToStructure<Kernel32.VAR_HEADER>(pVar);
                 _languages.Add(var.wLanguageIDMS, var.wCodePageIBM);
                 pVar = new IntPtr(pVar.ToInt64() + Marshal.SizeOf(var));
             }
