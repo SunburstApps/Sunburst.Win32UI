@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using Vestris.ResourceLib;
+using Microsoft.Win32.Resources;
 
 namespace Win32UI.Build.Tasks
 {
