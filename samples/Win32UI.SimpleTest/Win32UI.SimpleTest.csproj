@@ -12,6 +12,7 @@
     <ProjectReference Include="../../src/Win32UI.TaskDialogs/Win32UI.TaskDialogs.csproj" />
 
     <EntryPointRCFragment Include="RCVersionInfo.txt" />
+    <SxsManifestFragment Include="compat.manifest" />
   </ItemGroup>
 
   <Import Project="../../Sunburst.Win32UI.GuiEntryPoint.targets" />
