@@ -12,6 +12,14 @@ namespace Microsoft.Win32.UserInterface
     /// </summary>
     public class Window
     {
+        static Window()
+        {
+            NativeMethods.INITCOMMONCONTROLSEX init_struct = new NativeMethods.INITCOMMONCONTROLSEX();
+            init_struct.dwSize = Marshal.SizeOf<NativeMethods.INITCOMMONCONTROLSEX>();
+            init_struct.dwICC = 0xFFFF;
+            NativeMethods.InitCommonControlsEx(ref init_struct);
+        }
+
         /// <summary>
         /// Creates a new instance of <see cref="Window"/> that does not contain a valid handle.
         /// </summary>
