@@ -1,5 +1,9 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <AssemblyTitle Condition="'$(AssemblyTitle)' == '' and '$(TargetName)' != ''">$(TargetName)</AssemblyTitle>
     <Description Condition="'$(Description)' == '' and '$(AssemblyTitle)' != ''">$(AssemblyTitle)</Description>
 
