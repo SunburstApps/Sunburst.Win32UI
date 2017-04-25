@@ -209,6 +209,8 @@
         public const uint WM_TABLET_FIRST = 0x02c0;
         public const uint WM_TABLET_LAST = 0x02df;
         public const uint WM_DPICHANGED = 0x02E0;
+        public const uint WM_DPICHANGED_BEFOREPARENT = 0x2E2;
+        public const uint WM_DPICHANGED_AFTERPARENT = 0x2E3;
         public const uint WM_CUT = 0x0300;
         public const uint WM_COPY = 0x0301;
         public const uint WM_PASTE = 0x0302;

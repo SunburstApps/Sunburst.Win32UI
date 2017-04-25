@@ -29,5 +29,8 @@ namespace Microsoft.Win32.UserInterface.Interop
 
         [DllImport("user32.dll")]
         public static extern bool ShutdownBlockReasonDestroy(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetProcessDpiAwarenessContext(IntPtr contextId);
     }
 }
