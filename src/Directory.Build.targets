@@ -3,13 +3,6 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!-- Referencing this package works around a bug wherein 'dotnet pack' output -->
-    <!-- would contain content files from Microsoft.DiaSymReader.Native that should -->
-    <!-- not be present in that folder. This can be removed when targeting netcoreapp2.0. -->
-    <PackageReference Include="Microsoft.DiaSymReader.Native" Version="1.4.2" />
-  </ItemGroup>
-
   <Target Name="PackProjectReferences" BeforeTargets="_GetPackageFiles" Condition="'$(PackProjectReferences)' == 'true'">
     <ItemGroup>
       <_PackableProjectReference Include="@(ProjectReference)" Condition="'%(ProjectReference.Pack)' == 'true' and '%(ProjectReference.PackagePath)' != ''" />
