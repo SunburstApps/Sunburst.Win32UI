@@ -9,12 +9,6 @@ namespace Microsoft.Win32.UserInterface
         private static Stack<Window> mDialogBoxes = new Stack<Window>();
         private static Stack<Tuple<Window, AcceleratorTable>> mAcceleratorTables = new Stack<Tuple<Window, AcceleratorTable>>();
 
-        public static bool EnablePerMonitorV2DPIScaling()
-        {
-            IntPtr DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = (IntPtr)(-4);
-            return NativeMethods.SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
-        }
-
         public static void PushAcceleratorTable(Window hWnd, AcceleratorTable hAccel)
         {
             mAcceleratorTables.Push(new Tuple<Window, AcceleratorTable>(hWnd, hAccel));
