@@ -1,4 +1,6 @@
-﻿namespace Microsoft.Win32.UserInterface.Events
+﻿using System.ComponentModel;
+
+namespace Microsoft.Win32.UserInterface.Events
 {
     public sealed class TimerEventArgs : HandledEventArgs
     {

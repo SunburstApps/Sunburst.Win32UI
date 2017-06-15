@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32.UserInterface.Graphics;
+﻿using System.ComponentModel;
+using Microsoft.Win32.UserInterface.Graphics;
 
 namespace Microsoft.Win32.UserInterface.Events
 {
