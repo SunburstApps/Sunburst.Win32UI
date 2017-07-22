@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Microsoft.Win32.UserInterface.Events
+﻿namespace Microsoft.Win32.UserInterface.Events
 {
     public class CommandEventArgs : HandledEventArgs
     {

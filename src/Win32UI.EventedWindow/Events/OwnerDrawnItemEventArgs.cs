@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using Microsoft.Win32.UserInterface.Graphics;
 using Microsoft.Win32.UserInterface.Interop;
 
