@@ -24,8 +24,7 @@ namespace Win32UI.Build.Tasks
             }
 #endif
 
-            string tasksAssemblyDir = Path.GetDirectoryName(typeof(GetVisualStudioPath).GetTypeInfo().Assembly.Location);
-            string vswhereExe = Path.Combine(tasksAssemblyDir, "vswhere.exe");
+            string vswhereExe = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe";
             if (!File.Exists(vswhereExe))
             {
                 Log.LogError("{0} not found - cannot continue", vswhereExe);

@@ -14,12 +14,6 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <PackageReference Include="vswhere" Version="1.0.62" />
-
-    <Content Include="$(VSWhereDir)vswhere.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Link>vswhere.exe</Link>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
