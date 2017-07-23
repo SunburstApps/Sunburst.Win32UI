@@ -18,5 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Win32.Resources\Microsoft.Win32.Resources.csproj" />
+    <None Include="..\..\Sunburst.Win32UI.GuiEntryPoint.targets" Link="Sunburst.Win32UI.GuiEntryPoint.targets" />
   </ItemGroup>
 </Project>
