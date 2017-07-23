@@ -7,6 +7,7 @@
 
     <GuiEntryPoint Condition="'$(GuiEntryPoint)' == ''">false</GuiEntryPoint>
     <UpdateEntryPointResources Condition="'$(UpdateEntryPointResources)' == '' and '$(GuiEntryPoint)' == 'true'">true</UpdateEntryPointResources>
+    <SetEntryPointVersionFromAssemblyMetadata Condition="'$(SetEntryPointVersionFromAssemblyMetadata)' == '' and '$(UpdateEntryPointResources)' == 'true'">true</SetEntryPointVersionFromAssemblyMetadata>
     <UacPrivilegeLevel Condition="'$(UacPrivilegeLevel)' == ''">AsInvoker</UacPrivilegeLevel>
 
     <LinkerPlatform Condition="$(RuntimeIdentifier.EndsWith('x64'))">x64</LinkerPlatform>
@@ -42,6 +43,7 @@
   <UsingTask TaskName="CopyResourceSegment" AssemblyFile="$(Win32UITasksAssembly)" />
   <UsingTask TaskName="MarkExecutableAsGui" AssemblyFile="$(Win32UITasksAssembly)" />
   <UsingTask TaskName="GetVisualStudioPath" AssemblyFile="$(Win32UITasksAssembly)" />
+  <UsingTask TaskName="SetNativeVersionInfo" AssemblyFile="$(Win32UITasksAssembly)" />
 
   <Target Name="UpdateEntryPointResources" AfterTargets="Build" DependsOnTargets="_CompileGuiEntryPointTasks; _GuiEntryPointGetMsvcPath" Condition="'$(OutputType)' == 'Exe' and '$(UpdateEntryPointResources)' == 'true'">
     <GenerateResourceScript Icons="@(EntryPointIcon)" ScriptFragments="@(EntryPointRCFragment)" EmbeddedFiles="@(EntryPointRCEmbeddedFile)" OutputDirectory="$(IntermediateOutputPath)">
@@ -63,6 +65,10 @@
     <MsvcSxsManifestTool InputManifestFile="$(IntermediateOutputPath)EntryPoint.manifest" OutputAssembly="$(_ResourceLinkOutput)" ManifestFragments="@(SxsManifestFragment)" CanonicalizeXml="true" ToolPath="$(SxsManifestToolPath)" />
 
     <CopyResourceSegment InputFile="$(_ResourceLinkOutput)" OutputFile="$(OutputPath)$(TargetName).exe" />
+
+    <SetNativeVersionInfo Condition="'$(SetEntryPointVersionFromAssemblyMetadata)' == 'true'" InputFiles="$(OutputPath)$(TargetName).exe"
+                          FileVersion="$(FileVersion)" ProductVersion="$(Version)" CompanyName="$(Authors)" FileDescription="$(AssemblyTitle)"
+                          LegalCopyright="$(Copyright)" ProductName="$(Product)" />
 
     <ItemGroup>
       <FileWrites Include="@(_ResourceScript)" />

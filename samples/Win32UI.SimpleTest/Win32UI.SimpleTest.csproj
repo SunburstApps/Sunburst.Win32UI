@@ -11,7 +11,6 @@
     <ProjectReference Include="../../src/Win32UI.MessageBox/Win32UI.MessageBox.csproj" />
     <ProjectReference Include="../../src/Win32UI.TaskDialogs/Win32UI.TaskDialogs.csproj" />
 
-    <EntryPointRCFragment Include="RCVersionInfo.txt" />
     <SxsManifestFragment Include="compat.manifest" />
   </ItemGroup>
 
