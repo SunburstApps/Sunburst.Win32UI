@@ -10,7 +10,7 @@
       <Version>4.3.0</Version>
     </PackageReference>
 
-    <ProjectReference Include="../Microsoft.Win32.Resources/Microsoft.Win32.Resources.csproj" />
+    <ProjectReference Include="../Microsoft.Win32.NativeResources/Microsoft.Win32.NativeResources.csproj" />
     <ProjectReference Include="../Win32UI.EventedWindow/Win32UI.EventedWindow.csproj" />
     <ProjectReference Include="../Win32UI.Controls/Win32UI.Controls.csproj" />
     <ProjectReference Include="../Win32UI.ImageList/Win32UI.ImageList.csproj" />

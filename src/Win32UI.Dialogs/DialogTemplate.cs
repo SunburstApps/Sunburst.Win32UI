@@ -3,14 +3,14 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.UserInterface.Graphics;
 using Microsoft.Win32.UserInterface.Interop;
-using Microsoft.Win32.Resources;
+using Microsoft.Win32.NativeResources;
 
 namespace Microsoft.Win32.UserInterface
 {
     public sealed class DialogTemplate : IDisposable
     {
         private DialogUnitHelper mDLUHelper;
-        private Microsoft.Win32.Resources.DialogTemplate mNativeTemplate = null;
+        private Microsoft.Win32.NativeResources.DialogTemplate mNativeTemplate = null;
 
         public DialogTemplate() { }
 
@@ -43,7 +43,7 @@ namespace Microsoft.Win32.UserInterface
                     throw new ArgumentException($"Invalid {nameof(DialogMetric)} value", nameof(metric));
             }
 
-            mNativeTemplate = new Microsoft.Win32.Resources.DialogTemplate();
+            mNativeTemplate = new Microsoft.Win32.NativeResources.DialogTemplate();
             mNativeTemplate.x = Convert.ToInt16(adjustedRect.left);
             mNativeTemplate.y = Convert.ToInt16(adjustedRect.top);
             mNativeTemplate.cx = Convert.ToInt16(adjustedRect.Width);

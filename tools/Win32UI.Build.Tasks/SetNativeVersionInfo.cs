@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using Microsoft.Win32.Resources;
+using Microsoft.Win32.NativeResources;
 
 namespace Win32UI.Build.Tasks
 {
