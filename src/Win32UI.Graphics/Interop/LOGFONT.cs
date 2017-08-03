@@ -28,6 +28,12 @@ namespace Microsoft.Win32.UserInterface.Interop
         [MarshalAs(UnmanagedType.LPWStr, SizeConst = 32)]
         public string lfFaceName;
 
+        public int GetPointSize(NonOwnedGraphicsContext sourceDC)
+        {
+            const int LOGPIXELSY = 90;
+            return -NativeMethods.MulDiv(Convert.ToInt32(lfHeight), 72, sourceDC.GetCapability(LOGPIXELSY));
+        }
+
         public void SetPointSize(int pointSize, NonOwnedGraphicsContext sourceDC)
         {
             const int LOGPIXELSY = 90;
