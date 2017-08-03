@@ -25,7 +25,7 @@ namespace Microsoft.Win32.UserInterface.Graphics
             Handle = IntPtr.Zero;
         }
 
-        public LOGFONT GetLOGFONT()
+        public LOGFONT GetFontDescriptor()
         {
             using (StructureBuffer<LOGFONT> ptr = new StructureBuffer<LOGFONT>())
             {
