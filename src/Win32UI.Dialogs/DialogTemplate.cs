@@ -14,6 +14,20 @@ namespace Microsoft.Win32.UserInterface
 
         public DialogTemplate() { }
 
+        public void CreateTemplate(DialogTemplateMode mode, string caption, Rect rc, uint style, uint exStyle, NonOwnedFont font, string className = null, DialogMetric metric = DialogMetric.Pixel)
+        {
+            if (font == null) throw new ArgumentNullException(nameof(font));
+
+            LOGFONT descriptor = font.GetFontDescriptor();
+            int pointSize;
+            using (GraphicsContext dc = GraphicsContext.CreateOffscreenContext())
+            {
+                pointSize = descriptor.GetPointSize(dc);
+            }
+
+            CreateTemplate(mode, caption, rc, style, exStyle, descriptor.lfFaceName, pointSize, className, metric);
+        }
+
         public void CreateTemplate(DialogTemplateMode mode, string caption, Rect rc, uint style, uint exStyle, string fontName = "Segoe UI",
             int fontSize = 9, string className = null, DialogMetric metric = DialogMetric.Pixel)
         {
