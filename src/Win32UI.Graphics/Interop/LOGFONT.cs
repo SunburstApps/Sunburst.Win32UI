@@ -9,8 +9,7 @@ namespace Microsoft.Win32.UserInterface.Interop
     /// </summary>
     /// <remarks>
     /// This structure is public because wrapping it in a <c>FontDescriptor</c> class is
-    /// not worthwhile because the bulk of the font data is contained in such a way that
-    /// makes wrapping it not worth the effort.
+    /// not worth the effort it would take to create the wrapper.
     /// </remarks>
     public struct LOGFONT : IEquatable<LOGFONT>
     {
