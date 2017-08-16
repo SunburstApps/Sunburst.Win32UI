@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     <ProjectReference Include="../Win32UI.Core/Win32UI.Core.csproj" />
     <ProjectReference Include="../Win32UI.Support/Win32UI.Support.csproj" />
   </ItemGroup>

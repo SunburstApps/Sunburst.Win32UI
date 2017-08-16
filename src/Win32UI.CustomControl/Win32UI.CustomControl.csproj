@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation">
-      <Version>4.3.0</Version>
-    </PackageReference>
-
     <ProjectReference Include="../Win32UI.EventedWindow/Win32UI.EventedWindow.csproj" />
     <ProjectReference Include="../Win32UI.ImageList/Win32UI.ImageList.csproj" />
     <ProjectReference Include="../Win32UI.Graphics/Win32UI.Graphics.csproj" />
