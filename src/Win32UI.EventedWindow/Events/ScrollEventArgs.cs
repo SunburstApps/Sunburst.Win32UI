@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32.UserInterface.CommonControls;
+﻿using System.ComponentModel;
+using Microsoft.Win32.UserInterface.CommonControls;
 
 namespace Microsoft.Win32.UserInterface.Events
 {

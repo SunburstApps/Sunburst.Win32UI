@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">$(TargetFrameworks); net46</TargetFrameworks>
     <DefineConstants Condition="'$(TargetFramework)' == 'netcoreapp1.1'">IS_CORECLR</DefineConstants>
     <DefineConstants Condition="'$(TargetFramework)' == 'net46'">IS_FULL_FRAMEWORK</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.1.0-preview-*" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.1.0-preview-*" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.3.409" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.3.409" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
