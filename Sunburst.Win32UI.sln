@@ -1,14 +1,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{FE883911-3D18-4C71-B682-B9847CCE2634}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32UI.Build.Tasks", "tools\Win32UI.Build.Tasks\Win32UI.Build.Tasks.csproj", "{C48B540D-3EB6-433A-A048-E1B84152DBFE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.GDIPlus", "src\Microsoft.GDIPlus\Microsoft.GDIPlus.csproj", "{AAB1FDF6-B75A-4503-B074-81C13D763B5F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32UI.Aero", "src\Win32UI.Aero\Win32UI.Aero.csproj", "{82C94DDD-4161-487E-BFBE-E680C65C75D4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Win32UI.BufferedGraphics", "src\Win32UI.BufferedGraphics\Win32UI.BufferedGraphics.csproj", "{6286405F-9921-4C62-86CE-B45B955B4293}"
 EndProject
@@ -80,18 +78,6 @@ Global
 		{AAB1FDF6-B75A-4503-B074-81C13D763B5F}.Release|x64.Build.0 = Release|Any CPU
 		{AAB1FDF6-B75A-4503-B074-81C13D763B5F}.Release|x86.ActiveCfg = Release|Any CPU
 		{AAB1FDF6-B75A-4503-B074-81C13D763B5F}.Release|x86.Build.0 = Release|Any CPU
-		{82C94DDD-4161-487E-BFBE-E680C65C75D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82C94DDD-4161-487E-BFBE-E680C65C75D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82C94DDD-4161-487E-BFBE-E680C65C75D4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{82C94DDD-4161-487E-BFBE-E680C65C75D4}.Debug|x64.Build.0 = Debug|Any CPU
-		{82C94DDD-4161-487E-BFBE-E680C65C75D4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{82C94DDD-4161-487E-BFBE-E680C65C75D4}.Debug|x86.Build.0 = Debug|Any CPU
-		{82C94DDD-4161-487E-BFBE-E680C65C75D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82C94DDD-4161-487E-BFBE-E680C65C75D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82C94DDD-4161-487E-BFBE-E680C65C75D4}.Release|x64.ActiveCfg = Release|Any CPU
-		{82C94DDD-4161-487E-BFBE-E680C65C75D4}.Release|x64.Build.0 = Release|Any CPU
-		{82C94DDD-4161-487E-BFBE-E680C65C75D4}.Release|x86.ActiveCfg = Release|Any CPU
-		{82C94DDD-4161-487E-BFBE-E680C65C75D4}.Release|x86.Build.0 = Release|Any CPU
 		{6286405F-9921-4C62-86CE-B45B955B4293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6286405F-9921-4C62-86CE-B45B955B4293}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6286405F-9921-4C62-86CE-B45B955B4293}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -303,5 +289,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C48B540D-3EB6-433A-A048-E1B84152DBFE} = {FE883911-3D18-4C71-B682-B9847CCE2634}
 		{41C44977-9C8B-41F3-8E8C-E551FF9B669A} = {16DEF3BF-B228-406C-80BE-1C0E11FE571B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9651FA15-E618-406F-BCCC-4A12C349EA8A}
 	EndGlobalSection
 EndGlobal
