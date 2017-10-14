@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
-    <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)tools/Win32UI.Build.Tasks/bin/$(Configuration)/netcoreapp2.0/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
-    <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)tools/Win32UI.Build.Tasks/bin/$(Configuration)/net46/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
+    <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)tools/Sunburst.Win32UI.Build.Tasks/bin/$(Configuration)/netcoreapp2.0/Sunburst.Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
+    <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)tools/Sunburst.Win32UI.Build.Tasks/bin/$(Configuration)/net46/Sunburst.Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
 
     <WindowsSDKVersion Condition="'$(WindowsSDKVersion)' == ''">15063</WindowsSDKVersion>
 
@@ -106,6 +106,6 @@
   </Target>
 
   <Target Name="_CompileGuiEntryPointTasks" Condition="!Exists($(Win32UITasksAssembly))">
-    <MSBuild Projects="$(MSBuildThisFileDirectory)tools/Win32UI.Build.Tasks/Win32UI.Build.Tasks.csproj" Properties="Configuration=$(Configuration)" Targets="Restore; Build" />
+    <MSBuild Projects="$(MSBuildThisFileDirectory)tools/Sunburst.Win32UI.Build.Tasks/Sunburst.Win32UI.Build.Tasks.csproj" Properties="Configuration=$(Configuration)" Targets="Restore; Build" />
   </Target>
 </Project>
