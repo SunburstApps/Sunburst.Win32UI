@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Microsoft.Win32.NativeResources/Microsoft.Win32.NativeResources.csproj" />
     <ProjectReference Include="../Win32UI.EventedWindow/Win32UI.EventedWindow.csproj" />
     <ProjectReference Include="../Win32UI.Controls/Win32UI.Controls.csproj" />
     <ProjectReference Include="../Win32UI.ImageList/Win32UI.ImageList.csproj" />
     <ProjectReference Include="../Win32UI.Graphics/Win32UI.Graphics.csproj" />
     <ProjectReference Include="../Win32UI.Core/Win32UI.Core.csproj" />
     <ProjectReference Include="../Win32UI.Support/Win32UI.Support.csproj" />
+    <ProjectReference Include="../../external/ResourceLib/Source/ResourceLib.NetStandard/ResourceLib.NetStandard.csproj" />
   </ItemGroup>
 </Project>
