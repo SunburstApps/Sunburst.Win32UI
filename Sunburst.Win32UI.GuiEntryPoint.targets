@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)tools/Win32UI.Build.Tasks/bin/$(Configuration)/netcoreapp1.1/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
+    <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)tools/Win32UI.Build.Tasks/bin/$(Configuration)/netcoreapp2.0/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
     <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)tools/Win32UI.Build.Tasks/bin/$(Configuration)/net46/Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
 
     <WindowsSDKVersion Condition="'$(WindowsSDKVersion)' == ''">15063</WindowsSDKVersion>
