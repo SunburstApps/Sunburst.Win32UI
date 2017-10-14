@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyTitle>Sunburst.Win32UI.Graphics</AssemblyTitle>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Sunburst.Win32UI.Core/Sunburst.Win32UI.Core.csproj" />
+  </ItemGroup>
+</Project>

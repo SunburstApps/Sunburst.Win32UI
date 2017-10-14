@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Sunburst.Win32UI.Core/Sunburst.Win32UI.Core.csproj" />
+    <ProjectReference Include="../Sunburst.Win32UI.Menus/Sunburst.Win32UI.Menus.csproj" />
+  </ItemGroup>
+</Project>
