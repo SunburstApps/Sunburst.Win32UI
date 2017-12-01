@@ -1,4 +1,4 @@
-[submodule "resourcelib_rebased"]
+[submodule "external/ResourceLib"]
 	path = external/ResourceLib
-	url = git@github.com:SunburstApps/ResourceLib
-	branch = netstandard
+	url = git@github.com:resourcelib/resourcelib
+	branch = netstandard20
