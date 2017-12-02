@@ -15,6 +15,8 @@ namespace Sunburst.WindowsForms
 
         public int ExtendedStyle { get; set; }
 
+        public int ClassStyle { get; set; }
+
         public Rectangle Frame { get; set; }
 
         public IntPtr ParentHandle { get; set; }
@@ -23,7 +25,7 @@ namespace Sunburst.WindowsForms
 
         public bool Equals(CreateParams other)
         {
-            return ClassName == other.ClassName && Caption == other.Caption && Style == other.Style && Frame.Equals(other.Frame) && ParentHandle == other.ParentHandle && CreationParameter.Equals(other.CreationParameter);
+            return ClassName == other.ClassName && Caption == other.Caption && Style == other.Style && ExtendedStyle == other.ExtendedStyle && ClassStyle == other.ClassStyle && Frame.Equals(other.Frame) && ParentHandle == other.ParentHandle && CreationParameter.Equals(other.CreationParameter);
         }
 
         public override bool Equals(object obj)
@@ -35,7 +37,7 @@ namespace Sunburst.WindowsForms
 
         public override int GetHashCode()
         {
-            return ClassName.GetHashCode() ^ Caption.GetHashCode() ^ Style.GetHashCode() ^ ExtendedStyle.GetHashCode() ^ Frame.GetHashCode() ^ ParentHandle.GetHashCode() ^ CreationParameter.GetHashCode();
+            return ClassName.GetHashCode() ^ Caption.GetHashCode() ^ Style.GetHashCode() ^ ExtendedStyle.GetHashCode() ^ ClassStyle.GetHashCode() ^ Frame.GetHashCode() ^ ParentHandle.GetHashCode() ^ CreationParameter.GetHashCode();
         }
     }
 }
