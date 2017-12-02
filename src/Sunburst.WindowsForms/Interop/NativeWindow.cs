@@ -6,7 +6,7 @@ namespace Sunburst.WindowsForms.Interop
 {
     public class NativeWindow : IWin32Window
     {
-        public IntPtr Handle { get; private set; }
+        public IntPtr Handle { get; private set; } = IntPtr.Zero;
         private IntPtr superclassWndProc = IntPtr.Zero;
 
         private static IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam)
@@ -54,6 +54,9 @@ namespace Sunburst.WindowsForms.Interop
 
         public void CreateHandle(CreateParams createParams)
         {
+            if (createParams == null) throw new ArgumentNullException(nameof(createParams));
+            if (Handle != IntPtr.Zero) throw new InvalidOperationException("This instance already has a handle, please destroy if first");
+
             WindowClass windowClass = WindowClass.GetWindowClass(createParams.ClassName, createParams.ClassStyle);
 
             IntPtr wndProc = Marshal.GetFunctionPointerForDelegate((WNDPROC)WndProc);
@@ -69,6 +72,7 @@ namespace Sunburst.WindowsForms.Interop
 
         public void DestroyHandle()
         {
+            if (Handle == IntPtr.Zero) throw new InvalidOperationException("This instance does not have a handle to destroy");
             NativeMethods.DestroyWindow(Handle);
         }
     }
