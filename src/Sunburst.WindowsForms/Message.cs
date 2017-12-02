@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 
 namespace Sunburst.WindowsForms
 {
@@ -11,5 +10,14 @@ namespace Sunburst.WindowsForms
         public IntPtr lParam { get; set; }
 
         public IntPtr Result { get; set; }
+
+        public Message(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
+        {
+            this.hWnd = hWnd;
+            this.msg = msg;
+            this.wParam = wParam;
+            this.lParam = lParam;
+            this.Result = IntPtr.Zero;
+        }
     }
 }
