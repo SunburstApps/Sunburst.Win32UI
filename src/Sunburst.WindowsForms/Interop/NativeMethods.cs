@@ -84,10 +84,10 @@ namespace Sunburst.WindowsForms.Interop
         public static extern bool UpdateWindow(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        public static extern IntPtr CallWindowProc(WNDPROC wndProc, IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+        public static extern IntPtr CallWindowProc(WNDPROC wndProc, IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
-        public static extern IntPtr CallWindowProc(IntPtr wndProcRaw, IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+        public static extern IntPtr CallWindowProc(IntPtr wndProcRaw, IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
         public static extern IntPtr SetWindowProc(IntPtr hWnd, int index, WNDPROC wndProc);
@@ -96,7 +96,7 @@ namespace Sunburst.WindowsForms.Interop
         public static extern IntPtr SetWindowProcRaw(IntPtr hWnd, int index, IntPtr wndProc);
 
         [DllImport("user32.dll", EntryPoint = "DefWindowProcW")]
-        public static extern IntPtr DefWindowProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+        public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
         public static extern IntPtr GetParent(IntPtr hWnd);
@@ -116,6 +116,24 @@ namespace Sunburst.WindowsForms.Interop
 
         [DllImport("comctl32.dll")]
         public static extern bool InitCommonControlsEx(ref INITCOMMONCONTROLSEX init_struct);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetProp(IntPtr hWnd, string name);
+
+        [DllImport("user32.dll")]
+        public static extern void SetProp(IntPtr hWnd, string name, IntPtr value);
+
+        [DllImport("user32.dll")]
+        public static extern void RemoveProp(IntPtr hWnd, string name);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool GetClassInfo(IntPtr hInstance, string className, out WNDCLASSEXW classInfo);
+
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr GetModuleHandle(string fileName);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr RegisterClassExW(ref WNDCLASSEXW windowClass);
     }
 
 #pragma warning disable 0649
