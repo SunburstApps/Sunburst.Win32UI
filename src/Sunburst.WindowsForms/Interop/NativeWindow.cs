@@ -60,7 +60,7 @@ namespace Sunburst.WindowsForms.Interop
             WindowClass windowClass = WindowClass.GetWindowClass(createParams.ClassName, createParams.ClassStyle);
 
             IntPtr wndProc = Marshal.GetFunctionPointerForDelegate((WNDPROC)WndProc);
-            string fullClassName = windowClass.Register(wndProc, out superclassWndProc, out var dontCare);
+            string fullClassName = windowClass.Register(wndProc, out superclassWndProc);
 
             GCHandle gcHandle = GCHandle.Alloc(this);
 

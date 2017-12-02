@@ -40,12 +40,10 @@ namespace Sunburst.WindowsForms.Interop
 
         private string registeredClassName = null;
 
-        public string Register(IntPtr wndProc, out IntPtr superclassWndProc, out string superclassName)
+        public string Register(IntPtr wndProc, out IntPtr superclassWndProc)
         {
             bool ok = NativeMethods.GetClassInfo(IntPtr.Zero, ClassName, out var classInfo);
             if (!ok) throw new Win32Exception("Invalid window class name '" + ClassName + "'");
-
-            superclassName = classInfo.lpszClassName;
             superclassWndProc = classInfo.lpfnWndProc;
 
             if (registeredClassName != null)
