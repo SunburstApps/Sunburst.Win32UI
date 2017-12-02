@@ -54,7 +54,7 @@ namespace Sunburst.WindowsForms.Interop
         public static extern bool IsWindowVisible(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        public static extern bool IsWindowIconic(IntPtr hWnd);
+        public static extern bool IsIconic(IntPtr hWnd);
 
         [DllImport("user32.dll")]
         public static extern bool IsZoomed(IntPtr hWnd);
