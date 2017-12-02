@@ -7,19 +7,19 @@ namespace Sunburst.WindowsForms
     {
         // This is actually the name of the desired superclass, NOT the window class to be created.
         // If null, no superclass will be used.
-        public string ClassName { get; set; }
+        public string ClassName { get; set; } = null;
 
-        public string Caption { get; set; }
+        public string Caption { get; set; } = "";
 
-        public int Style { get; set; }
+        public int Style { get; set; } = 0;
 
-        public int ExtendedStyle { get; set; }
+        public int ExtendedStyle { get; set; } = 0;
 
-        public int ClassStyle { get; set; }
+        public int ClassStyle { get; set; } = 0;
 
-        public Rectangle Frame { get; set; }
+        public Rectangle Frame { get; set; } = Rectangle.Empty;
 
-        public IntPtr ParentHandle { get; set; }
+        public IntPtr ParentHandle { get; set; } = IntPtr.Zero;
 
         public bool Equals(CreateParams other)
         {
