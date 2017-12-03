@@ -134,6 +134,9 @@ namespace Sunburst.WindowsForms.Interop
 
         [DllImport("user32.dll")]
         public static extern IntPtr RegisterClassExW(ref WNDCLASSEXW windowClass);
+
+        [DllImport("user32.dll", EntryPoint = "LoadCursorW")]
+        public static extern IntPtr LoadCursor(IntPtr hInstance, IntPtr cursorId);
     }
 
 #pragma warning disable 0649
