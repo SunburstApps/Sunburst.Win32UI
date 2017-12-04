@@ -110,6 +110,6 @@ namespace Sunburst.WindowsForms
         /// <summary>
         /// The handle to the native cursor data.
         /// </summary>
-        public IntPtr Handle { get; protected set; }
+        public IntPtr Handle { get; }
     }
 }
