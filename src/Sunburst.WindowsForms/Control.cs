@@ -6,7 +6,7 @@ using Sunburst.WindowsForms.Interop;
 
 namespace Sunburst.WindowsForms
 {
-    public class Control : IWin32Window
+    public class Control : Component, IWin32Window
     {
         private ControlNativeWindow nativeWindow;
 
