@@ -18,7 +18,7 @@ namespace Sunburst.WindowsForms.Interop
 
         protected override void ProcessMessage(ref Message m)
         {
-            Owner.WndProc(ref m);
+            Owner.CallWndProc(ref m);
         }
     }
 }

@@ -17,9 +17,11 @@ namespace Sunburst.WindowsForms
             nativeWindow.DefaultProcessMessage(ref m);
         }
 
-        protected internal virtual void WndProc(ref Message m)
+        protected virtual void WndProc(ref Message m)
         {
-            nativeWindow.DefaultProcessMessage(ref m);
+            DefWndProc(ref m);
         }
+
+        internal void CallWndProc(ref Message m) => WndProc(ref m);
     }
 }
