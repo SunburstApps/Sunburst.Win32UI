@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">$(TargetFrameworks); net46</TargetFrameworks>
-    <DefineConstants Condition="'$(TargetFramework)' == 'netcoreapp1.1'">IS_CORECLR</DefineConstants>
+    <DefineConstants Condition="'$(TargetFramework)' == 'netcoreapp2.0'">IS_CORECLR</DefineConstants>
     <DefineConstants Condition="'$(TargetFramework)' == 'net46'">IS_FULL_FRAMEWORK</DefineConstants>
   </PropertyGroup>
 
