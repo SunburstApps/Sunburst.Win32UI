@@ -5,7 +5,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class Toolbar : Window
+    public class Toolbar : Control
     {
         #region Messages
         private const uint WM_USER = 0x400;
@@ -99,8 +99,18 @@ namespace Sunburst.Win32UI.CommonControls
         private const uint TB_HITTEST = (WM_USER + 69);
         #endregion
 
-        public const string WindowClass = "ToolbarWindow32";
-        public override string WindowClassName => WindowClass;
+        public Toolbar() : base() { }
+        public Toolbar(IntPtr hWnd) : base(hWnd) { }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "ToolbarWindow32";
+                return cp;
+            }
+        }
 
         public bool GetButtonEnabled(int buttonId)
         {
@@ -167,7 +177,7 @@ namespace Sunburst.Win32UI.CommonControls
         {
             get
             {
-                return new ToolTip() { Handle = SendMessage(TB_GETTOOLTIPS, IntPtr.Zero, IntPtr.Zero) };
+                return new ToolTip(SendMessage(TB_GETTOOLTIPS, IntPtr.Zero, IntPtr.Zero));
             }
 
             set
@@ -176,7 +186,7 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public void SetNotificationTarget(Window window)
+        public void SetNotificationTarget(Control window)
         {
             SendMessage(TB_SETPARENT, window.Handle, IntPtr.Zero);
         }

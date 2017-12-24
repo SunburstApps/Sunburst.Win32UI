@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Sunburst.Win32UI.Events;
 using Sunburst.Win32UI.Graphics;
 using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.Layout
 {
-    public class SplitContainer : CustomWindow
+    public class SplitContainer : Control
     {
         // Continue at: GetSystemSettings() method [atlsplit.h line 966]
 
@@ -21,7 +20,7 @@ namespace Sunburst.Win32UI.Layout
 
         private int? mSplitterPosition = null, mNewSplitterPosition = null, mProportionalPosition = null;
         private SplitContainerPane mDefaultActivePane = SplitContainerPane.None, mDefaultSinglePane = SplitContainerPane.None;
-        private Window mSavedFocusWindow = null;
+        private IntPtr mSavedFocusWindow = IntPtr.Zero;
         private int mSplitterBarThickness = 4;
         private Cursor mCursor = null;
         private int mMinPaneSize = 0, mSplitterBarEdge = 0;
@@ -32,26 +31,14 @@ namespace Sunburst.Win32UI.Layout
         private bool mProportionalDefaultPosition = false;
         private Rect mSplitterRect;
 
-        private Dictionary<SplitContainerPane, Window> mSplitPanes = new Dictionary<SplitContainerPane, Window>(2);
-
-        private void CommonConstructor()
-        {
-            // This method exists because SplitContainer constructor(hWnd) cannot inherit
-            // from both base(hWnd) and this() at the same time.
-            mSplitPanes[SplitContainerPane.LeftTop] = new Window(IntPtr.Zero);
-            mSplitPanes[SplitContainerPane.RightBottom] = new Window(IntPtr.Zero);
-
-            mSplitterRect = Rect.Zero;
-        }
+        private Dictionary<SplitContainerPane, Control> mSplitPanes = new Dictionary<SplitContainerPane, Control>(2);
 
         public SplitContainer()
         {
-            CommonConstructor();
-        }
+            mSplitPanes[SplitContainerPane.LeftTop] = null;
+            mSplitPanes[SplitContainerPane.RightBottom] = null;
 
-        public SplitContainer(IntPtr hWnd) : base(hWnd)
-        {
-            CommonConstructor();
+            mSplitterRect = Rect.Zero;
         }
 
         public Rect GetSplitterRect() => mSplitterRect;
@@ -144,16 +131,16 @@ namespace Sunburst.Win32UI.Layout
         {
             if (pane != SplitContainerPane.None)
             {
-                if (!mSplitPanes[pane].IsVisible) mSplitPanes[pane].Show();
+                if (!mSplitPanes[pane]?.IsVisible ?? false) mSplitPanes[pane]?.Show();
                 SplitContainerPane otherPane = (pane == SplitContainerPane.LeftTop) ? SplitContainerPane.RightBottom : SplitContainerPane.LeftTop;
-                mSplitPanes[otherPane].Hide();
+                mSplitPanes[otherPane]?.Hide();
 
                 if (mDefaultActivePane != pane) mDefaultActivePane = pane;
             }
             else if (mDefaultActivePane != SplitContainerPane.None)
             {
                 SplitContainerPane otherPane = (pane == SplitContainerPane.LeftTop) ? SplitContainerPane.RightBottom : SplitContainerPane.LeftTop;
-                mSplitPanes[otherPane].Show();
+                mSplitPanes[otherPane]?.Show();
             }
 
             mDefaultActivePane = pane;
@@ -174,7 +161,7 @@ namespace Sunburst.Win32UI.Layout
             mProportionalDefaultPosition = true;
         }
 
-        public Window GetPane(SplitContainerPane pane)
+        public Control GetPane(SplitContainerPane pane)
         {
             if (pane == SplitContainerPane.None)
             {
@@ -191,7 +178,7 @@ namespace Sunburst.Win32UI.Layout
             }
         }
 
-        public void SetPane(SplitContainerPane pane, Window content, bool update = true)
+        public void SetPane(SplitContainerPane pane, Control content, bool update = true)
         {
             if (pane == SplitContainerPane.None)
             {
@@ -201,7 +188,7 @@ namespace Sunburst.Win32UI.Layout
             IntPtr contentHandle = content?.Handle ?? IntPtr.Zero;
             if (pane == SplitContainerPane.LeftTop)
             {
-                IntPtr otherHandle = mSplitPanes[SplitContainerPane.RightBottom].Handle;
+                IntPtr otherHandle = mSplitPanes[SplitContainerPane.RightBottom]?.Handle ?? IntPtr.Zero;
                 if (otherHandle != IntPtr.Zero && otherHandle == contentHandle)
                 {
                     throw new ArgumentException("You cannot set the same control as both the left/top and right/bottom pane");
@@ -211,7 +198,7 @@ namespace Sunburst.Win32UI.Layout
             }
             else if (pane == SplitContainerPane.RightBottom)
             {
-                IntPtr otherHandle = mSplitPanes[SplitContainerPane.LeftTop].Handle;
+                IntPtr otherHandle = mSplitPanes[SplitContainerPane.LeftTop]?.Handle ?? IntPtr.Zero;
                 if (otherHandle != IntPtr.Zero && otherHandle == contentHandle)
                 {
                     throw new ArgumentException("You cannot set the same control as both the left/top and right/bottom pane");
@@ -230,7 +217,7 @@ namespace Sunburst.Win32UI.Layout
                 throw new ArgumentException($"You cannot pass {nameof(SplitContainerPane)}.{nameof(SplitContainerPane.None)} to this method", nameof(pane));
             }
 
-            IntPtr hWnd = mSplitPanes[pane].Handle;
+            IntPtr hWnd = mSplitPanes[pane]?.Handle ?? IntPtr.Zero;
             if (hWnd != IntPtr.Zero) NativeMethods.SetFocus(hWnd);
 
             mDefaultSinglePane = pane;
@@ -241,8 +228,11 @@ namespace Sunburst.Win32UI.Layout
             IntPtr hWnd = NativeMethods.GetFocus();
             if (hWnd != IntPtr.Zero)
             {
-                if (mSplitPanes[SplitContainerPane.LeftTop].Handle == hWnd || NativeMethods.IsChild(mSplitPanes[SplitContainerPane.LeftTop].Handle, hWnd)) return SplitContainerPane.LeftTop;
-                else if (mSplitPanes[SplitContainerPane.RightBottom].Handle == hWnd || NativeMethods.IsChild(mSplitPanes[SplitContainerPane.RightBottom].Handle, hWnd)) return SplitContainerPane.RightBottom;
+                IntPtr leftHandle = mSplitPanes[SplitContainerPane.LeftTop]?.Handle ?? IntPtr.Zero;
+                IntPtr rightHandle = mSplitPanes[SplitContainerPane.RightBottom]?.Handle ?? IntPtr.Zero;
+
+                if (leftHandle != IntPtr.Zero && (leftHandle == hWnd || NativeMethods.IsChild(leftHandle, hWnd))) return SplitContainerPane.LeftTop;
+                else if (rightHandle != IntPtr.Zero && (rightHandle == hWnd || NativeMethods.IsChild(rightHandle, hWnd))) return SplitContainerPane.RightBottom;
             }
 
             return SplitContainerPane.None;
@@ -373,117 +363,105 @@ namespace Sunburst.Win32UI.Layout
             throw new NotImplementedException();
         }
 
-        protected override void OnCreated(ResultHandledEventArgs e)
+        protected override void WndProc(ref Message m)
         {
-            base.OnCreated(e);
-        }
+            bool handled = false;
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            if (mDefaultSinglePane == SplitContainerPane.None && !mSplitterPosition.HasValue)
-                SetSplitterPosition(null);
-
-            using (WindowPaintGraphicsContext dc = new WindowPaintGraphicsContext(this))
+            if (m.MessageId == WindowMessages.WM_PAINT)
             {
-                DrawSplitter(dc);
-            }
+                if (mDefaultSinglePane == SplitContainerPane.None && !mSplitterPosition.HasValue)
+                    SetSplitterPosition(null);
 
-            e.Handled = true;
-            e.ResultPointer = IntPtr.Zero;
-        }
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-
-            if (NativeMethods.GetCapture() == Handle)
-            {
-                int newSplitPosition = 0;
-                if (Orientation == SplitContainerOrientation.Vertical) newSplitPosition = e.MouseLocation.x - mSplitterRect.left - mDragOffset;
-                else newSplitPosition = e.MouseLocation.y - mSplitterRect.top - mDragOffset;
-
-                if (mSplitterPosition != newSplitPosition)
+                using (WindowPaintGraphicsContext dc = new WindowPaintGraphicsContext(this))
                 {
-                    if (mFullDrag)
+                    DrawSplitter(dc);
+                }
+
+                m.Result = IntPtr.Zero;
+            }
+            else if (m.MessageId == WindowMessages.WM_MOUSEMOVE)
+            {
+                int locationComposite = (int)m.LParam;
+                Point mouseLocation = new Point(locationComposite & 0xFFFF, (locationComposite >> 16) & 0xFFFF);
+
+                if (NativeMethods.GetCapture() == Handle)
+                {
+                    int newSplitPosition = 0;
+                    if (Orientation == SplitContainerOrientation.Vertical) newSplitPosition = mouseLocation.x - mSplitterRect.left - mDragOffset;
+                    else newSplitPosition = mouseLocation.y - mSplitterRect.top - mDragOffset;
+
+                    if (mSplitterPosition != newSplitPosition)
                     {
-                        SetSplitterPosition(newSplitPosition);
-                        Update();
+                        if (mFullDrag)
+                        {
+                            SetSplitterPosition(newSplitPosition);
+                            Update();
+                        }
+                        else
+                        {
+                            DrawGhostBar();
+                            SetSplitterPosition(newSplitPosition, false);
+                            DrawGhostBar();
+                        }
                     }
-                    else
+                }
+                else
+                {
+                    if (IsOverSplitterBar(mouseLocation.x, mouseLocation.y))
                     {
-                        DrawGhostBar();
-                        SetSplitterPosition(newSplitPosition, false);
-                        DrawGhostBar();
+                        Cursor.Current = mCursor;
                     }
                 }
             }
-            else
+            else if (m.MessageId == WindowMessages.WM_LBUTTONDOWN)
             {
-                if (IsOverSplitterBar(e.MouseLocation.x, e.MouseLocation.y))
+                int locationComposite = (int)m.LParam;
+                Point mouseLocation = new Point(locationComposite & 0xFFFF, (locationComposite >> 16) & 0xFFFF0);
+
+                if (NativeMethods.GetCapture() != Handle && IsOverSplitterBar(mouseLocation.x, mouseLocation.y))
                 {
+                    mNewSplitterPosition = mSplitterPosition;
+                    NativeMethods.SetCapture(Handle);
+                    mSavedFocusWindow = NativeMethods.GetFocus();
+                    NativeMethods.SetFocus(Handle);
                     Cursor.Current = mCursor;
+
+                    if (!mFullDrag) DrawGhostBar();
+                    if (Orientation == SplitContainerOrientation.Vertical) mDragOffset = mouseLocation.x - mSplitterRect.left - (mSplitterPosition ?? 0);
+                    else mDragOffset = mouseLocation.y - mSplitterRect.top - (mSplitterPosition ?? 0);
+                }
+                else if (NativeMethods.GetCapture() == Handle && !IsOverSplitterBar(mouseLocation.x, mouseLocation.y))
+                {
+                    NativeMethods.ReleaseCapture();
                 }
             }
-        }
-
-        protected override void OnMouseLeftButtonDown(MouseEventArgs e)
-        {
-            base.OnMouseLeftButtonDown(e);
-
-            if (NativeMethods.GetCapture() != Handle && IsOverSplitterBar(e.MouseLocation.x, e.MouseLocation.y))
+            else if (m.MessageId == WindowMessages.WM_LBUTTONUP)
             {
-                mNewSplitterPosition = mSplitterPosition;
-                NativeMethods.SetCapture(Handle);
-                mSavedFocusWindow = new Window(NativeMethods.GetFocus());
-                NativeMethods.SetFocus(Handle);
-                Cursor.Current = mCursor;
-
-                if (!mFullDrag) DrawGhostBar();
-                if (Orientation == SplitContainerOrientation.Vertical) mDragOffset = e.MouseLocation.x - mSplitterRect.left - (mSplitterPosition ?? 0);
-                else mDragOffset = e.MouseLocation.y - mSplitterRect.top - (mSplitterPosition ?? 0);
+                if (NativeMethods.GetCapture() == Handle)
+                {
+                    mNewSplitterPosition = mSplitterPosition;
+                    NativeMethods.ReleaseCapture();
+                }
             }
-            else if (NativeMethods.GetCapture() == Handle && !IsOverSplitterBar(e.MouseLocation.x, e.MouseLocation.y))
+            else if (m.MessageId == WindowMessages.WM_LBUTTONDBLCLK)
             {
-                NativeMethods.ReleaseCapture();
+                SetSplitterPosition(null);
             }
-
-            e.Handled = false;
-        }
-
-        protected override void OnMouseLeftButtonUp(MouseEventArgs e)
-        {
-            base.OnMouseLeftButtonUp(e);
-
-            if (NativeMethods.GetCapture() == Handle)
-            {
-                mNewSplitterPosition = mSplitterPosition;
-                NativeMethods.ReleaseCapture();
-            }
-
-            e.Handled = false;
-        }
-
-        protected override void OnMouseLeftButtonDoubleClick(MouseEventArgs e)
-        {
-            base.OnMouseLeftButtonDoubleClick(e);
-            SetSplitterPosition(null);
-        }
-
-        protected override IntPtr ProcessMessage(uint msg, IntPtr wParam, IntPtr lParam)
-        {
-            if (msg == WindowMessages.WM_SETCURSOR)
+            else if (m.MessageId == WindowMessages.WM_SETCURSOR)
             {
                 const int HTCLIENT = 1;
-                if (wParam == Handle && (((int)lParam) & 0xFFFF) == HTCLIENT)
+                if (m.WParam == Handle && (((int)m.LParam) & 0xFFFF) == HTCLIENT)
                 {
                     int position = NativeMethods.GetMessagePos();
                     Point pt = new Point((position & 0xFFFF), (position >> 16) & 0xFFFF);
-                    if (IsOverSplitterBar(pt.x, pt.y)) return (IntPtr)1;
+                    if (IsOverSplitterBar(pt.x, pt.y))
+                    {
+                        m.Result = (IntPtr)1;
+                        handled = true;
+                    }
                 }
             }
-            else if (msg == WindowMessages.WM_CAPTURECHANGED)
+            else if (m.MessageId == WindowMessages.WM_CAPTURECHANGED)
             {
                 if (!mFullDrag) DrawGhostBar();
 
@@ -496,13 +474,13 @@ namespace Sunburst.Win32UI.Layout
                     Invalidate();
                 }
 
-                if (mSavedFocusWindow != null) NativeMethods.SetFocus(mSavedFocusWindow.Handle);
+                if (mSavedFocusWindow != null) NativeMethods.SetFocus(mSavedFocusWindow);
             }
-            else if (msg == WindowMessages.WM_KEYDOWN)
+            else if (m.MessageId == WindowMessages.WM_KEYDOWN)
             {
                 if (NativeMethods.GetCapture() == Handle)
                 {
-                    ushort keyCode = (ushort)(int)wParam;
+                    ushort keyCode = (ushort)(int)m.WParam;
                     VirtualKeys key = (VirtualKeys)keyCode;
                     if (key == VirtualKeys.VK_RETURN)
                     {
@@ -555,7 +533,7 @@ namespace Sunburst.Win32UI.Layout
                     }
                 }
             }
-            else if (msg == WindowMessages.WM_SETFOCUS)
+            else if (m.MessageId == WindowMessages.WM_SETFOCUS)
             {
                 if (NativeMethods.GetCapture() != Handle)
                 {
@@ -572,7 +550,7 @@ namespace Sunburst.Win32UI.Layout
                     }
                 }
             }
-            else if (msg == WindowMessages.WM_CREATE)
+            else if (m.MessageId == WindowMessages.WM_CREATE)
             {
                 const uint SPI_GETDRAGFULLWINDOWS = 0x26;
                 using (HGlobal ptr = new HGlobal(Marshal.SizeOf<int>()))
@@ -582,7 +560,8 @@ namespace Sunburst.Win32UI.Layout
                 }
             }
 
-            return base.ProcessMessage(msg, wParam, lParam);
+
+            if (!handled) base.WndProc(ref m);
         }
 
         private bool IsOverSplitterRect(int? x, int? y)

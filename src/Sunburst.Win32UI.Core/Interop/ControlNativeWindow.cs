@@ -1,6 +1,4 @@
-using System;
-
-namespace Sunburst.WindowsForms.Interop
+﻿namespace Sunburst.Win32UI.Interop
 {
     internal sealed class ControlNativeWindow : NativeWindow
     {

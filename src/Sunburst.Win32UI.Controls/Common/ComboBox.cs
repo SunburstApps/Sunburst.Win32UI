@@ -6,7 +6,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class ComboBox : Window
+    public class ComboBox : Control
     {
         #region Messages
         private const uint CB_GETEDITSEL = 0x0140;
@@ -51,8 +51,15 @@ namespace Sunburst.Win32UI.CommonControls
         private const uint CB_GETCUEBANNER        = 0x1704;
         #endregion
 
-        public const string WindowClass = "COMBOBOX";
-        public override string WindowClassName => WindowClass;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "COMBOBOX";
+                return cp;
+            }
+        }
 
         public int Count => (int)SendMessage(CB_GETCOUNT, IntPtr.Zero, IntPtr.Zero);
 

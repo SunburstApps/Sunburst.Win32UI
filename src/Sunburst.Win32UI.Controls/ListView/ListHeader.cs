@@ -7,7 +7,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class ListHeader : Window
+    public class ListHeader : Control
     {
         #region Messages
         private const uint HDM_FIRST = 0x1200;
@@ -37,8 +37,18 @@ namespace Sunburst.Win32UI.CommonControls
         private const uint HDM_SETFOCUSEDITEM = (HDM_FIRST + 28);
         #endregion
 
-        public const string WindowClass = "SysHeader32";
-        public override string WindowClassName => WindowClass;
+        public ListHeader() : base() { }
+        public ListHeader(IntPtr hWnd) : base(hWnd) { }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "SysHeader32";
+                return cp;
+            }
+        }
 
         public int ColumnCount => (int)SendMessage(HDM_GETITEMCOUNT, IntPtr.Zero, IntPtr.Zero);
         public int AddColumn(ListHeaderColumn column) => InsertColumn(ColumnCount, column);

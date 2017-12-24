@@ -7,7 +7,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class ListView : Window
+    public class ListView : Control
     {
         #region Messages
         private const uint LVM_FIRST = 0x1000;
@@ -164,10 +164,25 @@ namespace Sunburst.Win32UI.CommonControls
         private const uint LVM_GETBKIMAGE = LVM_GETBKIMAGEW;
         #endregion
 
-        public ListView() { }
-        public ListView(IntPtr hWnd) : base(hWnd) { }
-        public const string WindowClass = "SysListView32";
-        public override string WindowClassName => WindowClassName;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "SysListView32";
+                return cp;
+            }
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.MessageId == WindowMessages.WM_CREATE)
+            {
+                NativeMethods.SetWindowTheme(Handle, "Explorer", null);
+            }
+
+            base.WndProc(ref m);
+        }
 
         public Color BackgroundColor
         {
@@ -207,8 +222,6 @@ namespace Sunburst.Win32UI.CommonControls
                 SendMessage(LVM_SETTEXTBKCOLOR, IntPtr.Zero, (IntPtr)Color.ToWin32Color(value));
             }
         }
-
-        public void SetTheme() => NativeMethods.SetWindowTheme(Handle, "Explorer", null);
 
         public NonOwnedImageList GetImageList(ListViewImageListType type)
         {
@@ -345,8 +358,8 @@ namespace Sunburst.Win32UI.CommonControls
             return (int)SendMessage(LVM_SETITEMPOSITION32, (IntPtr)item, new IntPtr(&pos)) == 1;
         }
 
-        public TextBox GetEditControl() => new TextBox() { Handle = SendMessage(LVM_GETEDITCONTROL, IntPtr.Zero, IntPtr.Zero) };
-        public ListHeader GetHeader() => new ListHeader() { Handle = SendMessage(LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero) };
+        public TextBox GetEditControl() => new TextBox(SendMessage(LVM_GETEDITCONTROL, IntPtr.Zero, IntPtr.Zero));
+        public ListHeader GetHeader() => new ListHeader(SendMessage(LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero));
 
         public unsafe bool GetColumn(int index, ref LVCOLUMN column)
         {
@@ -638,7 +651,7 @@ namespace Sunburst.Win32UI.CommonControls
         {
             get
             {
-                return new ToolTip() { Handle = SendMessage(LVM_GETTOOLTIPS, IntPtr.Zero, IntPtr.Zero) };
+                return new ToolTip(SendMessage(LVM_GETTOOLTIPS, IntPtr.Zero, IntPtr.Zero));
             }
 
             set
@@ -901,7 +914,7 @@ namespace Sunburst.Win32UI.CommonControls
         public void SnapItemsToGrid() => SendMessage(LVM_ARRANGE, (IntPtr)0x5, IntPtr.Zero);
         public bool UpdateItem(int item) => (int)SendMessage(LVM_UPDATE, (IntPtr)item, IntPtr.Zero) == 1;
         public unsafe ImageList CreateDragImage(int item, Point pt) => new ImageList() { Handle = SendMessage(LVM_CREATEDRAGIMAGE, (IntPtr)item, new IntPtr(&pt)) };
-        public TextBox EditLabel(int item) => new TextBox() { Handle = SendMessage(LVM_EDITLABEL, (IntPtr)item, IntPtr.Zero) };
+        public TextBox EditLabel(int item) => new TextBox(SendMessage(LVM_EDITLABEL, (IntPtr)item, IntPtr.Zero));
         public void CancelEditLabel() => SendMessage(LVM_CANCELEDITLABEL, IntPtr.Zero, IntPtr.Zero);
         
         public Size EstimateDisplaySize(int itemCount = -1) => EstimateDisplaySize(itemCount, new Point(ClientRect.Width, ClientRect.Height));

@@ -4,17 +4,21 @@ using System.Text;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class HotKey : Window
+    public class HotKey : Control
     {
         public HotKey()
         {
         }
 
-        public HotKey(IntPtr hWnd) : base(hWnd)
+        protected override CreateParams CreateParams
         {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "msctls_hotkey32";
+                return cp;
+            }
         }
-
-        public override string WindowClassName => "msctls_hotkey32";
 
         public void GetHotKey(out ushort keyCode, out HotKeyModifiers modifiers)
         {

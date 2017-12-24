@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Sunburst.Win32UI.Graphics;
-using Sunburst.Win32UI.Handles;
 using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI
@@ -10,9 +9,9 @@ namespace Sunburst.Win32UI
     /// <summary>
     /// Represents a Windows control or top-level window (<c>HWND</c>).
     /// </summary>
-    public class Window : IWin32Window
+    public class Control : IWin32Window
     {
-        static Window()
+        static Control()
         {
             NativeMethods.INITCOMMONCONTROLSEX init_struct = new NativeMethods.INITCOMMONCONTROLSEX();
             init_struct.dwSize = Marshal.SizeOf<NativeMethods.INITCOMMONCONTROLSEX>();
@@ -21,55 +20,68 @@ namespace Sunburst.Win32UI
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Window"/> that does not contain a valid handle.
+        /// Creates a new instance of <see cref="Control"/> that does not contain a valid handle.
         /// </summary>
-        public Window()
+        public Control()
         {
         }
 
-        /// <summary>
-        /// Creates a new instance of <see cref="Window"/> with the given handle.
-        /// </summary>
-        /// <param name="hWnd">
-        /// A handle to a Win32 control or top-level window.
-        /// </param>
-        public Window(IntPtr hWnd)
+        public Control(IntPtr hWnd)
         {
-            Handle = hWnd;
+            m_NativeWindow = new NativeWindow(hWnd);
         }
 
-        public static IntPtr CreateHandle(string windowClass, Rect frame, string text,
-            int style = 0, int extendedStyle = 0, Window parent = null, IMenuHandle hMenu = null)
+        public virtual void CreateHandle()
         {
-            IntPtr hWndParent = parent?.Handle ?? IntPtr.Zero;
-            return NativeMethods.CreateWindowEx(extendedStyle, windowClass, text,
-                style, frame.left, frame.top, frame.Width, frame.Height, hWndParent, hMenu?.Handle ?? IntPtr.Zero,
-                IntPtr.Zero, IntPtr.Zero);
+            if (m_NativeWindow != null) throw new InvalidOperationException($"Cannot call {nameof(CreateHandle)}() on a {nameof(Control)} instance that already has one");
+
+            m_NativeWindow = new ControlNativeWindow(this);
+            m_NativeWindow.CreateHandle(CreateParams);
         }
 
-        public virtual void CreateHandle(Rect frame, string text, int style = 0, int extendedStyle = 0,
-            Window parent = null, IMenuHandle hMenu = null)
+        protected virtual CreateParams CreateParams
         {
-            if (WindowClassName == null) throw new InvalidOperationException($"{nameof(WindowClassName)} must be overridden");
-            Handle = CreateHandle(WindowClassName, frame, text, style, extendedStyle, parent, hMenu);
-        }
-
-        public bool DestroyHandle()
-        {
-            if (Handle != IntPtr.Zero && NativeMethods.IsWindow(Handle))
+            get
             {
-                NativeMethods.DestroyWindow(Handle);
-                Handle = IntPtr.Zero;
-                return true;
+                CreateParams cp = new CreateParams();
+                cp.Style = WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS | WindowStyles.WS_CHILD;
+                return cp;
             }
+        }
 
-            return false;
+        public void DestroyHandle()
+        {
+            if (m_NativeWindow != null)
+            {
+                m_NativeWindow.DestroyHandle();
+                m_NativeWindow = null;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Cannot call {nameof(DestroyHandle)} on a {nameof(Control)} that doesn't have one");
+            }
         }
 
         /// <summary>
         /// The handle to the Win32 control or top-level window that this instance wraps.
         /// </summary>
-        public IntPtr Handle { get; set; }
+        public IntPtr Handle => m_NativeWindow.Handle;
+        private NativeWindow m_NativeWindow = null;
+
+        protected void DefWndProc(ref Message m)
+        {
+            if (m_NativeWindow is ControlNativeWindow native)
+            {
+                native.DefaultProcessMessage(ref m);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Cannot call {nameof(DefWndProc)} on a {nameof(Control)} that was created with an arbitrary HWND");
+            }
+        }
+
+        protected virtual void WndProc(ref Message m) => DefWndProc(ref m);
+        internal void CallWndProc(ref Message m) => WndProc(ref m);
 
         public string GetText()
         {
@@ -117,27 +129,6 @@ namespace Sunburst.Win32UI
             }
         }
 
-        public Window Parent
-        {
-            get => new Window(NativeMethods.GetParent(Handle));
-            set => NativeMethods.SetParent(Handle, value.Handle);
-        }
-
-        public IEnumerable<Window> ChildWindows
-        {
-            get
-            {
-                List<Window> children = new List<Window>();
-
-                for (IntPtr child = NativeMethods.GetWindow(Handle, NativeMethods.GW_CHILD); child != IntPtr.Zero; child = NativeMethods.GetWindow(child, NativeMethods.GW_HWNDNEXT))
-                {
-                    children.Add(new Window(child));
-                }
-
-                return children;
-            }
-        }
-
         public IntPtr GetWindowLongPtr(int index) => NativeMethods.GetWindowLongPtr(Handle, index);
         public void SetWindowLongPtr(int index, IntPtr value) => NativeMethods.SetWindowLongPtr(Handle, index, value);
         public int GetStyle() => (int)GetWindowLongPtr(-16);
@@ -164,6 +155,18 @@ namespace Sunburst.Win32UI
             }
         }
 
-        public virtual string WindowClassName => null;
+        public void SetTimer(uint timerId, TimeSpan interval)
+        {
+            if (timerId == 0) throw new ArgumentException("Timer ID cannot be zero", nameof(timerId));
+            uint retval = NativeMethods.SetTimer(Handle, timerId, Convert.ToUInt32(Math.Round(interval.TotalMilliseconds)), IntPtr.Zero);
+            if (retval == 0) throw new Win32Exception();
+        }
+
+        public void KillTimer(uint timerId)
+        {
+            if (timerId == 0) throw new ArgumentException("Timer ID cannot be zero", nameof(timerId));
+            bool retval = NativeMethods.KillTimer(Handle, timerId);
+            if (!retval) throw new Win32Exception();
+        }
     }
 }

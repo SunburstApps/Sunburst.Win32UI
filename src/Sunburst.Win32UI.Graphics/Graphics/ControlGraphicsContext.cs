@@ -5,14 +5,14 @@ namespace Sunburst.Win32UI.Graphics
 {
     public class WindowGraphicsContext : NonOwnedGraphicsContext, IDisposable
     {
-        public WindowGraphicsContext(Window parent) : base(NativeMethods.GetDC(parent.Handle))
+        public WindowGraphicsContext(Control parent) : base(NativeMethods.GetDC(parent.Handle))
         {
             Parent = parent;
         }
 
         public WindowGraphicsContext(IntPtr ptr) : base(ptr) { }
 
-        public Window Parent { get; private set; }
+        public Control Parent { get; private set; }
 
         public void Dispose()
         {

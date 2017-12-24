@@ -88,18 +88,18 @@
     </GetVisualStudioPath>
 
     <PropertyGroup>
-      <LinkToolPath>$(_VisualStudioPath)\VC\Tools\MSVC\14.11.25503\bin\Host$(LinkerPlatform.ToUpperInvariant())\$(LinkerPlatform)</LinkToolPath>
-      <EditbinToolPath>$(_VisualStudioPath)\VC\Tools\MSVC\14.11.25503\bin\Host$(LinkerPlatform.ToUpperInvariant())\$(LinkerPlatform)</EditbinToolPath>
+      <LinkToolPath>$(_VisualStudioPath)\VC\Tools\MSVC\14.12.25827\bin\Host$(LinkerPlatform.ToUpperInvariant())\$(LinkerPlatform)</LinkToolPath>
+      <EditbinToolPath>$(_VisualStudioPath)\VC\Tools\MSVC\14.12.25827\bin\Host$(LinkerPlatform.ToUpperInvariant())\$(LinkerPlatform)</EditbinToolPath>
 
       <RCIncludePaths>
-        $(_VisualStudioPath)\VC\Tools\MSVC\14.10.25017\ATLMFC\include;
-        $(_VisualStudioPath)\VC\Tools\MSVC\14.10.25017\include;
+        $(_VisualStudioPath)\VC\Tools\MSVC\14.12.25827\ATLMFC\include;
+        $(_VisualStudioPath)\VC\Tools\MSVC\14.12.25827\include;
         $(RCIncludePaths)
       </RCIncludePaths>
 
       <LinkLibraryPaths>
-        $(_VisualStudioPath)\VC\Tools\MSVC\14.10.25017\ATLMFC\lib\$(LinkerPlatform);
-        $(_VisualStudioPath)\VC\Tools\MSVC\14.10.25017\lib\$(LinkerPlatform);
+        $(_VisualStudioPath)\VC\Tools\MSVC\14.12.25827\ATLMFC\lib\$(LinkerPlatform);
+        $(_VisualStudioPath)\VC\Tools\MSVC\14.12.25827\lib\$(LinkerPlatform);
         $(LinkLibraryPaths)
       </LinkLibraryPaths>
     </PropertyGroup>

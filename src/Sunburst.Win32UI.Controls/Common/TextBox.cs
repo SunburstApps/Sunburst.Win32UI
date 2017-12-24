@@ -7,7 +7,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class TextBox : Window
+    public class TextBox : Control
     {
         #region Messages
         private const uint EM_GETSEL = 0x00B0;
@@ -60,7 +60,18 @@ namespace Sunburst.Win32UI.CommonControls
         private const uint EM_TAKEFOCUS = (ECM_FIRST + 8);
         #endregion
 
-        public override string WindowClassName => "EDIT";
+        public TextBox() : base() { }
+        public TextBox(IntPtr hWnd) : base(hWnd) { }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "EDIT";
+                return cp;
+            }
+        }
 
         public bool CanUndo
         {

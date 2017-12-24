@@ -43,7 +43,7 @@ namespace Sunburst.Win32UI.Theming
 
         public IntPtr Handle { get; private set; }
 
-        public ThemeData(Window window, string themeClassList)
+        public ThemeData(Control window, string themeClassList)
         {
             Handle = NativeMethods.OpenThemeData(window.Handle, themeClassList);
             if (Handle == IntPtr.Zero) throw new System.ComponentModel.Win32Exception();

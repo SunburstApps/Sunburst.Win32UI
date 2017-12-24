@@ -6,7 +6,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class ListBox : Window
+    public class ListBox : Control
     {
         #region Messages
         private const uint LB_ADDSTRING = 0x0180;
@@ -52,12 +52,15 @@ namespace Sunburst.Win32UI.CommonControls
         private const uint LB_GETLISTBOXINFO = 0x01B2;
         #endregion
 
-        public const string WindowClass = "LISTBOX";
-        public override string WindowClassName => WindowClass;
-
-        public void CreateHandle(Rect frame, string text, Window parent = null, IMenuHandle hMenu = null)
+        protected override CreateParams CreateParams
         {
-            CreateHandle(WindowClassName, frame, text, CommonControlStyles.LBS_STANDARD, 0, parent, hMenu);
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "LISTBOX";
+                cp.Style = CommonControlStyles.LBS_STANDARD;
+                return cp;
+            }
         }
 
         public int Count

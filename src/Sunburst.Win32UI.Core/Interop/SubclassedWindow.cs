@@ -28,13 +28,13 @@ namespace Sunburst.Win32UI.Interop
             }
         }
 
-        public SubclassedWindow(Window owner)
+        public SubclassedWindow(Control owner)
         {
             Owner = owner;
             ReplacementProcessMessage = (msg, wParam, lParam) => OriginalProcessMessage(msg, wParam, lParam);
         }
 
-        private Window Owner;
+        private Control Owner;
         private IntPtr OriginalWndProc;
         private bool AlreadySubclassed = false;
         private const int GWLP_WNDPROC = -4;

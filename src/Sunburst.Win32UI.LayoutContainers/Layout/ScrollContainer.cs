@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Sunburst.Win32UI.Events;
 using Sunburst.Win32UI.Graphics;
 using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.Layout
 {
-    public class ScrollContainer : CustomWindow
+    public class ScrollContainer : Control
     {
         public bool ScrollChildren { get; set; } = true;
         public bool DisableThumbTracking { get; set; } = false;
@@ -51,7 +49,7 @@ namespace Sunburst.Win32UI.Layout
                 {
                     for (IntPtr child = NativeMethods.GetWindow(Handle, NativeMethods.GW_CHILD); child != IntPtr.Zero; child = NativeMethods.GetWindow(child, NativeMethods.GW_HWNDNEXT))
                     {
-                        Window wnd = new Window(child);
+                        ExternalWindow wnd = new ExternalWindow(child);
                         Rect rect = wnd.WindowRect;
 
                         Point pt = new Point(rect.left, rect.top);
@@ -108,7 +106,7 @@ namespace Sunburst.Win32UI.Layout
                 {
                     for (IntPtr child = NativeMethods.GetWindow(Handle, NativeMethods.GW_CHILD); child != IntPtr.Zero; child = NativeMethods.GetWindow(child, NativeMethods.GW_HWNDNEXT))
                     {
-                        Window wnd = new Window(child);
+                        ExternalWindow wnd = new ExternalWindow(child);
                         Rect rect = wnd.WindowRect;
 
                         Point pt = new Point(rect.left, rect.top);
@@ -290,7 +288,7 @@ namespace Sunburst.Win32UI.Layout
             SetScrollOffset(new Point(x, y));
         }
 
-        public void ScrollIntoView(Window window)
+        public void ScrollIntoView(Control window)
         {
             Rect windowRect = window.WindowRect;
             Point[] points = new Point[2];
@@ -309,85 +307,74 @@ namespace Sunburst.Win32UI.Layout
             ScrollIntoView(targetRect);
         }
 
-        protected override void OnCreated(ResultHandledEventArgs e)
+        protected override void WndProc(ref Message m)
         {
-            base.OnCreated(e);
-            GetSystemSettings();
-        }
-
-        protected override void OnVerticalScroll(ScrollEventArgs e)
-        {
-            DoScroll(SCROLLINFO.SB_VERT, (int)e.Type, ref mOffset.y, mEntireSize.height, mPageSize.height, mLineSize.height);
-            base.OnVerticalScroll(e);
-        }
-
-        protected override void OnHorizontalScroll(ScrollEventArgs e)
-        {
-            DoScroll(SCROLLINFO.SB_HORZ, (int)e.Type, ref mOffset.x, mEntireSize.width, mPageSize.width, mLineSize.width);
-            base.OnHorizontalScroll(e);
-        }
-
-        protected override void OnMouseWheel(MouseWheelEventArgs e)
-        {
-            const int ONE_WHEEL_DETENT = 120;
-
-            int scrollCode = (mWheelLines == uint.MaxValue) ? ((e.WheelMovement > 0) ? SCROLLINFO.SB_PAGEUP : SCROLLINFO.SB_PAGEDOWN) : ((e.WheelMovement > 0) ? SCROLLINFO.SB_LINEUP : SCROLLINFO.SB_LINEDOWN);
-
-            mWheelDelta += e.WheelMovement;
-            int zTotal = Convert.ToInt32((mWheelLines == uint.MaxValue) ? Math.Abs(e.WheelMovement) : Math.Abs(e.WheelMovement) * mWheelLines);
-            if (mEntireSize.height > mClientSize.height)
-            {
-                for (int i = 0; i < zTotal; i += ONE_WHEEL_DETENT)
-                {
-                    DoScroll(SCROLLINFO.SB_VERT, scrollCode, ref mOffset.y, mEntireSize.height, mPageSize.height, mLineSize.height);
-                    Update();
-                }
-            }
-            else
-            {
-                // Can't scroll vertically, so scroll horizontally.
-                for (int i = 0; i < zTotal; i += ONE_WHEEL_DETENT)
-                {
-                    DoScroll(SCROLLINFO.SB_HORZ, scrollCode, ref mOffset.x, mEntireSize.width, mPageSize.width, mLineSize.width);
-                    Update();
-                }
-            }
-
-            mWheelDelta %= ONE_WHEEL_DETENT;
-            base.OnMouseWheel(e);
-        }
-
-        protected override void OnResized(WindowResizedEventArgs e)
-        {
-            DoSize(e.NewSize);
-            base.OnResized(e);
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            using (WindowPaintGraphicsContext context = new WindowPaintGraphicsContext(this))
-            {
-                context.SetViewportOrigin(new Point(-mOffset.x, -mOffset.y));
-                DoPaint(context);
-            }
-
-            e.Handled = true;
-        }
-
-        protected override IntPtr ProcessMessage(uint msg, IntPtr wParam, IntPtr lParam)
-        {
-            if (msg == WindowMessages.WM_SETTINGCHANGE)
+            if (m.MessageId == WindowMessages.WM_CREATE)
             {
                 GetSystemSettings();
             }
-            else if (msg == WindowMessages.WM_MOUSEHWHEEL)
+            else if (m.MessageId == WindowMessages.WM_VSCROLL)
+            {
+                DoScroll(SCROLLINFO.SB_VERT, (int)m.WParam & 0xFFFF, ref mOffset.y, mEntireSize.height, mPageSize.height, mLineSize.height);
+            }
+            else if (m.MessageId == WindowMessages.WM_VSCROLL)
+            {
+                DoScroll(SCROLLINFO.SB_HORZ, (int)m.WParam & 0xFFFF, ref mOffset.x, mEntireSize.width, mPageSize.width, mLineSize.width);
+            }
+            else if (m.MessageId == WindowMessages.WM_MOUSEWHEEL)
             {
                 const int ONE_WHEEL_DETENT = 120;
-                short zDelta = (short)wParam;
+
+                short wheelMovement = (short)(((int)m.WParam >> 16) & 0xFFFF);
+                int scrollCode = (mWheelLines == uint.MaxValue) ? ((wheelMovement > 0) ? SCROLLINFO.SB_PAGEUP : SCROLLINFO.SB_PAGEDOWN) : ((wheelMovement > 0) ? SCROLLINFO.SB_LINEUP : SCROLLINFO.SB_LINEDOWN);
+
+                mWheelDelta += wheelMovement;
+                int zTotal = Convert.ToInt32((mWheelLines == uint.MaxValue) ? Math.Abs(wheelMovement) : Math.Abs(wheelMovement) * mWheelLines);
+                if (mEntireSize.height > mClientSize.height)
+                {
+                    for (int i = 0; i < zTotal; i += ONE_WHEEL_DETENT)
+                    {
+                        DoScroll(SCROLLINFO.SB_VERT, scrollCode, ref mOffset.y, mEntireSize.height, mPageSize.height, mLineSize.height);
+                        Update();
+                    }
+                }
+                else
+                {
+                    // Can't scroll vertically, so scroll horizontally.
+                    for (int i = 0; i < zTotal; i += ONE_WHEEL_DETENT)
+                    {
+                        DoScroll(SCROLLINFO.SB_HORZ, scrollCode, ref mOffset.x, mEntireSize.width, mPageSize.width, mLineSize.width);
+                        Update();
+                    }
+                }
+
+                mWheelDelta %= ONE_WHEEL_DETENT;
+            }
+            else if (m.MessageId == WindowMessages.WM_SIZE)
+            {
+                int sizeComposite = (int)m.LParam;
+                DoSize(new Size(sizeComposite & 0xFFFF, (sizeComposite >> 16) & 0xFFFF));
+            }
+            else if (m.MessageId == WindowMessages.WM_PAINT)
+            {
+                using (WindowPaintGraphicsContext context = new WindowPaintGraphicsContext(this))
+                {
+                    context.SetViewportOrigin(new Point(-mOffset.x, -mOffset.y));
+                    DoPaint(context);
+                }
+            }
+            else if (m.MessageId == WindowMessages.WM_SETTINGCHANGE)
+            {
+                GetSystemSettings();
+            }
+            else if (m.MessageId == WindowMessages.WM_MOUSEHWHEEL)
+            {
+                const int ONE_WHEEL_DETENT = 120;
+                short zDelta = (short)m.WParam;
 
                 int scrollCode = (mWheelLines == uint.MaxValue) ? ((zDelta > 0) ? SCROLLINFO.SB_PAGELEFT : SCROLLINFO.SB_PAGERIGHT) : ((zDelta > 0) ? SCROLLINFO.SB_LINELEFT : SCROLLINFO.SB_LINERIGHT);
 
-                mWheelDelta += (short)wParam;
+                mWheelDelta += (short)m.WParam;
                 int zTotal = Convert.ToInt32((mWheelLines == uint.MaxValue) ? Math.Abs(zDelta) : Math.Abs(zDelta) * mWheelHorizontalDelta);
                 for (int i = 0; i < zTotal; i += ONE_WHEEL_DETENT)
                 {
@@ -396,10 +383,11 @@ namespace Sunburst.Win32UI.Layout
                 }
 
                 mWheelDelta %= ONE_WHEEL_DETENT;
-                return IntPtr.Zero;
+                m.Result = IntPtr.Zero;
             }
 
-            return base.ProcessMessage(msg, wParam, lParam);
+
+            base.WndProc(ref m);
         }
 
         private void DoSize(Size sz)

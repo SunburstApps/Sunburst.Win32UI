@@ -29,6 +29,9 @@ namespace Sunburst.Win32UI.Interop
         [DllImport("user32.dll")]
         public static extern bool SetScrollInfo(IntPtr hWnd, int wSBFlags, ref SCROLLINFO info);
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetParent(IntPtr hWnd);
+
         [DllImport("uxtheme.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int SetWindowTheme(IntPtr hWnd, string appName, string idList);
     }

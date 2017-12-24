@@ -33,10 +33,10 @@ namespace Sunburst.Win32UI.Layout
         private List<TableCellSize> mRowSizes;
         private int mColumnCount;
         private int mRowCount;
-        private Dictionary<Window, int> mColumns;
-        private Dictionary<Window, int> mColumnSpans;
-        private Dictionary<Window, int> mRows;
-        private Dictionary<Window, int> mRowSpans;
+        private Dictionary<Control, int> mColumns;
+        private Dictionary<Control, int> mColumnSpans;
+        private Dictionary<Control, int> mRows;
+        private Dictionary<Control, int> mRowSpans;
         private TableLayoutPanelGrowStyle mGrowStyle = TableLayoutPanelGrowStyle.FixedSize;
 
         public int ColumnCount
@@ -86,7 +86,7 @@ namespace Sunburst.Win32UI.Layout
             }
         }
 
-        public int GetColumn(Window control)
+        public int GetColumn(Control control)
         {
             if (control == null) throw new ArgumentNullException(nameof(control));
 
@@ -94,7 +94,7 @@ namespace Sunburst.Win32UI.Layout
             else return -1;
         }
 
-        public int GetRow(Window control)
+        public int GetRow(Control control)
         {
             if (control == null) throw new ArgumentNullException(nameof(control));
 
@@ -102,7 +102,7 @@ namespace Sunburst.Win32UI.Layout
             else return -1;
         }
 
-        public int GetColumnSpan(Window control)
+        public int GetColumnSpan(Control control)
         {
             if (control == null) throw new ArgumentNullException(nameof(control));
 
@@ -110,7 +110,7 @@ namespace Sunburst.Win32UI.Layout
             else return -1;
         }
 
-        public int GetRowSpan(Window control)
+        public int GetRowSpan(Control control)
         {
             if (control == null) throw new ArgumentNullException(nameof(control));
 
@@ -118,7 +118,7 @@ namespace Sunburst.Win32UI.Layout
             else return -1;
         }
 
-        public void SetColumn(Window control, int column)
+        public void SetColumn(Control control, int column)
         {
             if (control == null) throw new ArgumentNullException(nameof(control));
             if (column < -1) throw new ArgumentOutOfRangeException(nameof(column));
@@ -127,7 +127,7 @@ namespace Sunburst.Win32UI.Layout
             PerformLayout();
         }
 
-        public void SetRow(Window control, int row)
+        public void SetRow(Control control, int row)
         {
             if (control == null) throw new ArgumentNullException(nameof(control));
             if (row < -1) throw new ArgumentOutOfRangeException(nameof(row));
@@ -136,7 +136,7 @@ namespace Sunburst.Win32UI.Layout
             PerformLayout();
         }
 
-        public void SetColumnSpan(Window control, int span)
+        public void SetColumnSpan(Control control, int span)
         {
             if (control == null) throw new ArgumentNullException(nameof(control));
             if (span < -1) throw new ArgumentOutOfRangeException(nameof(span));
@@ -145,7 +145,7 @@ namespace Sunburst.Win32UI.Layout
             PerformLayout();
         }
 
-        public void SetRowSpan(Window control, int span)
+        public void SetRowSpan(Control control, int span)
         {
             if (control == null) throw new ArgumentNullException(nameof(control));
             if (span < -1) throw new ArgumentOutOfRangeException(nameof(span));

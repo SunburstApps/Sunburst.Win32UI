@@ -5,7 +5,7 @@ namespace Sunburst.Win32UI.Graphics
 {
     public class WindowPaintGraphicsContext : NonOwnedGraphicsContext, IDisposable
     {
-        public WindowPaintGraphicsContext(Window parent)
+        public WindowPaintGraphicsContext(Control parent)
         {
             NativeMethods.BeginPaint(parent.Handle, ref PaintStruct);
             Parent = parent;
@@ -14,7 +14,7 @@ namespace Sunburst.Win32UI.Graphics
 
         public WindowPaintGraphicsContext(IntPtr ptr) : base(ptr) { }
 
-        public Window Parent { get; private set; }
+        public Control Parent { get; private set; }
         private PAINTSTRUCT PaintStruct;
 
         public Rect RedrawRect => PaintStruct.rcPaint;

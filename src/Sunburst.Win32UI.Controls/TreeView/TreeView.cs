@@ -7,7 +7,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class TreeView : Window
+    public class TreeView : Control
     {
         #region Messages
         private const uint TV_FIRST = 0x1100;
@@ -74,8 +74,28 @@ namespace Sunburst.Win32UI.CommonControls
         private const uint TVM_GETITEMPARTRECT = (TV_FIRST + 72);
         #endregion
 
-        public const string WindowClass = "SysTreeView32";
-        public override string WindowClassName => WindowClass;
+        public TreeView() : base() { }
+        public TreeView(IntPtr hWnd) : base(hWnd) { }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "SysTreeView32";
+                return cp;
+            }
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.MessageId == WindowMessages.WM_CREATE)
+            {
+                NativeMethods.SetWindowTheme(Handle, "Explorer", null);
+            }
+
+            base.WndProc(ref m);
+        }
 
         public uint Count
         {
@@ -166,7 +186,7 @@ namespace Sunburst.Win32UI.CommonControls
         {
             get
             {
-                return new TextBox() { Handle = SendMessage(TVM_GETEDITCONTROL, IntPtr.Zero, IntPtr.Zero) };
+                return new TextBox(SendMessage(TVM_GETEDITCONTROL, IntPtr.Zero, IntPtr.Zero));
             }
         }
 
@@ -195,7 +215,7 @@ namespace Sunburst.Win32UI.CommonControls
         {
             get
             {
-                return new ToolTip() { Handle = SendMessage(TVM_GETTOOLTIPS, IntPtr.Zero, IntPtr.Zero) };
+                return new ToolTip(SendMessage(TVM_GETTOOLTIPS, IntPtr.Zero, IntPtr.Zero));
             }
 
             set
@@ -446,7 +466,7 @@ namespace Sunburst.Win32UI.CommonControls
 
         public TextBox BeginEditItemLabel(TreeViewItemHandle item)
         {
-            return new TextBox() { Handle = SendMessage(TVM_EDITLABELW, IntPtr.Zero, item.Handle) };
+            return new TextBox(SendMessage(TVM_EDITLABELW, IntPtr.Zero, item.Handle));
         }
 
         public bool EndEditItemLabel(bool discardChanges = false)

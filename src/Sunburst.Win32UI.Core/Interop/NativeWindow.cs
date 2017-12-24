@@ -5,6 +5,12 @@ namespace Sunburst.Win32UI.Interop
 {
     public class NativeWindow : IWin32Window
     {
+        public NativeWindow() { }
+        public NativeWindow(IntPtr hWnd)
+        {
+            Handle = hWnd;
+        }
+
         public IntPtr Handle { get; private set; } = IntPtr.Zero;
         private IntPtr superclassWndProc = IntPtr.Zero;
 

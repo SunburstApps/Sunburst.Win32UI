@@ -6,12 +6,12 @@ namespace Sunburst.Win32UI
 {
     public sealed class Application
     {
-        private static Stack<Window> mDialogBoxes = new Stack<Window>();
-        private static Stack<Tuple<Window, AcceleratorTable>> mAcceleratorTables = new Stack<Tuple<Window, AcceleratorTable>>();
+        private static Stack<Control> mDialogBoxes = new Stack<Control>();
+        private static Stack<Tuple<Control, AcceleratorTable>> mAcceleratorTables = new Stack<Tuple<Control, AcceleratorTable>>();
 
-        public static void PushAcceleratorTable(Window hWnd, AcceleratorTable hAccel)
+        public static void PushAcceleratorTable(Control hWnd, AcceleratorTable hAccel)
         {
-            mAcceleratorTables.Push(new Tuple<Window, AcceleratorTable>(hWnd, hAccel));
+            mAcceleratorTables.Push(new Tuple<Control, AcceleratorTable>(hWnd, hAccel));
         }
 
         public static void PopAcceleratorTable()
@@ -26,7 +26,7 @@ namespace Sunburst.Win32UI
             }
         }
 
-        public static void PushDialog(Window hWnd)
+        public static void PushDialog(Control hWnd)
         {
             mDialogBoxes.Push(hWnd);
         }
@@ -72,12 +72,12 @@ namespace Sunburst.Win32UI
             NativeMethods.PostQuitMessage(0);
         }
 
-        public static bool CreateShutdownBlock(Window window, string reason)
+        public static bool CreateShutdownBlock(Control window, string reason)
         {
             return NativeMethods.ShutdownBlockReasonCreate(window.Handle, reason);
         }
 
-        public static bool DestroyShutdownBlock(Window window)
+        public static bool DestroyShutdownBlock(Control window)
         {
             return NativeMethods.ShutdownBlockReasonDestroy(window.Handle);
         }

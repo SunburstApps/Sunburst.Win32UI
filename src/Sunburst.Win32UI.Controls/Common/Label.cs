@@ -3,7 +3,7 @@ using Sunburst.Win32UI.Graphics;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class Label : Window
+    public class Label : Control
     {
         #region Messages
 
@@ -14,7 +14,15 @@ namespace Sunburst.Win32UI.CommonControls
 
         #endregion
 
-        public override string WindowClassName => "STATIC";
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "STATIC";
+                return cp;
+            }
+        }
 
         public NonOwnedIcon Icon
         {

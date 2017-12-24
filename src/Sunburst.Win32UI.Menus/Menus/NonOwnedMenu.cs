@@ -41,7 +41,7 @@ namespace Sunburst.Win32UI.Menus
             if (!success) throw new System.ComponentModel.Win32Exception();
         }
 
-        public void ShowPopupMenu(Point windowRelativePosition, Window owner, PopupMenuFlags flags)
+        public void ShowPopupMenu(Point windowRelativePosition, Control owner, PopupMenuFlags flags)
         {
             Point screenPosition = windowRelativePosition;
             bool success = NativeMethods.ClientToScreen(owner.Handle, ref screenPosition);
@@ -50,7 +50,7 @@ namespace Sunburst.Win32UI.Menus
             NativeMethods.TrackPopupMenuEx(Handle, (uint)flags, screenPosition.x, screenPosition.y, owner.Handle, IntPtr.Zero);
         }
 
-        public void ShowPopupMenu(Point windowRelativePosition, Window owner, PopupMenuFlags flags, Rect excludeRect)
+        public void ShowPopupMenu(Point windowRelativePosition, Control owner, PopupMenuFlags flags, Rect excludeRect)
         {
             Point screenPosition = windowRelativePosition;
             bool success = NativeMethods.ClientToScreen(owner.Handle, ref screenPosition);

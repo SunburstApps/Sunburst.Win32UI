@@ -5,7 +5,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class TrackBar : Window
+    public class TrackBar : Control
     {
         #region Messages
         private const uint TBM_GETPOS             = (WindowMessages.WM_USER);
@@ -44,8 +44,18 @@ namespace Sunburst.Win32UI.CommonControls
         private const uint TBM_SETPOSNOTIFY       = (WindowMessages.WM_USER+34);
         #endregion
 
-        public const string WindowClass = "msctls_trackbar32";
-        public override string WindowClassName => WindowClass;
+        public TrackBar() : base() { }
+        public TrackBar(IntPtr hWnd) : base(hWnd) { }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "msctls_trackbar32";
+                return cp;
+            }
+        }
 
         public int LineSize
         {
@@ -189,11 +199,11 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public Window LeftBuddyWindow
+        public Control LeftBuddyWindow
         {
             get
             {
-                return new Window(SendMessage(TBM_GETBUDDY, (IntPtr)1, IntPtr.Zero));
+                return new Control(SendMessage(TBM_GETBUDDY, (IntPtr)1, IntPtr.Zero));
             }
 
             set
@@ -202,11 +212,11 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public Window RightBuddyWindow
+        public Control RightBuddyWindow
         {
             get
             {
-                return new Window(SendMessage(TBM_GETBUDDY, IntPtr.Zero, IntPtr.Zero));
+                return new Control(SendMessage(TBM_GETBUDDY, IntPtr.Zero, IntPtr.Zero));
             }
 
             set
@@ -219,9 +229,7 @@ namespace Sunburst.Win32UI.CommonControls
         {
             get
             {
-                ToolTip ctrl = new ToolTip();
-                ctrl.Handle = SendMessage(TBM_GETTOOLTIPS, IntPtr.Zero, IntPtr.Zero);
-                return ctrl;
+                return new ToolTip(SendMessage(TBM_GETTOOLTIPS, IntPtr.Zero, IntPtr.Zero));
             }
 
             set

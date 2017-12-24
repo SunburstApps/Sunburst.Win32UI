@@ -16,12 +16,12 @@ namespace Sunburst.Win32UI.CommonControls
             if ((nativeStruct.uFlags & TTF_IDISHWND) == TTF_IDISHWND)
             {
                 ShowOnEntireOwner = true;
-                Owner = new Window(nativeStruct.uId);
+                Owner = new Control(nativeStruct.uId);
             }
             else
             {
                 ShowOnEntireOwner = false;
-                Owner = new Window(nativeStruct.hWnd);
+                Owner = new Control(nativeStruct.hWnd);
                 ToolTipId = (int)nativeStruct.uId;
             }
 
@@ -42,7 +42,7 @@ namespace Sunburst.Win32UI.CommonControls
             {
                 info.uFlags |= TTF_IDISHWND;
                 info.uId = Owner.Handle;
-                info.hWnd = Owner.Parent.Handle;
+                info.hWnd = NativeMethods.GetParent(Owner.Handle);
             }
             else
             {
@@ -56,7 +56,7 @@ namespace Sunburst.Win32UI.CommonControls
             return info;
         }
 
-        public Window Owner { get; set; }
+        public Control Owner { get; set; }
         public Rect Rect { get; set; }
         public string Text { get; set; } = "";
         public bool ParseHyperlinks { get; set; } = false;

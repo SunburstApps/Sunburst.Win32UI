@@ -105,8 +105,8 @@ namespace Sunburst.Win32UI.Graphics
 
         public void EndDrag() => NativeMethods.ImageList_EndDrag();
         public bool DragMove(Point location) => NativeMethods.ImageList_DragMove(location.x, location.y);
-        public bool DragEnterWindow(Window window, Point location) => NativeMethods.ImageList_DragEnter(window.Handle, location.x, location.y);
-        public bool DragLeaveWindow(Window window) => NativeMethods.ImageList_DragLeave(window.Handle);
+        public bool DragEnterWindow(Control window, Point location) => NativeMethods.ImageList_DragEnter(window.Handle, location.x, location.y);
+        public bool DragLeaveWindow(Control window) => NativeMethods.ImageList_DragLeave(window.Handle);
         public ImageList Duplicate() => new ImageList() { Handle = NativeMethods.ImageList_Duplicate(Handle) };
     }
 }

@@ -6,12 +6,20 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class ScrollBar : Window
+    public class ScrollBar : Control
     {
         private const int SB_CTL = 2;
 
-        public const string WindowClass = "SCROLLBAR";
-        public override string WindowClassName => WindowClass;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "SCROLLBAR";
+                return cp;
+            }
+        }
+
         public bool RemoveWhenUnneeded { get; set; } = true;
 
         private SCROLLINFO NativeScrollInfo

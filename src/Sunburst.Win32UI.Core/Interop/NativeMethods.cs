@@ -180,6 +180,13 @@ namespace Sunburst.Win32UI.Interop
 
         [DllImport("user32.dll")]
         public static extern IntPtr RegisterClassExW(ref WNDCLASSEXW windowClass);
+
+        [DllImport("user32.dll")]
+        public static extern uint SetTimer(IntPtr hWnd, uint nIDEvent, uint uElapse, IntPtr timerProc);
+
+        [DllImport("user32.dll")]
+        public static extern bool KillTimer(IntPtr hWnd, uint nIDEvent);
+
         [DllImport("comctl32.dll")]
         public static extern bool InitCommonControlsEx(ref INITCOMMONCONTROLSEX init_struct);
 

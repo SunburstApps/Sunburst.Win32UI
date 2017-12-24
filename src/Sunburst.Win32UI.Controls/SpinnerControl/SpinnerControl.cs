@@ -3,7 +3,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class SpinnerControl : Window
+    public class SpinnerControl : Control
     {
         #region Messages
         private const uint UDM_GETPOS = (WindowMessages.WM_USER + 104);
@@ -19,8 +19,18 @@ namespace Sunburst.Win32UI.CommonControls
         private const uint UDM_GETPOS32 = (WindowMessages.WM_USER + 114);
         #endregion
 
-        public const string WindowClass = "msctls_updown32";
-        public override string WindowClassName => WindowClass;
+        public SpinnerControl() : base() { }
+        public SpinnerControl(IntPtr hWnd) : base(hWnd) { }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "msctls_updown32";
+                return cp;
+            }
+        }
 
         public void GetAcceleration(int index, out uint timing, out uint increment)
         {
@@ -59,11 +69,11 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public Window BuddyWindow
+        public Control BuddyWindow
         {
             get
             {
-                return new Window(SendMessage(UDM_GETBUDDY, IntPtr.Zero, IntPtr.Zero));
+                return new Control(SendMessage(UDM_GETBUDDY, IntPtr.Zero, IntPtr.Zero));
             }
 
             set

@@ -5,7 +5,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class ToolTip : Window
+    public class ToolTip : Control
     {
         #region Styles
         public const int TTS_ALWAYSTIP = 0x01;
@@ -77,10 +77,20 @@ namespace Sunburst.Win32UI.CommonControls
         private const uint TTM_SETTITLE = TTM_SETTITLEW;
         #endregion
 
-        public const string WindowClass = "tooltips_class32";
-        public override string WindowClassName => WindowClass;
+        public ToolTip() : base() { }
+        public ToolTip(IntPtr hWnd) : base(hWnd) { }
 
-        public ToolTipInfo GetTipInfo(Window owner)
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "tooltips_class32";
+                return cp;
+            }
+        }
+
+        public ToolTipInfo GetTipInfo(Control owner)
         {
             ToolTipInfo info = new ToolTipInfo();
             info.ShowOnEntireOwner = true;
@@ -95,7 +105,7 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public ToolTipInfo GetTipInfo(Window owner, int tipId)
+        public ToolTipInfo GetTipInfo(Control owner, int tipId)
         {
             ToolTipInfo info = new ToolTipInfo();
             info.Owner = owner;
@@ -227,7 +237,7 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public Size GetBubbleSize(Window owner)
+        public Size GetBubbleSize(Control owner)
         {
             ToolTipInfo info = new ToolTipInfo();
             info.ShowOnEntireOwner = true;

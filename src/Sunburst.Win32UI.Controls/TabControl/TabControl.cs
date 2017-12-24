@@ -7,7 +7,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class TabControl : Window
+    public class TabControl : Control
     {
         #region Messages
         private const uint TCM_FIRST = 0x1300;
@@ -43,8 +43,18 @@ namespace Sunburst.Win32UI.CommonControls
         private const uint TCM_GETEXTENDEDSTYLE = (TCM_FIRST + 53);
         #endregion
 
-        public const string WindowClass = "SysTabControl32";
-        public override string WindowClassName => WindowClass;
+        public TabControl() : base() { }
+        public TabControl(IntPtr hWnd) : base(hWnd) { }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "SysTabControl32";
+                return cp;
+            }
+        }
 
         public NonOwnedImageList ImageList
         {
@@ -131,7 +141,7 @@ namespace Sunburst.Win32UI.CommonControls
         {
             get
             {
-                return new ToolTip() { Handle = SendMessage(TCM_GETTOOLTIPS, IntPtr.Zero, IntPtr.Zero) };
+                return new ToolTip(SendMessage(TCM_GETTOOLTIPS, IntPtr.Zero, IntPtr.Zero));
             }
 
             set

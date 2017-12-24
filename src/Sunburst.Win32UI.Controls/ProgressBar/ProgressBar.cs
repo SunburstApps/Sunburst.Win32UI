@@ -6,7 +6,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class ProgressBar : Window
+    public class ProgressBar : Control
     {
         public ProgressBar()
         {
@@ -16,7 +16,15 @@ namespace Sunburst.Win32UI.CommonControls
         {
         }
 
-        public override string WindowClassName => "msctls_progress32";
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassName = "msctls_progress32";
+                return cp;
+            }
+        }
 
         public void OffsetValue(int delta)
         {

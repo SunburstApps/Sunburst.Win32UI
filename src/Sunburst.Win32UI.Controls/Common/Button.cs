@@ -5,7 +5,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.CommonControls
 {
-    public class Button : Window
+    public class Button : Control
     {
         #region Messages
 
@@ -34,7 +34,15 @@ namespace Sunburst.Win32UI.CommonControls
 
         #endregion
 
-        public override string WindowClassName => "BUTTON";
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ClassName = "BUTTON";
+                return cp;
+            }
+        }
 
         public bool Highlighted
         {
@@ -110,7 +118,7 @@ namespace Sunburst.Win32UI.CommonControls
                     return rectPtr.Value;
                 }
             }
-            
+
             set
             {
                 using (StructureBuffer<Rect> rectPtr = new StructureBuffer<Rect>())
