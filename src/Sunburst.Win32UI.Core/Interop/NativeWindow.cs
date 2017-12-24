@@ -54,7 +54,7 @@ namespace Sunburst.Win32UI.Interop
         public void CreateHandle(CreateParams createParams)
         {
             if (createParams == null) throw new ArgumentNullException(nameof(createParams));
-            if (Handle != IntPtr.Zero) throw new InvalidOperationException("This instance already has a handle, please destroy if first");
+            if (Handle != IntPtr.Zero) throw new InvalidOperationException("This instance already has a handle, please destroy it first");
 
             WindowClass windowClass = WindowClass.GetWindowClass(createParams.ClassName, createParams.ClassStyle);
 
@@ -65,8 +65,8 @@ namespace Sunburst.Win32UI.Interop
 
             var frame = createParams.Frame;
             Handle = NativeMethods.CreateWindowEx(createParams.ExtendedStyle, fullClassName,
-            createParams.Caption, createParams.Style, frame.left, frame.top, frame.Width, frame.Height,
-            createParams.ParentHandle, IntPtr.Zero, IntPtr.Zero, GCHandle.ToIntPtr(gcHandle));
+                createParams.Caption, createParams.Style, frame.left, frame.top, frame.Width, frame.Height,
+                createParams.ParentHandle, IntPtr.Zero, IntPtr.Zero, GCHandle.ToIntPtr(gcHandle));
         }
 
         public void DestroyHandle()
