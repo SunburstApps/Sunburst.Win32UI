@@ -9,6 +9,23 @@ namespace Sunburst.Win32UI.Interop
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     internal delegate IntPtr WNDPROC(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    internal struct WNDCLASSEXW
+    {
+        public uint cbSize;
+        public uint style;
+        public IntPtr lpfnWndProc;
+        public int cbClsExtra;
+        public int cbWndExtra;
+        public IntPtr hInstance;
+        public IntPtr hIcon;
+        public IntPtr hCursor;
+        public IntPtr hbrBackground;
+        public string lpszMenuName;
+        public string lpszClassName;
+        public IntPtr hIconSm;
+    }
+
     internal static class NativeMethods
     {
         public const int LOAD_LIBRARY_AS_DATAFILE = 0x00000002,
@@ -146,6 +163,23 @@ namespace Sunburst.Win32UI.Interop
         public static extern IntPtr GetWindow(IntPtr hWnd, int relationship);
         public const int GW_CHILD = 5, GW_HWNDNEXT = 2;
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetProp(IntPtr hWnd, string name);
+
+        [DllImport("user32.dll")]
+        public static extern void SetProp(IntPtr hWnd, string name, IntPtr value);
+
+        [DllImport("user32.dll")]
+        public static extern void RemoveProp(IntPtr hWnd, string name);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool GetClassInfo(IntPtr hInstance, string className, out WNDCLASSEXW classInfo);
+
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr GetModuleHandle(string fileName);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr RegisterClassExW(ref WNDCLASSEXW windowClass);
         [DllImport("comctl32.dll")]
         public static extern bool InitCommonControlsEx(ref INITCOMMONCONTROLSEX init_struct);
 
