@@ -10,7 +10,7 @@ namespace Sunburst.Win32UI
     /// <summary>
     /// Represents a Windows control or top-level window (<c>HWND</c>).
     /// </summary>
-    public class Window
+    public class Window : IWin32Window
     {
         static Window()
         {
