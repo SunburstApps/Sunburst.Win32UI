@@ -59,13 +59,11 @@ namespace Win32UI.Build.Tasks
 
         public override bool Execute()
         {
-#if IS_CORECLR
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 Log.LogWarning("Skipping MsvcSxsManifestTool task on non-Windows platform");
                 return true;
             }
-#endif
 
             if (InputManifestFile == null && InputAssembly == null)
             {

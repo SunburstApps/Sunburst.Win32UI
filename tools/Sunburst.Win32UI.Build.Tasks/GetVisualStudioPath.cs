@@ -16,13 +16,11 @@ namespace Win32UI.Build.Tasks
 
         public override bool Execute()
         {
-#if IS_CORECLR
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 Log.LogError("You cannot get the path to Visual Studio on a non-Windows platform");
                 return false;
             }
-#endif
 
             string vswhereExe = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe";
             if (!File.Exists(vswhereExe))
