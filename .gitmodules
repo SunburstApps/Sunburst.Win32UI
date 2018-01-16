@@ -1,4 +1,0 @@
-[submodule "external/ResourceLib"]
-	path = external/ResourceLib
-	url = git@github.com:resourcelib/resourcelib
-	branch = netstandard20
