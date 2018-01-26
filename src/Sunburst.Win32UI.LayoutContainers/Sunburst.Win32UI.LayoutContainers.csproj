@@ -8,7 +8,6 @@
   <ItemGroup>
     <ProjectReference Include="../Sunburst.Win32UI.Core/Sunburst.Win32UI.Core.csproj" />
     <ProjectReference Include="../Sunburst.Win32UI.Graphics/Sunburst.Win32UI.Graphics.csproj" />
-    <ProjectReference Include="../Sunburst.Win32UI.ImageList/Sunburst.Win32UI.ImageList.csproj" />
     <ProjectReference Include="../Sunburst.Win32UI.Controls/Sunburst.Win32UI.Controls.csproj" />
     <ProjectReference Include="../Sunburst.Win32UI.Menus/Sunburst.Win32UI.Menus.csproj" />
   </ItemGroup>
