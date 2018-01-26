@@ -85,11 +85,11 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public NonOwnedImageList ImageList
+        public ImageList ImageList
         {
             get
             {
-                return new NonOwnedImageList() { Handle = SendMessage(HDM_GETIMAGELIST, IntPtr.Zero, IntPtr.Zero) };
+                return new ImageList() { Handle = SendMessage(HDM_GETIMAGELIST, IntPtr.Zero, IntPtr.Zero) };
             }
 
             set

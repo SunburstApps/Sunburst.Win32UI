@@ -234,11 +234,11 @@ namespace Sunburst.Win32UI.CommonControls
             return (int)SendMessage(TB_GETBITMAP, (IntPtr)buttonIndex, IntPtr.Zero);
         }
 
-        public NonOwnedImageList NormalImageList
+        public ImageList NormalImageList
         {
             get
             {
-                return new NonOwnedImageList() { Handle = SendMessage(TB_GETIMAGELIST, IntPtr.Zero, IntPtr.Zero) };
+                return new ImageList() { Handle = SendMessage(TB_GETIMAGELIST, IntPtr.Zero, IntPtr.Zero) };
             }
 
             set
@@ -247,11 +247,11 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public NonOwnedImageList DisabledImageList
+        public ImageList DisabledImageList
         {
             get
             {
-                return new NonOwnedImageList() { Handle = SendMessage(TB_GETDISABLEDIMAGELIST, IntPtr.Zero, IntPtr.Zero) };
+                return new ImageList() { Handle = SendMessage(TB_GETDISABLEDIMAGELIST, IntPtr.Zero, IntPtr.Zero) };
             }
 
             set
@@ -260,11 +260,11 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public NonOwnedImageList MouseOverImageList
+        public ImageList MouseOverImageList
         {
             get
             {
-                return new NonOwnedImageList() { Handle = SendMessage(TB_GETHOTIMAGELIST, IntPtr.Zero, IntPtr.Zero) };
+                return new ImageList() { Handle = SendMessage(TB_GETHOTIMAGELIST, IntPtr.Zero, IntPtr.Zero) };
             }
 
             set
@@ -513,14 +513,14 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public NonOwnedImageList GetPressedImageList(int index = 0)
+        public ImageList GetPressedImageList(int index = 0)
         {
-            NonOwnedImageList retval = new NonOwnedImageList();
+            ImageList retval = new ImageList();
             retval.Handle = SendMessage(TB_GETPRESSEDIMAGELIST, (IntPtr)index, IntPtr.Zero);
             return retval;
         }
 
-        public void SetPressedImageList(NonOwnedImageList imageList, int index = 0)
+        public void SetPressedImageList(ImageList imageList, int index = 0)
         {
             SendMessage(TB_SETPRESSEDIMAGELIST, (IntPtr)index, imageList.Handle);
         }

@@ -223,12 +223,12 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public NonOwnedImageList GetImageList(ListViewImageListType type)
+        public ImageList GetImageList(ListViewImageListType type)
         {
-            return new NonOwnedImageList() { Handle = SendMessage(LVM_GETIMAGELIST, (IntPtr)(int)type, IntPtr.Zero) };
+            return new ImageList() { Handle = SendMessage(LVM_GETIMAGELIST, (IntPtr)(int)type, IntPtr.Zero) };
         }
 
-        public void SetImageList(ListViewImageListType type, NonOwnedImageList list)
+        public void SetImageList(ListViewImageListType type, ImageList list)
         {
             SendMessage(LVM_SETIMAGELIST, (IntPtr)(int)type, list.Handle);
         }

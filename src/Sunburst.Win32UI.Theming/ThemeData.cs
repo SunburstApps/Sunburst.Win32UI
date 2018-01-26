@@ -130,7 +130,7 @@ namespace Sunburst.Win32UI.Theming
             return new Region(hRegion);
         }
 
-        public void DrawImage(NonOwnedGraphicsContext dc, int partId, int stateId, Rect destinationRect, NonOwnedImageList imageList, int imageIndex)
+        public void DrawImage(NonOwnedGraphicsContext dc, int partId, int stateId, Rect destinationRect, ImageList imageList, int imageIndex)
         {
             AssertPartDefined(partId, stateId);
             int hr = NativeMethods.DrawThemeIcon(Handle, dc.Handle, partId, stateId, ref destinationRect, imageList.Handle, imageIndex);

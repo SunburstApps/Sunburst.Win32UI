@@ -118,13 +118,13 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public NonOwnedImageList NormalImageList
+        public ImageList NormalImageList
         {
             get
             {
                 const int TVSIL_NORMAL = 0;
 
-                var list = new NonOwnedImageList();
+                var list = new ImageList();
                 list.Handle = SendMessage(TVM_GETIMAGELIST, (IntPtr)TVSIL_NORMAL, IntPtr.Zero);
                 return list;
             }
@@ -136,13 +136,13 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public NonOwnedImageList SelectedImageList
+        public ImageList SelectedImageList
         {
             get
             {
                 const int TVSIL_STATE = 2;
 
-                var list = new NonOwnedImageList();
+                var list = new ImageList();
                 list.Handle = SendMessage(TVM_GETIMAGELIST, (IntPtr)TVSIL_STATE, IntPtr.Zero);
                 return list;
             }
@@ -503,9 +503,9 @@ namespace Sunburst.Win32UI.CommonControls
         }
 
         // You must dispose the return value of this function.
-        public ImageList CreateDragImage(TreeViewItemHandle item)
+        public OwnedImageList CreateDragImage(TreeViewItemHandle item)
         {
-            return new ImageList() { Handle = SendMessage(TVM_CREATEDRAGIMAGE, IntPtr.Zero, item.Handle) };
+            return new OwnedImageList() { Handle = SendMessage(TVM_CREATEDRAGIMAGE, IntPtr.Zero, item.Handle) };
         }
 
         public bool SetInsertMarkBeforeItem(TreeViewItemHandle item)
