@@ -503,9 +503,9 @@ namespace Sunburst.Win32UI.CommonControls
         }
 
         // You must dispose the return value of this function.
-        public OwnedImageList CreateDragImage(TreeViewItemHandle item)
+        public ImageList CreateDragImage(TreeViewItemHandle item)
         {
-            return new OwnedImageList() { Handle = SendMessage(TVM_CREATEDRAGIMAGE, IntPtr.Zero, item.Handle) };
+            return new ImageList() { Handle = SendMessage(TVM_CREATEDRAGIMAGE, IntPtr.Zero, item.Handle) };
         }
 
         public bool SetInsertMarkBeforeItem(TreeViewItemHandle item)
