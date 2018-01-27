@@ -181,4 +181,10 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9651FA15-E618-406F-BCCC-4A12C349EA8A}
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.TabsToSpaces = True
+		$1.scope = text/x-csharp
+	EndGlobalSection
 EndGlobal
