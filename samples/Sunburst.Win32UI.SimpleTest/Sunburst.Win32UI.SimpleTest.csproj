@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/Sunburst.Win32UI.Application/Sunburst.Win32UI.Application.csproj" />
-    <ProjectReference Include="../../src/Sunburst.Win32UI.MessageBox/Sunburst.Win32UI.MessageBox.csproj" />
     <ProjectReference Include="../../src/Sunburst.Win32UI.TaskDialogs/Sunburst.Win32UI.TaskDialogs.csproj" />
 
     <SxsManifestFragment Include="compat.manifest" />
