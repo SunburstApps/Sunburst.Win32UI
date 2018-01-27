@@ -19,7 +19,7 @@ namespace Sunburst.Win32UI.Graphics
             return new Bitmap(NativeMethods.CreateCompatibleBitmap(Handle, width, height));
         }
 
-        public void Select(NonOwnedBitmap bitmap, Action action)
+        public void Select(Bitmap bitmap, Action action)
         {
             IntPtr oldObject = NativeMethods.SelectObject(Handle, bitmap.Handle);
             try
@@ -123,11 +123,11 @@ namespace Sunburst.Win32UI.Graphics
             }
         }
 
-        public NonOwnedBitmap CurrentBitmap
+        public Bitmap CurrentBitmap
         {
             get
             {
-                return new NonOwnedBitmap(NativeMethods.GetCurrentObject(Handle, GDIConstants.OBJ_BITMAP));
+                return new Bitmap(NativeMethods.GetCurrentObject(Handle, GDIConstants.OBJ_BITMAP));
             }
 
             set
@@ -268,7 +268,7 @@ namespace Sunburst.Win32UI.Graphics
                 Convert.ToInt32(sourceFrame.Width), Convert.ToInt32(sourceFrame.Height), ROP_SRCCOPY);
         }
 
-        public bool AlphaBlend(NonOwnedBitmap source, Rect destinationFrame, Rect sourceFrame, byte masterOpacity = 255)
+        public bool AlphaBlend(Bitmap source, Rect destinationFrame, Rect sourceFrame, byte masterOpacity = 255)
         {
             BLENDFUNCTION bf = new BLENDFUNCTION();
             bf.BlendOp = bf.AlphaFormat = bf.BlendFlags = 0;

@@ -88,12 +88,12 @@ namespace Sunburst.Win32UI.Graphics
             return NativeMethods.ImageList_SetOverlayImage(Handle, baseImageIndex, overlayIndex);
         }
 
-        public int AddImage(NonOwnedBitmap image, NonOwnedBitmap mask)
+        public int AddImage(Bitmap image, Bitmap mask)
         {
             return NativeMethods.ImageList_Add(Handle, image.Handle, mask.Handle);
         }
 
-        public int AddImage(NonOwnedBitmap image, Color maskColor)
+        public int AddImage(Bitmap image, Color maskColor)
         {
             return NativeMethods.ImageList_AddMasked(Handle, image.Handle, Color.ToWin32Color(maskColor));
         }

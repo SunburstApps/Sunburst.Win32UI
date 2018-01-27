@@ -5,10 +5,9 @@ using Sunburst.Win32UI.Interop;
 namespace Sunburst.Win32UI.Graphics
 {
     /// <summary>
-    /// Wraps a Win32 <c>HBITMAP</c> that was obtained from a system method.
-    /// This class cannot be used to create a bitmap; use the <see cref="Bitmap"/> class instead.
+    /// Wraps a Win32 bitmap (GDI <c>HBITMAP</c>).
     /// </summary>
-    public class NonOwnedBitmap : IDisposable
+    public class Bitmap : IDisposable
     {
         private static Bitmap LoadImageFromBitmapSource(NativeMethods.IWICBitmapSource source)
         {
@@ -125,7 +124,7 @@ namespace Sunburst.Win32UI.Graphics
         /// <param name="resourceTypeName">
         /// The name of the resource type (for example, <c>IMAGE</c>).
         /// </param>
-        /// <param name="resourceId">
+        /// <param name="resourceName">
         /// The name (as used in the RC file) of the resource to load.
         /// </param>
         /// <returns>
@@ -174,20 +173,20 @@ namespace Sunburst.Win32UI.Graphics
             }
         }
 
-        public static NonOwnedBitmap Load(ResourceLoader loader, string resourceName)
+        public static Bitmap Load(ResourceLoader loader, string resourceName)
         {
             using (HGlobal buffer = HGlobal.WithStringUni(resourceName))
             {
-                return new NonOwnedBitmap(NativeMethods.LoadBitmap(loader.ModuleHandle, buffer.Handle));
+                return new Bitmap(NativeMethods.LoadBitmap(loader.ModuleHandle, buffer.Handle));
             }
         }
 
-        public static NonOwnedBitmap Load(ResourceLoader loader, ushort resourceId)
+        public static Bitmap Load(ResourceLoader loader, ushort resourceId)
         {
-            return new NonOwnedBitmap(NativeMethods.LoadBitmap(loader.ModuleHandle, (IntPtr)resourceId));
+            return new Bitmap(NativeMethods.LoadBitmap(loader.ModuleHandle, (IntPtr)resourceId));
         }
 
-        public NonOwnedBitmap(IntPtr ptr)
+        public Bitmap(IntPtr ptr)
         {
             Handle = ptr;
         }

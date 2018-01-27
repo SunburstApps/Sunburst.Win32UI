@@ -137,7 +137,7 @@ namespace Sunburst.Win32UI.Theming
             if (hr != 0) Marshal.ThrowExceptionForHR(hr);
         }
 
-        public void DrawImage(NonOwnedGraphicsContext dc, int partId, int stateId, Rect destinationRect, NonOwnedBitmap bitmap, Color maskColor)
+        public void DrawImage(NonOwnedGraphicsContext dc, int partId, int stateId, Rect destinationRect, Bitmap bitmap, Color maskColor)
         {
             // Don't AssertPartDefined() here, as the other overload of DrawImage() will do that for us.
             using (ImageList list = new ImageList(bitmap.Size, 1, 1))

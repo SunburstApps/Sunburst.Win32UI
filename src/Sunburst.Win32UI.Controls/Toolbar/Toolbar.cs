@@ -541,7 +541,7 @@ namespace Sunburst.Win32UI.CommonControls
         public bool SetButtonIndeterminate(int id, bool value) => (int)SendMessage(TB_INDETERMINATE, (IntPtr)id, (IntPtr)(value ? 1 : 0)) == 1;
         public bool SetBorderMarkState(int id, bool value) => (int)SendMessage(TB_MARKBUTTON, (IntPtr)id, (IntPtr)(value ? 1 : 0)) == 1;
 
-        public int AddBitmap(int buttonCount, NonOwnedBitmap bitmap)
+        public int AddBitmap(int buttonCount, Bitmap bitmap)
         {
             TBADDBITMAP addStruct = new TBADDBITMAP();
             addStruct.hInst = IntPtr.Zero;

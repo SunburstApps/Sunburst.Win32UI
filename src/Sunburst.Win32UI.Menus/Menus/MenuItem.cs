@@ -20,9 +20,9 @@ namespace Sunburst.Win32UI.Menus
             IsChecked = (nativeStruct.fState & MenuConstants.MFS_CHECKED) != 0;
             UseRadioCheck = (nativeStruct.fType & MenuConstants.MFT_RADIOCHECK) != 0;
 
-            if (nativeStruct.hbmpChecked != IntPtr.Zero) CheckedBitmap = new NonOwnedBitmap(nativeStruct.hbmpChecked);
-            if (nativeStruct.hbmpUnchecked != IntPtr.Zero) UncheckedBitmap = new NonOwnedBitmap(nativeStruct.hbmpUnchecked);
-            if (nativeStruct.hbmpItem != IntPtr.Zero) ItemBitmap = new NonOwnedBitmap(nativeStruct.hbmpItem);
+            if (nativeStruct.hbmpChecked != IntPtr.Zero) CheckedBitmap = new Bitmap(nativeStruct.hbmpChecked);
+            if (nativeStruct.hbmpUnchecked != IntPtr.Zero) UncheckedBitmap = new Bitmap(nativeStruct.hbmpUnchecked);
+            if (nativeStruct.hbmpItem != IntPtr.Zero) ItemBitmap = new Bitmap(nativeStruct.hbmpItem);
             if (nativeStruct.hSubMenu != IntPtr.Zero) Submenu = new Menu() { Handle = nativeStruct.hSubMenu };
         }
 
@@ -62,10 +62,10 @@ namespace Sunburst.Win32UI.Menus
         public bool IsEnabled { get; set; } = true;
         public bool UseRadioCheck { get; set; } = false;
 
-        public NonOwnedBitmap ItemBitmap { get; set; } = null;
-        public NonOwnedBitmap CheckedBitmap { get; set; } = null;
-        public NonOwnedBitmap UncheckedBitmap { get; set; } = null;
-        public void SetBitmap(NonOwnedBitmap bmp)
+        public Bitmap ItemBitmap { get; set; } = null;
+        public Bitmap CheckedBitmap { get; set; } = null;
+        public Bitmap UncheckedBitmap { get; set; } = null;
+        public void SetBitmap(Bitmap bmp)
         {
             CheckedBitmap = UncheckedBitmap = bmp;
         }

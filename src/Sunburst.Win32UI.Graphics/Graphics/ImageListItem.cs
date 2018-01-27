@@ -7,13 +7,13 @@ namespace Sunburst.Win32UI.Graphics
     {
         internal ImageListItem(IMAGEINFO nativeInfo)
         {
-            Bitmap = new NonOwnedBitmap(nativeInfo.hbmImage);
-            MaskBitmap = new NonOwnedBitmap(nativeInfo.hbmMask);
+            Bitmap = new Bitmap(nativeInfo.hbmImage);
+            MaskBitmap = new Bitmap(nativeInfo.hbmMask);
             Frame = nativeInfo.rcImage;
         }
 
-        public NonOwnedBitmap Bitmap { get; private set; }
-        public NonOwnedBitmap MaskBitmap { get; private set; }
+        public Bitmap Bitmap { get; private set; }
+        public Bitmap MaskBitmap { get; private set; }
         public Rect Frame { get; private set; }
     }
 }

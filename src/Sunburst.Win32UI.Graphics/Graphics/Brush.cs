@@ -18,7 +18,7 @@ namespace Sunburst.Win32UI.Graphics
             return new Brush(NativeMethods.CreateHatchBrush((int)hatchStyle, Color.ToWin32Color(color)));
         }
 
-        public static Brush CreatePattern(NonOwnedBitmap bmp)
+        public static Brush CreatePattern(Bitmap bmp)
         {
             return new Brush(NativeMethods.CreatePatternBrush(bmp.Handle));
         }

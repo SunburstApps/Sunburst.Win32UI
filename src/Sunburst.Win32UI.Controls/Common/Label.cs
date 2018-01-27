@@ -37,11 +37,11 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public NonOwnedBitmap Bitmap
+        public Bitmap Bitmap
         {
             get
             {
-                return new NonOwnedBitmap(SendMessage(STM_GETIMAGE, IntPtr.Zero, IntPtr.Zero));
+                return new Bitmap(SendMessage(STM_GETIMAGE, IntPtr.Zero, IntPtr.Zero));
             }
 
             set

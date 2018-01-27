@@ -13,7 +13,7 @@ namespace Sunburst.Win32UI.CommonControls
         {
             Width = nativeItem.cxy;
             Text = nativeItem.pszText;
-            Bitmap = (nativeItem.hbm != IntPtr.Zero) ? new NonOwnedBitmap(nativeItem.hbm) : null;
+            Bitmap = (nativeItem.hbm != IntPtr.Zero) ? new Bitmap(nativeItem.hbm) : null;
 
             if ((nativeItem.fmt & HDITEM.HDF_CENTER) == HDITEM.HDF_CENTER) TextAlignment = TextAlignment.Center;
             else if ((nativeItem.fmt & HDITEM.HDF_RIGHT) == HDITEM.HDF_RIGHT) TextAlignment = TextAlignment.Right;
@@ -119,7 +119,7 @@ namespace Sunburst.Win32UI.CommonControls
         public int Width { get; set; } = 100;
         public string Text { get; set; } = "";
         public bool ShowsBitmap { get; set; } = false;
-        public NonOwnedBitmap Bitmap { get; set; } = null;
+        public Bitmap Bitmap { get; set; } = null;
         public TextAlignment TextAlignment { get; set; } = TextAlignment.Left;
         public bool BitmapOnRight { get; set; } = false;
         public ListHeaderColumnSortOrder SortOrder { get; set; } = ListHeaderColumnSortOrder.None;

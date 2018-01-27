@@ -969,7 +969,7 @@ namespace Sunburst.Win32UI.CommonControls
             if ((nativeStruct.ulFlags & LVBKIMAGE.LVBKIF_SOURCE_HBITMAP) == 0)
                 throw new InvalidOperationException($"{nameof(ListViewBackground)} only supports ${nameof(LVBKIMAGE)} structures that contain an HBITMAP");
 
-            Bitmap = new NonOwnedBitmap(nativeStruct.hbm);
+            Bitmap = new Bitmap(nativeStruct.hbm);
             Tile = (nativeStruct.ulFlags & LVBKIMAGE.LVBKIF_STYLE_TILE) != 0;
             BitmapIsWatermark = (nativeStruct.ulFlags & LVBKIMAGE.LVBKIF_TYPE_WATERMARK) != 0;
             HorizontalOffset = nativeStruct.xOffsetPercent;
@@ -990,7 +990,7 @@ namespace Sunburst.Win32UI.CommonControls
             return nativeStruct;
         }
 
-        public NonOwnedBitmap Bitmap { get; set; } = null;
+        public Bitmap Bitmap { get; set; } = null;
         public bool Tile { get; set; } = false;
         public bool BitmapIsWatermark { get; set; } = false;
         public int HorizontalOffset { get; set; } = 0; // In pixels if Tile is true, in percent (0-100 left-to-right) if it is false
