@@ -6,10 +6,20 @@ using Sunburst.Win32UI.Interop;
 namespace Sunburst.Win32UI.Graphics
 {
     /// <summary>
-    /// Wraps a Win32 <c>HRGN</c>.
-    /// </summary>
-    public class Region : NonOwnedRegion, IDisposable
+    /// Wraps a GDI region (<c>HRGN</c>).
+    public class Region : IDisposable
     {
+        internal static int TranslateCombinationMode(RegionCombinationMode mode, string parameterName = null)
+        {
+            switch (mode)
+            {
+                case RegionCombinationMode.Intersect: return 1;
+                case RegionCombinationMode.Union: return 2;
+                case RegionCombinationMode.UnionExceptOverlap: return 3;
+                default: throw new ArgumentException("Unrecognized regionCombinationMode", parameterName ?? nameof(mode));
+            }
+        }
+
         private static int TranslateFillMode(PolygonFillMode fillMode)
         {
             int nativeFillMode = 0;
@@ -73,11 +83,58 @@ namespace Sunburst.Win32UI.Graphics
             return new Region(NativeMethods.PathToRegion(context.Handle));
         }
 
-        public Region(IntPtr ptr) : base(ptr) { }
+        public Region(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero) throw new ArgumentException("Cannot use a NULL region handle", nameof(ptr));
+
+            Handle = ptr;
+        }
 
         public void Dispose()
         {
             NativeMethods.DeleteObject(Handle);
+        }
+
+        public IntPtr Handle { get; protected internal set; }
+
+        public void Combine(Region other, RegionCombinationMode mode)
+        {
+            NativeMethods.CombineRgn(Handle, Handle, other.Handle, TranslateCombinationMode(mode, nameof(mode)));
+        }
+
+        public void Offset(Point pt)
+        {
+            NativeMethods.OffsetRgn(Handle, Convert.ToInt32(pt.x), Convert.ToInt32(pt.y));
+        }
+
+        public bool ContainsPoint(Point pt)
+        {
+            return NativeMethods.PtInRegion(Handle, Convert.ToInt32(pt.x), Convert.ToInt32(pt.y));
+        }
+
+        public bool ContainsRect(Rect rect)
+        {
+            return NativeMethods.RectInRegion(Handle, ref rect);
+        }
+
+        public Rect BoundingBox
+        {
+            get
+            {
+                Rect retval = new Rect();
+                NativeMethods.GetRgnBox(Handle, ref retval);
+                return retval;
+            }
+        }
+
+        public static bool EqualRegions(Region lhs, Region rhs)
+        {
+            // NonOwnedRegion does not implement IEquatable because I cannot specify the
+            // invariant "if two objects are Equal(), they have the same GetHashCode()".
+            // This is because the equality is implemented in unmanaged code, which does
+            // not offer a hash function.
+
+            return NativeMethods.EqualRgn(lhs.Handle, rhs.Handle);
         }
     }
 }

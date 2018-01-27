@@ -171,7 +171,7 @@ namespace Sunburst.Win32UI.Graphics
             }
         }
 
-        public void FillRegion(NonOwnedRegion region, Brush brush)
+        public void FillRegion(Region region, Brush brush)
         {
             NativeMethods.FillRgn(Handle, region.Handle, brush.Handle);
         }
@@ -201,7 +201,7 @@ namespace Sunburst.Win32UI.Graphics
             NativeMethods.GradientFill(Handle, points, 2, ref gradientRect, 1, horizontalGradient ? 0 : 1);
         }
 
-        public void FrameRegion(NonOwnedRegion region, Brush brush, Size size)
+        public void FrameRegion(Region region, Brush brush, Size size)
         {
             NativeMethods.FrameRgn(Handle, region.Handle, brush.Handle,
                 Convert.ToInt32(size.width), Convert.ToInt32(size.height));
@@ -212,7 +212,7 @@ namespace Sunburst.Win32UI.Graphics
             NativeMethods.FrameRect(Handle, ref rect, brush.Handle);
         }
 
-        public bool InvertRegion(NonOwnedRegion region)
+        public bool InvertRegion(Region region)
         {
             return NativeMethods.InvertRgn(Handle, region.Handle);
         }
@@ -232,10 +232,10 @@ namespace Sunburst.Win32UI.Graphics
             return initialRegion;
         }
 
-        public int SetClippingRegion(NonOwnedRegion region, RegionCombinationMode combinationMode)
+        public int SetClippingRegion(Region region, RegionCombinationMode combinationMode)
         {
             return NativeMethods.ExtSelectClipRgn(Handle, region.Handle,
-                NonOwnedRegion.TranslateCombinationMode(combinationMode, nameof(combinationMode))); 
+                Region.TranslateCombinationMode(combinationMode, nameof(combinationMode))); 
         }
 
         public bool DrawIcon(Icon icon, Point position, Size size)

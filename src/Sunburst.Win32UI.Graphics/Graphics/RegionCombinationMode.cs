@@ -1,7 +1,7 @@
 ﻿namespace Sunburst.Win32UI.Graphics
 {
     /// <summary>
-    /// Specifies the possible ways two <see cref="NonOwnedRegion"/> instances can be combined.
+    /// Specifies the possible ways two <see cref="Region"/> instances can be combined.
     /// </summary>
     public enum RegionCombinationMode
     {
