@@ -108,12 +108,12 @@ namespace Sunburst.Win32UI.Graphics
             return NativeMethods.ImageList_ReplaceIcon(Handle, index, icon.Handle);
         }
 
-        public bool DrawImage(NonOwnedGraphicsContext dc, int index, Point location)
+        public bool DrawImage(GraphicsContext dc, int index, Point location)
         {
             return NativeMethods.ImageList_Draw(Handle, index, dc.Handle, location.x, location.y, 0U);
         }
 
-        public bool DrawImage(NonOwnedGraphicsContext dc, int index, Rect frame)
+        public bool DrawImage(GraphicsContext dc, int index, Rect frame)
         {
             const int CLR_NONE = unchecked((int)0xFFFFFFFF);
             return NativeMethods.ImageList_DrawEx(Handle, index, dc.Handle, frame.left, frame.top, frame.Width, frame.Height, CLR_NONE, CLR_NONE, 0U);

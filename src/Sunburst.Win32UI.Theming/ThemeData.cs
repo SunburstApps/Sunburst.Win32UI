@@ -58,14 +58,14 @@ namespace Sunburst.Win32UI.Theming
             }
         }
 
-        public void DrawBackground(NonOwnedGraphicsContext dc, int partId, int stateId, Rect drawRect)
+        public void DrawBackground(GraphicsContext dc, int partId, int stateId, Rect drawRect)
         {
             AssertPartDefined(partId, stateId);
             int hr = NativeMethods.DrawThemeBackground(Handle, dc.Handle, partId, stateId, ref drawRect, IntPtr.Zero);
             if (hr != 0) Marshal.ThrowExceptionForHR(hr);
         }
 
-        public void DrawBackground(NonOwnedGraphicsContext dc, int partId, int stateId, Rect drawRect, Rect clipRect)
+        public void DrawBackground(GraphicsContext dc, int partId, int stateId, Rect drawRect, Rect clipRect)
         {
             AssertPartDefined(partId, stateId);
             using (StructureBuffer<Rect> clipRectPtr = new StructureBuffer<Rect>())
@@ -76,7 +76,7 @@ namespace Sunburst.Win32UI.Theming
             }
         }
 
-        public void DrawText(NonOwnedGraphicsContext dc, int partId, int stateId, string text, Rect drawRect,
+        public void DrawText(GraphicsContext dc, int partId, int stateId, string text, Rect drawRect,
             TextAlignment halign = TextAlignment.Left, VerticalTextAlignment valign = VerticalTextAlignment.Top, StringDrawingFlags flags = 0)
         {
             AssertPartDefined(partId, stateId);
@@ -84,7 +84,7 @@ namespace Sunburst.Win32UI.Theming
             if (hr != 0) Marshal.ThrowExceptionForHR(hr);
         }
 
-        public Rect CalculateContentRect(NonOwnedGraphicsContext dc, int partId, int stateId, Rect boundingRect)
+        public Rect CalculateContentRect(GraphicsContext dc, int partId, int stateId, Rect boundingRect)
         {
             AssertPartDefined(partId, stateId);
             int hr = NativeMethods.GetThemeBackgroundContentRect(Handle, dc.Handle, partId, stateId, ref boundingRect, out var contentRect);
@@ -93,7 +93,7 @@ namespace Sunburst.Win32UI.Theming
             return contentRect;
         }
 
-        public Rect CalculateBoundingRect(NonOwnedGraphicsContext dc, int partId, int stateId, Rect contentRect)
+        public Rect CalculateBoundingRect(GraphicsContext dc, int partId, int stateId, Rect contentRect)
         {
             AssertPartDefined(partId, stateId);
             int hr = NativeMethods.GetThemeBackgroundExtent(Handle, dc.Handle, partId, stateId, ref contentRect, out var boundingRect);
@@ -102,7 +102,7 @@ namespace Sunburst.Win32UI.Theming
             return boundingRect;
         }
 
-        public Size GetPartSize(NonOwnedGraphicsContext dc, int partId, int stateId, PartSizingMode mode, Rect rect)
+        public Size GetPartSize(GraphicsContext dc, int partId, int stateId, PartSizingMode mode, Rect rect)
         {
             AssertPartDefined(partId, stateId);
             int hr = NativeMethods.GetThemePartSize(Handle, dc.Handle, partId, stateId, ref rect, mode, out var size);
@@ -111,7 +111,7 @@ namespace Sunburst.Win32UI.Theming
             return size;
         }
 
-        public Rect GetTextSize(NonOwnedGraphicsContext dc, int partId, int stateId, string text, Rect drawRect,
+        public Rect GetTextSize(GraphicsContext dc, int partId, int stateId, string text, Rect drawRect,
             TextAlignment halign = TextAlignment.Left, VerticalTextAlignment valign = VerticalTextAlignment.Top, StringDrawingFlags flags = 0)
         {
             AssertPartDefined(partId, stateId);
@@ -121,7 +121,7 @@ namespace Sunburst.Win32UI.Theming
             return extentRect;
         }
 
-        public Region GetBackgroundRegion(NonOwnedGraphicsContext dc, int partId, int stateId, Rect boundingRect)
+        public Region GetBackgroundRegion(GraphicsContext dc, int partId, int stateId, Rect boundingRect)
         {
             AssertPartDefined(partId, stateId);
             int hr = NativeMethods.GetThemeBackgroundRegion(Handle, dc.Handle, partId, stateId, ref boundingRect, out var hRegion);
@@ -130,14 +130,14 @@ namespace Sunburst.Win32UI.Theming
             return new Region(hRegion);
         }
 
-        public void DrawImage(NonOwnedGraphicsContext dc, int partId, int stateId, Rect destinationRect, ImageList imageList, int imageIndex)
+        public void DrawImage(GraphicsContext dc, int partId, int stateId, Rect destinationRect, ImageList imageList, int imageIndex)
         {
             AssertPartDefined(partId, stateId);
             int hr = NativeMethods.DrawThemeIcon(Handle, dc.Handle, partId, stateId, ref destinationRect, imageList.Handle, imageIndex);
             if (hr != 0) Marshal.ThrowExceptionForHR(hr);
         }
 
-        public void DrawImage(NonOwnedGraphicsContext dc, int partId, int stateId, Rect destinationRect, Bitmap bitmap, Color maskColor)
+        public void DrawImage(GraphicsContext dc, int partId, int stateId, Rect destinationRect, Bitmap bitmap, Color maskColor)
         {
             // Don't AssertPartDefined() here, as the other overload of DrawImage() will do that for us.
             using (ImageList list = new ImageList(bitmap.Size, 1, 1))
@@ -156,7 +156,7 @@ namespace Sunburst.Win32UI.Theming
             return Color.FromWin32Color(color_ref);
         }
 
-        public int GetMetric(NonOwnedGraphicsContext dc, int partId, int stateId, int propId)
+        public int GetMetric(GraphicsContext dc, int partId, int stateId, int propId)
         {
             AssertPartDefined(partId, stateId);
 
@@ -174,7 +174,7 @@ namespace Sunburst.Win32UI.Theming
             return value;
         }
 
-        public Font GetFont(NonOwnedGraphicsContext dc, int partId, int stateId, int propId)
+        public Font GetFont(GraphicsContext dc, int partId, int stateId, int propId)
         {
             AssertPartDefined(partId, stateId);
 
@@ -183,7 +183,7 @@ namespace Sunburst.Win32UI.Theming
             return new Font(value);
         }
 
-        public Rect GetRect(NonOwnedGraphicsContext dc, int partId, int stateId, int propId)
+        public Rect GetRect(GraphicsContext dc, int partId, int stateId, int propId)
         {
             AssertPartDefined(partId, stateId);
 

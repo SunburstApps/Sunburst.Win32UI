@@ -270,7 +270,7 @@ namespace Sunburst.Win32UI.Layout
             mDefaultActivePane = pane;
         }
 
-        private void DrawSplitter(NonOwnedGraphicsContext dc)
+        private void DrawSplitter(GraphicsContext dc)
         {
             if (mDefaultSinglePane == SplitContainerPane.None && !mSplitterPosition.HasValue) return;
 
@@ -315,13 +315,13 @@ namespace Sunburst.Win32UI.Layout
             else mDragOffset = y - mSplitterRect.top - (mSplitterPosition ?? 0);
         }
 
-        protected virtual void DrawSplitterBarContent(NonOwnedGraphicsContext dc)
+        protected virtual void DrawSplitterBarContent(GraphicsContext dc)
         {
             Rect? barRect = GetSplitterBarRect();
             if (barRect.HasValue) dc.FillRect(barRect.Value, SystemBrushes.WindowBackground);
         }
 
-        protected virtual void DrawEmptyPaneContent(NonOwnedGraphicsContext dc, SplitContainerPane pane)
+        protected virtual void DrawEmptyPaneContent(GraphicsContext dc, SplitContainerPane pane)
         {
             Rect paneRect = GetPaneRect(pane);
             dc.FillRect(paneRect, SystemBrushes.ControlBackground);

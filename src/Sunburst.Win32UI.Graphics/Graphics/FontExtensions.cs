@@ -19,7 +19,7 @@ namespace Sunburst.Win32UI.Graphics
                 72, NativeMethods.GetDeviceCaps(hDC, LOGPIXELSY));
         }
 
-        public static int GetPointSize(this LOGFONT font_struct, NonOwnedGraphicsContext ctx = null)
+        public static int GetPointSize(this LOGFONT font_struct, GraphicsContext ctx = null)
         {
             if (ctx == null)
             {
@@ -39,7 +39,7 @@ namespace Sunburst.Win32UI.Graphics
             }
         }
 
-        public static void SetPointSize(this LOGFONT font_struct, int pointSize, NonOwnedGraphicsContext ctx = null)
+        public static void SetPointSize(this LOGFONT font_struct, int pointSize, GraphicsContext ctx = null)
         {
             if (ctx == null)
             {

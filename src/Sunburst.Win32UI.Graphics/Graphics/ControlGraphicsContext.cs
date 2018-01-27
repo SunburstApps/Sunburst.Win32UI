@@ -3,7 +3,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.Graphics
 {
-    public class WindowGraphicsContext : NonOwnedGraphicsContext, IDisposable
+    public class WindowGraphicsContext : GraphicsContext, IDisposable
     {
         public WindowGraphicsContext(Control parent) : base(NativeMethods.GetDC(parent.Handle))
         {
@@ -14,7 +14,7 @@ namespace Sunburst.Win32UI.Graphics
 
         public Control Parent { get; private set; }
 
-        public void Dispose()
+        protected override void DisposeCore()
         {
             NativeMethods.ReleaseDC(Parent.Handle, Handle);
         }

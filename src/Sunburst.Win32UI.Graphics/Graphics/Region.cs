@@ -78,7 +78,7 @@ namespace Sunburst.Win32UI.Graphics
             return new Region(NativeMethods.CreateRoundRectRgn(frame.left, frame.top, frame.right, frame.bottom, widthRadius, heightRadius));
         }
 
-        public static Region CreateFromGraphicsContextPath(NonOwnedGraphicsContext context)
+        public static Region CreateFromGraphicsContextPath(GraphicsContext context)
         {
             return new Region(NativeMethods.PathToRegion(context.Handle));
         }

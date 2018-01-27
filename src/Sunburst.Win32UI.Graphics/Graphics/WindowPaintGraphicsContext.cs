@@ -3,7 +3,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.Graphics
 {
-    public class WindowPaintGraphicsContext : NonOwnedGraphicsContext, IDisposable
+    public class WindowPaintGraphicsContext : GraphicsContext, IDisposable
     {
         public WindowPaintGraphicsContext(Control parent)
         {
@@ -20,7 +20,7 @@ namespace Sunburst.Win32UI.Graphics
         public Rect RedrawRect => PaintStruct.rcPaint;
         public bool EraseBackground => PaintStruct.fErase;
 
-        public void Dispose()
+        protected virtual void DisposeCore()
         {
             NativeMethods.EndPaint(Parent.Handle, ref PaintStruct);
         }

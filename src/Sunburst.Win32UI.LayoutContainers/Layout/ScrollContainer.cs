@@ -486,6 +486,6 @@ namespace Sunburst.Win32UI.Layout
             NativeMethods.SetScrollInfo(Handle, barId, ref info, redraw);
         }
 
-        protected virtual void DoPaint(NonOwnedGraphicsContext graphicsContext) { }
+        protected virtual void DoPaint(GraphicsContext graphicsContext) { }
     }
 }
