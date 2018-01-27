@@ -7,25 +7,25 @@ namespace Sunburst.Win32UI.Graphics
 {
     public static class WindowExtensions
     {
-        public static NonOwnedIcon GetLargeIcon(this Control window)
+        public static Icon GetLargeIcon(this Control window)
         {
             const uint WM_GETICON = 0x007F;
-            return new NonOwnedIcon(window.SendMessage(WM_GETICON, (IntPtr)1, IntPtr.Zero));
+            return new Icon(window.SendMessage(WM_GETICON, (IntPtr)1, IntPtr.Zero));
         }
 
-        public static void SetLargeIcon(this Control window, NonOwnedIcon icon)
+        public static void SetLargeIcon(this Control window, Icon icon)
         {
             const uint WM_SETICON = 0x0080;
             window.SendMessage(WM_SETICON, (IntPtr)1, icon.Handle);
         }
 
-        public static NonOwnedIcon GetSmallIcon(this Control window)
+        public static Icon GetSmallIcon(this Control window)
         {
             const uint WM_GETICON = 0x007F;
-            return new NonOwnedIcon(window.SendMessage(WM_GETICON, (IntPtr)0, IntPtr.Zero));
+            return new Icon(window.SendMessage(WM_GETICON, (IntPtr)0, IntPtr.Zero));
         }
 
-        public static void SetSmallIcon(this Control window, NonOwnedIcon icon)
+        public static void SetSmallIcon(this Control window, Icon icon)
         {
             const uint WM_SETICON = 0x0080;
             window.SendMessage(WM_SETICON, (IntPtr)0, icon.Handle);

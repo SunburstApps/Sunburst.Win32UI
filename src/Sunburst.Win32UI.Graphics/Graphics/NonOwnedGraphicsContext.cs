@@ -238,7 +238,7 @@ namespace Sunburst.Win32UI.Graphics
                 NonOwnedRegion.TranslateCombinationMode(combinationMode, nameof(combinationMode))); 
         }
 
-        public bool DrawIcon(NonOwnedIcon icon, Point position, Size size)
+        public bool DrawIcon(Icon icon, Point position, Size size)
         {
             return NativeMethods.DrawIconEx(Handle, Convert.ToInt32(position.x), Convert.ToInt32(position.y),
                 icon.Handle, Convert.ToInt32(size.width), Convert.ToInt32(size.height), 0, IntPtr.Zero);

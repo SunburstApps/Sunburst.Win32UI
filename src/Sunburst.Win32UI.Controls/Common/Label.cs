@@ -24,11 +24,11 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public NonOwnedIcon Icon
+        public Icon Icon
         {
             get
             {
-                return new NonOwnedIcon(SendMessage(STM_GETICON, IntPtr.Zero, IntPtr.Zero));
+                return new Icon(SendMessage(STM_GETICON, IntPtr.Zero, IntPtr.Zero));
             }
 
             set

@@ -657,7 +657,7 @@ namespace Sunburst.Win32UI.TaskDialogs
         private IntPtr id;
         private IntPtr hicon;
 
-        public TaskDialogIcon(NonOwnedIcon bitmap)
+        public TaskDialogIcon(Icon bitmap)
         {
             id = IntPtr.Zero;
             hicon = bitmap.Handle;

@@ -98,12 +98,12 @@ namespace Sunburst.Win32UI.Graphics
             return NativeMethods.ImageList_AddMasked(Handle, image.Handle, Color.ToWin32Color(maskColor));
         }
 
-        public int AddImage(NonOwnedIcon icon)
+        public int AddImage(Icon icon)
         {
             return NativeMethods.ImageList_ReplaceIcon(Handle, -1, icon.Handle);
         }
 
-        public int ReplaceImage(int index, NonOwnedIcon icon)
+        public int ReplaceImage(int index, Icon icon)
         {
             return NativeMethods.ImageList_ReplaceIcon(Handle, index, icon.Handle);
         }

@@ -251,7 +251,7 @@ namespace Sunburst.Win32UI.CommonControls
             }
         }
 
-        public bool SetTitle(string title, NonOwnedIcon icon)
+        public bool SetTitle(string title, Icon icon)
         {
             if (title.Length > 99) throw new ArgumentException("Title too long (maximum 99 characters)", nameof(title));
             using (HGlobal ptr = HGlobal.WithStringUni(title))
