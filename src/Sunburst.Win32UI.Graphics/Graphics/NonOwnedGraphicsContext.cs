@@ -32,7 +32,7 @@ namespace Sunburst.Win32UI.Graphics
             }
         }
 
-        public void Select(NonOwnedBrush brush, Action action)
+        public void Select(Brush brush, Action action)
         {
             IntPtr oldObject = NativeMethods.SelectObject(Handle, brush.Handle);
             try
@@ -97,11 +97,11 @@ namespace Sunburst.Win32UI.Graphics
             }
         }
 
-        public NonOwnedBrush CurrentBrush
+        public Brush CurrentBrush
         {
             get
             {
-                return new NonOwnedBrush(NativeMethods.GetCurrentObject(Handle, GDIConstants.OBJ_BRUSH));
+                return new Brush(NativeMethods.GetCurrentObject(Handle, GDIConstants.OBJ_BRUSH));
             }
 
             set
@@ -171,12 +171,12 @@ namespace Sunburst.Win32UI.Graphics
             }
         }
 
-        public void FillRegion(NonOwnedRegion region, NonOwnedBrush brush)
+        public void FillRegion(NonOwnedRegion region, Brush brush)
         {
             NativeMethods.FillRgn(Handle, region.Handle, brush.Handle);
         }
 
-        public void FillRect(Rect rect, NonOwnedBrush brush)
+        public void FillRect(Rect rect, Brush brush)
         {
             NativeMethods.FillRect(Handle, ref rect, brush.Handle);
         }
@@ -201,13 +201,13 @@ namespace Sunburst.Win32UI.Graphics
             NativeMethods.GradientFill(Handle, points, 2, ref gradientRect, 1, horizontalGradient ? 0 : 1);
         }
 
-        public void FrameRegion(NonOwnedRegion region, NonOwnedBrush brush, Size size)
+        public void FrameRegion(NonOwnedRegion region, Brush brush, Size size)
         {
             NativeMethods.FrameRgn(Handle, region.Handle, brush.Handle,
                 Convert.ToInt32(size.width), Convert.ToInt32(size.height));
         }
 
-        public void FrameRect(Rect rect, NonOwnedBrush brush)
+        public void FrameRect(Rect rect, Brush brush)
         {
             NativeMethods.FrameRect(Handle, ref rect, brush.Handle);
         }

@@ -19,39 +19,39 @@ namespace Sunburst.Win32UI.Graphics
             throw new NotSupportedException();
         }
 
-        public static NonOwnedBrush WindowBackground
+        public static Brush WindowBackground
         {
             get
             {
                 const int COLOR_WINDOW = 5;
-                return new NonOwnedBrush(NativeMethods.GetSysColorBrush(COLOR_WINDOW));
+                return new Brush(NativeMethods.GetSysColorBrush(COLOR_WINDOW));
             }
         }
 
-        public static NonOwnedBrush ControlBackground
+        public static Brush ControlBackground
         {
             get
             {
                 const int COLOR_BTNFACE = 15;
-                return new NonOwnedBrush(NativeMethods.GetSysColorBrush(COLOR_BTNFACE));
+                return new Brush(NativeMethods.GetSysColorBrush(COLOR_BTNFACE));
             }
         }
 
-        public static NonOwnedBrush DisabledText
+        public static Brush DisabledText
         {
             get
             {
                 const int COLOR_GRAYTEXT = 17;
-                return new NonOwnedBrush(NativeMethods.GetSysColorBrush(COLOR_GRAYTEXT));
+                return new Brush(NativeMethods.GetSysColorBrush(COLOR_GRAYTEXT));
             }
         }
 
-        public static NonOwnedBrush Text
+        public static Brush Text
         {
             get
             {
                 const int COLOR_WINDOWTEXT = 8;
-                return new NonOwnedBrush(NativeMethods.GetSysColorBrush(COLOR_WINDOWTEXT));
+                return new Brush(NativeMethods.GetSysColorBrush(COLOR_WINDOWTEXT));
             }
         }
     }

@@ -4,9 +4,9 @@ using Sunburst.Win32UI.Interop;
 namespace Sunburst.Win32UI.Graphics
 {
     /// <summary>
-    /// Wraps a Win32 <c>HBRUSH</c>.
+    /// Wraps a GDI <c>HBRUSH</c>.
     /// </summary>
-    public class Brush : NonOwnedBrush, IDisposable
+    public class Brush : IDisposable
     {
         public static Brush CreateSolid(Color color)
         {
@@ -23,11 +23,16 @@ namespace Sunburst.Win32UI.Graphics
             return new Brush(NativeMethods.CreatePatternBrush(bmp.Handle));
         }
 
-        public Brush(IntPtr ptr) : base(ptr) { }
+        public Brush(IntPtr ptr)
+        {
+            Handle = ptr;
+        }
 
         public void Dispose()
         {
             NativeMethods.DeleteObject(Handle);
         }
+
+        public IntPtr Handle { get; private set; }
     }
 }

@@ -617,7 +617,7 @@ namespace Sunburst.Win32UI.Layout
             }
         }
 
-        private static NonOwnedBrush GetHalftoneBrush()
+        private static Brush GetHalftoneBrush()
         {
             short[] grayPattern = new short[8];
             for (int i = 0; i < 8; i++) grayPattern[i] = (short)(0x5555 << (i & 1));
@@ -629,7 +629,7 @@ namespace Sunburst.Win32UI.Layout
                 using (Bitmap bmp = new Bitmap(NativeMethods.CreateBitmap(8, 8, 1, 1, bits.Handle)))
                 {
                     IntPtr hBrush = NativeMethods.CreatePatternBrush(bmp.Handle);
-                    return new NonOwnedBrush(hBrush);
+                    return new Brush(hBrush);
                 }
             }
         }
