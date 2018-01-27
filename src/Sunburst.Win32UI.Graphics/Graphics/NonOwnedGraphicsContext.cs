@@ -84,11 +84,11 @@ namespace Sunburst.Win32UI.Graphics
             }
         }
 
-        public NonOwnedPen CurrentPen
+        public Pen CurrentPen
         {
             get
             {
-                return new NonOwnedPen(NativeMethods.GetCurrentObject(Handle, GDIConstants.OBJ_PEN));
+                return new Pen(NativeMethods.GetCurrentObject(Handle, GDIConstants.OBJ_PEN));
             }
 
             set
