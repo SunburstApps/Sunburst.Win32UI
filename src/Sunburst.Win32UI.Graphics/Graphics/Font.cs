@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.Graphics
 {
     /// <summary>
-    /// Wraps a Windows font.
+    /// Wraps a Windows font (GDI <c>HFONT</c>).
     /// </summary>
-    public class Font : NonOwnedFont, IDisposable
+    public class Font : IDisposable
     {
         private static LOGFONT CreatePointFontStruct(string fontName, int pointSize, bool bold, bool italic)
         {
@@ -36,11 +36,36 @@ namespace Sunburst.Win32UI.Graphics
             Handle = NativeMethods.CreateFontIndirect(ref font_struct);
         }
 
-        public Font(IntPtr ptr) : base(ptr) { }
+        /// <summary>
+        /// Creates a new instance of Font.
+        /// </summary>
+        /// <param name="ptr">
+        /// The native handle to the font data.
+        /// </param>
+        public Font(IntPtr ptr)
+        {
+            Handle = ptr;
+        }
 
         public void Dispose()
         {
             NativeMethods.DeleteObject(Handle);
         }
+
+        public LOGFONT GetFontDescriptor()
+        {
+            using (StructureBuffer<LOGFONT> ptr = new StructureBuffer<LOGFONT>())
+            {
+                int returnedSize = NativeMethods.GetObject(Handle, ptr.Size, ptr.Handle);
+                if (ptr.Size != returnedSize)
+                    throw new InvalidOperationException($"GetObject() returned incorrect size (got {returnedSize} bytes, expected {ptr.Size} bytes)");
+                return ptr.Value;
+            }
+        }
+
+        /// <summary>
+        /// The native handle to the font data.
+        /// </summary>
+        public IntPtr Handle { get; protected set; }
     }
 }

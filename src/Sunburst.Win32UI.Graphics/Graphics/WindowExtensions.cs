@@ -31,13 +31,13 @@ namespace Sunburst.Win32UI.Graphics
             window.SendMessage(WM_SETICON, (IntPtr)0, icon.Handle);
         }
 
-        public static NonOwnedFont GetFont(this Control window)
+        public static Font GetFont(this Control window)
         {
             const uint WM_GETFONT = 0x0031;
-            return new NonOwnedFont(window.SendMessage(WM_GETFONT, IntPtr.Zero, IntPtr.Zero));
+            return new Font(window.SendMessage(WM_GETFONT, IntPtr.Zero, IntPtr.Zero));
         }
 
-        public static void SetFont(this Control window, NonOwnedFont font)
+        public static void SetFont(this Control window, Font font)
         {
             const uint WM_SETFONT = 0x0030;
             window.SendMessage(WM_SETFONT, font.Handle, (IntPtr)1);

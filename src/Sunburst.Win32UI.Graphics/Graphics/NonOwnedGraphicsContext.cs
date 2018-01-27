@@ -45,7 +45,7 @@ namespace Sunburst.Win32UI.Graphics
             }
         }
 
-        public void Select(NonOwnedFont font, Action action)
+        public void Select(Font font, Action action)
         {
             IntPtr oldObject = NativeMethods.SelectObject(Handle, font.Handle);
             try
@@ -110,11 +110,11 @@ namespace Sunburst.Win32UI.Graphics
             }
         }
 
-        public NonOwnedFont CurrentFont
+        public Font CurrentFont
         {
             get
             {
-                return new NonOwnedFont(NativeMethods.GetCurrentObject(Handle, GDIConstants.OBJ_FONT));
+                return new Font(NativeMethods.GetCurrentObject(Handle, GDIConstants.OBJ_FONT));
             }
 
             set

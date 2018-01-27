@@ -5,7 +5,7 @@ using Sunburst.Win32UI.Graphics;
 namespace Sunburst.Win32UI.Interop
 {
     /// <summary>
-    /// Contains the data necessary to create a <see cref="Sunburst.Win32UI.Graphics.NonOwnedFont"/> instance.
+    /// Contains the data necessary to create a <see cref="Sunburst.Win32UI.Graphics.Font"/> instance.
     /// </summary>
     /// <remarks>
     /// This structure is public because wrapping it in a <c>FontDescriptor</c> class is
