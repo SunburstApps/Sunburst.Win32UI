@@ -28,15 +28,13 @@ namespace Sunburst.Win32UI
 
         public Control(IntPtr hWnd)
         {
-            m_NativeWindow = new NativeWindow(hWnd);
+            NativeWindow = new NativeWindow(hWnd);
         }
 
         public virtual void CreateHandle()
         {
-            if (m_NativeWindow != null) throw new InvalidOperationException($"Cannot call {nameof(CreateHandle)}() on a {nameof(Control)} instance that already has one");
-
-            m_NativeWindow = new ControlNativeWindow(this);
-            m_NativeWindow.CreateHandle(CreateParams);
+            if (NativeWindow != null) throw new InvalidOperationException($"Cannot call {nameof(CreateHandle)}() on a {nameof(Control)} instance that already has one");
+            NativeWindow = ControlNativeWindow.Create(this, CreateParams);
         }
 
         protected virtual CreateParams CreateParams
@@ -51,10 +49,10 @@ namespace Sunburst.Win32UI
 
         public void DestroyHandle()
         {
-            if (m_NativeWindow != null)
+            if (NativeWindow != null)
             {
-                m_NativeWindow.DestroyHandle();
-                m_NativeWindow = null;
+                NativeWindow.DestroyWindow();
+                NativeWindow = null;
             }
             else
             {
@@ -65,12 +63,12 @@ namespace Sunburst.Win32UI
         /// <summary>
         /// The handle to the Win32 control or top-level window that this instance wraps.
         /// </summary>
-        public IntPtr Handle => m_NativeWindow.Handle;
-        private NativeWindow m_NativeWindow = null;
+        public IntPtr Handle => NativeWindow.Handle;
+        public NativeWindow NativeWindow { get; private set; } = null;
 
         protected void DefWndProc(ref Message m)
         {
-            if (m_NativeWindow is ControlNativeWindow native)
+            if (NativeWindow is ControlNativeWindow native)
             {
                 native.DefaultProcessMessage(ref m);
             }
@@ -83,25 +81,27 @@ namespace Sunburst.Win32UI
         protected virtual void WndProc(ref Message m) => DefWndProc(ref m);
         internal void CallWndProc(ref Message m) => WndProc(ref m);
 
-        public string GetText()
+        public string Text
         {
-            int length = NativeMethods.GetWindowTextLength(Handle);
-            using (HGlobal ptr = new HGlobal((length + 1) * Marshal.SystemDefaultCharSize))
-            {
-                NativeMethods.GetWindowText(Handle, ptr.Handle, length + 1);
-                return Marshal.PtrToStringUni(ptr.Handle);
-            }
+            get => NativeWindow.Text;
+            set => NativeWindow.Text = value;
         }
 
-        public void SetText(string text) => NativeMethods.SetWindowText(Handle, text);
+        public bool Enabled
+        {
+            get => NativeWindow.Enabled;
+            set => NativeWindow.Enabled = value;
+        }
 
-        public bool GetEnabled() => NativeMethods.IsWindowEnabled(Handle);
-        public void SetEnabled(bool enable) => NativeMethods.EnableWindow(Handle, enable);
-        public void MakeActive() => NativeMethods.SetActiveWindow(Handle);
-        public void Focus() => NativeMethods.SetFocus(Handle);
-        public bool IsVisible => NativeMethods.IsWindowVisible(Handle);
-        public bool IsIconic => NativeMethods.IsWindowIconic(Handle);
-        public bool IsMaximized => NativeMethods.IsZoomed(Handle);
+        public Font Font
+        {
+            get => new Font(NativeWindow.SendMessage(WindowMessages.WM_GETFONT, IntPtr.Zero, IntPtr.Zero));
+            set => NativeWindow.SendMessage(WindowMessages.WM_SETFONT, Font.Handle, (IntPtr)1);
+        }
+
+        public void Activate() => NativeWindow.Activate();
+        public void Focus() => NativeWindow.Focus();
+        public bool IsVisible => NativeWindow.IsVisible;
         public void Move(Rect location) => NativeMethods.MoveWindow(Handle, location.left, location.top, location.Width, location.Height, true);
         public void BringToTop() => NativeMethods.BringWindowToTop(Handle);
 
@@ -129,22 +129,10 @@ namespace Sunburst.Win32UI
             }
         }
 
-        public IntPtr GetWindowLongPtr(int index) => NativeMethods.GetWindowLongPtr(Handle, index);
-        public void SetWindowLongPtr(int index, IntPtr value) => NativeMethods.SetWindowLongPtr(Handle, index, value);
-        public int GetStyle() => (int)GetWindowLongPtr(-16);
-        public void SetStyle(int style) => SetWindowLongPtr(-16, (IntPtr)style);
-        public int GetExtendedStyle() => (int)GetWindowLongPtr(-20);
-        public void SetExtendedStyle(int style) => SetWindowLongPtr(-20, (IntPtr)style);
         public void Show() => NativeMethods.ShowWindow(Handle, 1);
         public void Hide() => NativeMethods.ShowWindow(Handle, 0);
-        public void Maximize() => NativeMethods.ShowWindow(Handle, 3);
-        public void Minimize() => NativeMethods.ShowWindow(Handle, 6);
-        public void RestoreFromMaximize() => NativeMethods.ShowWindow(Handle, 9);
         public void Update() => NativeMethods.UpdateWindow(Handle);
 
-        public IntPtr SendMessage(uint messageId, IntPtr wParam, IntPtr lParam) => NativeMethods.SendMessage(Handle, messageId, wParam, lParam);
-        public IntPtr PostMessage(uint messageId, IntPtr wParam, IntPtr lParam) => NativeMethods.PostMessage(Handle, messageId, wParam, lParam);
-        public IntPtr SendNotifyMessage(uint messageId, IntPtr wParam, IntPtr lParam) => NativeMethods.SendNotifyMessage(Handle, messageId, wParam, lParam);
         public void Invalidate(bool redraw = true) => NativeMethods.InvalidateRect(Handle, IntPtr.Zero, redraw);
         public void Invalidate(Rect frame, bool redraw = true)
         {

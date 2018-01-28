@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Sunburst.Win32UI.Graphics;
 
 namespace Sunburst.Win32UI.Interop
 {
@@ -11,74 +12,95 @@ namespace Sunburst.Win32UI.Interop
             Handle = hWnd;
         }
 
-        public IntPtr Handle { get; private set; } = IntPtr.Zero;
-        private IntPtr superclassWndProc = IntPtr.Zero;
+        public IntPtr Handle { get; protected set; } = IntPtr.Zero;
 
-        private static IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
+        public string Text
         {
-            const string propertyName = "Sunburst.WindowsForms.Control";
-
-            if (msg == WindowMessages.WM_NCCREATE)
+            get
             {
-                CREATESTRUCT createStruct = Marshal.PtrToStructure<CREATESTRUCT>(lParam);
-                NativeMethods.SetProp(hWnd, propertyName, createStruct.lpCreateParams);
+                int length = NativeMethods.GetWindowTextLength(Handle);
+                using (HGlobal ptr = new HGlobal((length + 1) * Marshal.SystemDefaultCharSize))
+                {
+                    NativeMethods.GetWindowText(Handle, ptr.Handle, length + 1);
+                    return Marshal.PtrToStringUni(ptr.Handle);
+                }
             }
 
-            IntPtr instanceHandle = NativeMethods.GetProp(hWnd, propertyName);
-            if (instanceHandle == IntPtr.Zero)
-            {
-                // If we haven't received WM_NCCREATE yet, there's not much we can do here.
-                return NativeMethods.DefWindowProc(hWnd, msg, wParam, lParam);
-            }
-
-            NativeWindow instance = (NativeWindow)GCHandle.FromIntPtr(instanceHandle).Target;
-
-            Message m = new Message(hWnd, msg, wParam, lParam);
-            instance.ProcessMessage(ref m);
-
-            if (msg == WindowMessages.WM_NCDESTROY)
-            {
-                GCHandle.FromIntPtr(instanceHandle).Free();
-                NativeMethods.RemoveProp(hWnd, propertyName);
-            }
-
-            return m.Result;
+            set => NativeMethods.SetWindowText(Handle, value);
         }
 
-        protected virtual void ProcessMessage(ref Message msg)
+        public bool Enabled
         {
-            if (superclassWndProc != IntPtr.Zero)
+            get => NativeMethods.IsWindowEnabled(Handle);
+            set => NativeMethods.EnableWindow(Handle, value);
+        }
+
+        public void Activate() => NativeMethods.SetActiveWindow(Handle);
+        public void Focus() => NativeMethods.SetFocus(Handle);
+        public bool IsVisible => NativeMethods.IsWindowVisible(Handle);
+        public bool IsIconic => NativeMethods.IsWindowIconic(Handle);
+        public bool IsMaximized => NativeMethods.IsWindowZoomed(Handle);
+        public void Move(Rect location) => NativeMethods.MoveWindow(Handle, location.left, location.top, location.Width, location.Height, true);
+        public void BringToTop() => NativeMethods.BringWindowToTop(Handle);
+        public void DestroyWindow() => NativeMethods.DestroyWindow(Handle);
+
+        public Rect WindowRect
+        {
+            get
             {
-                msg.Result = NativeMethods.CallWindowProc(superclassWndProc, msg.TargetHandle, msg.MessageId, msg.WParam, msg.LParam);
+                if (!NativeMethods.IsWindow(Handle)) throw new InvalidOperationException("not a valid HWND");
+
+                Rect rect = new Rect();
+                NativeMethods.GetWindowRect(Handle, ref rect);
+                return rect;
             }
-            else
+        }
+
+        public Rect ClientRect
+        {
+            get
             {
-                msg.Result = NativeMethods.DefWindowProc(msg.TargetHandle, msg.MessageId, msg.WParam, msg.LParam);
+                if (!NativeMethods.IsWindow(Handle)) throw new InvalidOperationException("not a valid HWND");
+
+                Rect rect = new Rect();
+                NativeMethods.GetClientRect(Handle, ref rect);
+                return rect;
             }
         }
 
-        public void CreateHandle(CreateParams createParams)
+        public int Style
         {
-            if (createParams == null) throw new ArgumentNullException(nameof(createParams));
-            if (Handle != IntPtr.Zero) throw new InvalidOperationException("This instance already has a handle, please destroy it first");
-
-            WindowClass windowClass = WindowClass.GetWindowClass(createParams.ClassName, createParams.ClassStyle);
-
-            IntPtr wndProc = Marshal.GetFunctionPointerForDelegate((WNDPROC)WndProc);
-            string fullClassName = windowClass.Register(wndProc, out superclassWndProc);
-
-            GCHandle gcHandle = GCHandle.Alloc(this);
-
-            var frame = createParams.Frame;
-            Handle = NativeMethods.CreateWindowEx(createParams.ExtendedStyle, fullClassName,
-                createParams.Caption, createParams.Style, frame.left, frame.top, frame.Width, frame.Height,
-                createParams.ParentHandle, IntPtr.Zero, IntPtr.Zero, GCHandle.ToIntPtr(gcHandle));
+            get => (int)GetWindowLongPtr(-16);
+            set => SetWindowLongPtr(-16, (IntPtr)value);
         }
 
-        public void DestroyHandle()
+        public int ExtendedStyle
         {
-            if (Handle == IntPtr.Zero) throw new InvalidOperationException("This instance does not have a handle to destroy");
-            NativeMethods.DestroyWindow(Handle);
+            get => (int)GetWindowLongPtr(-20);
+            set => SetWindowLongPtr(-20, (IntPtr)value);
         }
+
+        public IntPtr GetWindowLongPtr(int index) => NativeMethods.GetWindowLongPtr(Handle, index);
+        public void SetWindowLongPtr(int index, IntPtr value) => NativeMethods.SetWindowLongPtr(Handle, index, value);
+        public void Show() => NativeMethods.ShowWindow(Handle, 1);
+        public void Hide() => NativeMethods.ShowWindow(Handle, 0);
+        public void Maximize() => NativeMethods.ShowWindow(Handle, 3);
+        public void Minimize() => NativeMethods.ShowWindow(Handle, 6);
+        public void RestoreFromMaximize() => NativeMethods.ShowWindow(Handle, 9);
+        public void Update() => NativeMethods.UpdateWindow(Handle);
+
+        public IntPtr SendMessage(uint messageId, IntPtr wParam, IntPtr lParam) => NativeMethods.SendMessage(Handle, messageId, wParam, lParam);
+        public IntPtr PostMessage(uint messageId, IntPtr wParam, IntPtr lParam) => NativeMethods.PostMessage(Handle, messageId, wParam, lParam);
+        public IntPtr SendNotifyMessage(uint messageId, IntPtr wParam, IntPtr lParam) => NativeMethods.SendNotifyMessage(Handle, messageId, wParam, lParam);
+        public void Invalidate(bool redraw = true) => NativeMethods.InvalidateRect(Handle, IntPtr.Zero, redraw);
+        public void Invalidate(Rect frame, bool redraw = true)
+        {
+            using (StructureBuffer<Rect> rectPtr = new StructureBuffer<Rect>())
+            {
+                rectPtr.Value = frame;
+                NativeMethods.InvalidateRect(Handle, rectPtr.Handle, redraw);
+            }
+        }
+
     }
 }

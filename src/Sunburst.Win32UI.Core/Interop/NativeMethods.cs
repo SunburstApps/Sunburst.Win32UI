@@ -106,7 +106,7 @@ namespace Sunburst.Win32UI.Interop
         public static extern bool IsWindowIconic(IntPtr hWnd);
 
         [DllImport("user32.dll")]
-        public static extern bool IsZoomed(IntPtr hWnd);
+        public static extern bool IsWindowZoomed(IntPtr hWnd);
 
         [DllImport("user32.dll")]
         public static extern void MoveWindow(IntPtr hWnd, int left, int top, int width, int height, bool redraw);
