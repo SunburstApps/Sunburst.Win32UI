@@ -1,4 +1,4 @@
-﻿namespace Sunburst.Win32UI
+﻿namespace Sunburst.Win32UI.Interop
 {
     /// <summary>
     /// Contains common style and extended-style data for Windows controls.

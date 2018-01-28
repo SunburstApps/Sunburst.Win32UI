@@ -1,4 +1,4 @@
-﻿namespace Sunburst.Win32UI
+﻿namespace Sunburst.Win32UI.Interop
 {
     public static class WindowMessages
     {
