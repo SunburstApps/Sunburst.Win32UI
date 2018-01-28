@@ -1,30 +1,28 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{FE883911-3D18-4C71-B682-B9847CCE2634}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.Core", "src\Sunburst.Win32UI.Core\Sunburst.Win32UI.Core.csproj", "{2C91B26B-D6FD-4C16-AACF-8166FFF54070}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.Win32UI.Core", "src\Sunburst.Win32UI.Core\Sunburst.Win32UI.Core.csproj", "{2C91B26B-D6FD-4C16-AACF-8166FFF54070}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.Graphics", "src\Sunburst.Win32UI.Graphics\Sunburst.Win32UI.Graphics.csproj", "{3C749E7E-4F6E-4768-8F6C-FC13916F924D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.Win32UI.TaskDialogs", "src\Sunburst.Win32UI.TaskDialogs\Sunburst.Win32UI.TaskDialogs.csproj", "{81F2D565-3B17-4657-83CC-D1F3C06363B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.TaskDialogs", "src\Sunburst.Win32UI.TaskDialogs\Sunburst.Win32UI.TaskDialogs.csproj", "{81F2D565-3B17-4657-83CC-D1F3C06363B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.Win32UI.Menus", "src\Sunburst.Win32UI.Menus\Sunburst.Win32UI.Menus.csproj", "{CDF633C5-00FD-4F8B-A263-17C0DAC8B9A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.Menus", "src\Sunburst.Win32UI.Menus\Sunburst.Win32UI.Menus.csproj", "{CDF633C5-00FD-4F8B-A263-17C0DAC8B9A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.Win32UI.Controls", "src\Sunburst.Win32UI.Controls\Sunburst.Win32UI.Controls.csproj", "{E52D37B4-C666-43D7-B5F9-F428EA6518D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.Controls", "src\Sunburst.Win32UI.Controls\Sunburst.Win32UI.Controls.csproj", "{E52D37B4-C666-43D7-B5F9-F428EA6518D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.Win32UI.LayoutContainers", "src\Sunburst.Win32UI.LayoutContainers\Sunburst.Win32UI.LayoutContainers.csproj", "{7B1CDDFF-2042-4CA2-8450-621447FE9BE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.LayoutContainers", "src\Sunburst.Win32UI.LayoutContainers\Sunburst.Win32UI.LayoutContainers.csproj", "{7B1CDDFF-2042-4CA2-8450-621447FE9BE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.Win32UI.Theming", "src\Sunburst.Win32UI.Theming\Sunburst.Win32UI.Theming.csproj", "{0C2D0D7A-22BC-498C-8B6F-93F74ADEF0E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.Theming", "src\Sunburst.Win32UI.Theming\Sunburst.Win32UI.Theming.csproj", "{0C2D0D7A-22BC-498C-8B6F-93F74ADEF0E0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.Application", "src\Sunburst.Win32UI.Application\Sunburst.Win32UI.Application.csproj", "{48B31A34-903B-4875-B1A3-55C959B3026A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.Win32UI.Application", "src\Sunburst.Win32UI.Application\Sunburst.Win32UI.Application.csproj", "{48B31A34-903B-4875-B1A3-55C959B3026A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{8D0269FB-ACD9-4045-A847-D3B0E5C2F263}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.SimpleTest", "samples\Sunburst.Win32UI.SimpleTest\Sunburst.Win32UI.SimpleTest.csproj", "{AE4842BA-B5D0-4291-B175-17E2CE93E8DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.Win32UI.SimpleTest", "samples\Sunburst.Win32UI.SimpleTest\Sunburst.Win32UI.SimpleTest.csproj", "{AE4842BA-B5D0-4291-B175-17E2CE93E8DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.Build.Tasks", "tools\Sunburst.Win32UI.Build.Tasks\Sunburst.Win32UI.Build.Tasks.csproj", "{9204C77D-C8A0-4535-A205-935675DB9C33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.Win32UI.Build.Tasks", "tools\Sunburst.Win32UI.Build.Tasks\Sunburst.Win32UI.Build.Tasks.csproj", "{9204C77D-C8A0-4535-A205-935675DB9C33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,18 +46,6 @@ Global
 		{2C91B26B-D6FD-4C16-AACF-8166FFF54070}.Release|x64.Build.0 = Release|Any CPU
 		{2C91B26B-D6FD-4C16-AACF-8166FFF54070}.Release|x86.ActiveCfg = Release|Any CPU
 		{2C91B26B-D6FD-4C16-AACF-8166FFF54070}.Release|x86.Build.0 = Release|Any CPU
-		{3C749E7E-4F6E-4768-8F6C-FC13916F924D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C749E7E-4F6E-4768-8F6C-FC13916F924D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C749E7E-4F6E-4768-8F6C-FC13916F924D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3C749E7E-4F6E-4768-8F6C-FC13916F924D}.Debug|x64.Build.0 = Debug|Any CPU
-		{3C749E7E-4F6E-4768-8F6C-FC13916F924D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3C749E7E-4F6E-4768-8F6C-FC13916F924D}.Debug|x86.Build.0 = Debug|Any CPU
-		{3C749E7E-4F6E-4768-8F6C-FC13916F924D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C749E7E-4F6E-4768-8F6C-FC13916F924D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C749E7E-4F6E-4768-8F6C-FC13916F924D}.Release|x64.ActiveCfg = Release|Any CPU
-		{3C749E7E-4F6E-4768-8F6C-FC13916F924D}.Release|x64.Build.0 = Release|Any CPU
-		{3C749E7E-4F6E-4768-8F6C-FC13916F924D}.Release|x86.ActiveCfg = Release|Any CPU
-		{3C749E7E-4F6E-4768-8F6C-FC13916F924D}.Release|x86.Build.0 = Release|Any CPU
 		{81F2D565-3B17-4657-83CC-D1F3C06363B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{81F2D565-3B17-4657-83CC-D1F3C06363B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81F2D565-3B17-4657-83CC-D1F3C06363B3}.Debug|x64.ActiveCfg = Debug|Any CPU

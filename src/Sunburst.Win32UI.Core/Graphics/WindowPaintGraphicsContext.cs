@@ -20,7 +20,7 @@ namespace Sunburst.Win32UI.Graphics
         public Rect RedrawRect => PaintStruct.rcPaint;
         public bool EraseBackground => PaintStruct.fErase;
 
-        protected virtual void DisposeCore()
+        protected override void DisposeCore()
         {
             NativeMethods.EndPaint(Parent.Handle, ref PaintStruct);
         }
