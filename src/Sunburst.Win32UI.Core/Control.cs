@@ -43,6 +43,7 @@ namespace Sunburst.Win32UI
             {
                 CreateParams cp = new CreateParams();
                 cp.Style = WindowStyles.WS_CLIPCHILDREN | WindowStyles.WS_CLIPSIBLINGS | WindowStyles.WS_CHILD;
+                cp.ClassStyle = WindowClassStyles.CS_HREDRAW | WindowClassStyles.CS_VREDRAW | WindowClassStyles.CS_DBLCLKS;
                 return cp;
             }
         }
