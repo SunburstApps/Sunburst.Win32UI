@@ -7,6 +7,7 @@ namespace Sunburst.Win32UI.Interop
     {
         public static ControlNativeWindow Create(Control owner, CreateParams createParams)
         {
+            if (owner == null) throw new ArgumentNullException(nameof(owner));
             if (createParams == null) throw new ArgumentNullException(nameof(createParams));
 
             ControlNativeWindow nativeWindow = new ControlNativeWindow(owner);
@@ -57,6 +58,7 @@ namespace Sunburst.Win32UI.Interop
 
         private ControlNativeWindow(Control owner)
         {
+            if (owner == null) throw new ArgumentNullException(nameof(owner));
             Owner = owner;
         }
 
