@@ -63,7 +63,7 @@ namespace Sunburst.Win32UI.Interop
         public Control Owner { get; }
         private IntPtr superclassWndProc = IntPtr.Zero;
 
-        public void DefaultProcessMessage(ref Message msg)
+        public void DefWndProc(ref Message msg)
         {
             if (superclassWndProc != IntPtr.Zero)
             {

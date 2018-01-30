@@ -71,7 +71,7 @@ namespace Sunburst.Win32UI
         {
             if (NativeWindow is ControlNativeWindow native)
             {
-                native.DefaultProcessMessage(ref m);
+                native.DefWndProc(ref m);
             }
             else
             {
