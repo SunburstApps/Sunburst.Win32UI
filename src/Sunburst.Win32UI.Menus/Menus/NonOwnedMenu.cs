@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Sunburst.Win32UI.Graphics;
-using Sunburst.Win32UI.Handles;
 using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.Menus
 {
-    public class NonOwnedMenu : IMenuHandle
+    public class NonOwnedMenu
     {
         public IntPtr Handle { get; set; }
 
