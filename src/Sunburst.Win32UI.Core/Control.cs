@@ -31,10 +31,20 @@ namespace Sunburst.Win32UI
             NativeWindow = new NativeWindow(hWnd);
         }
 
+        public Control Parent { get; set; } = null;
+
         public virtual void CreateHandle()
         {
             if (NativeWindow != null) throw new InvalidOperationException($"Cannot call {nameof(CreateHandle)}() on a {nameof(Control)} instance that already has one");
-            NativeWindow = ControlNativeWindow.Create(this, CreateParams);
+
+            CreateParams cp = CreateParams;
+            if ((cp.Style & WindowStyles.WS_CHILD) == WindowStyles.WS_CHILD)
+            {
+                if (Parent == null) throw new InvalidOperationException("A child control must have a parent");
+            }
+
+            cp.ParentHandle = Parent.Handle;
+            NativeWindow = ControlNativeWindow.Create(this, cp);
 
             if (m_visible) NativeWindow.Show();
             else NativeWindow.Hide();
