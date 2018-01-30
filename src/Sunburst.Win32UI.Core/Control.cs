@@ -66,6 +66,7 @@ namespace Sunburst.Win32UI
         /// </summary>
         public IntPtr Handle => NativeWindow.Handle;
         public NativeWindow NativeWindow { get; private set; } = null;
+        protected bool HandleValid => NativeWindow != null && NativeMethods.IsWindow(NativeWindow.Handle);
 
         protected void DefWndProc(ref Message m)
         {
