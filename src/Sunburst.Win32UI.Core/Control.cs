@@ -35,6 +35,9 @@ namespace Sunburst.Win32UI
         {
             if (NativeWindow != null) throw new InvalidOperationException($"Cannot call {nameof(CreateHandle)}() on a {nameof(Control)} instance that already has one");
             NativeWindow = ControlNativeWindow.Create(this, CreateParams);
+
+            if (m_visible) NativeWindow.Show();
+            else NativeWindow.Hide();
         }
 
         protected virtual CreateParams CreateParams
@@ -86,6 +89,29 @@ namespace Sunburst.Win32UI
         {
             get => new Font(NativeWindow.SendMessage(WindowMessages.WM_GETFONT, IntPtr.Zero, IntPtr.Zero));
             set => NativeWindow.SendMessage(WindowMessages.WM_SETFONT, Font.Handle, (IntPtr)1);
+        }
+
+        private bool m_visible = true;
+        public bool Visible
+        {
+            get
+            {
+                if (HandleValid) return NativeWindow.IsVisible;
+                else return m_visible;
+            }
+
+            set
+            {
+                if (HandleValid)
+                {
+                    if (value) NativeWindow.Show();
+                    else NativeWindow.Hide();
+                }
+                else
+                {
+                    m_visible = value;
+                }
+            }
         }
 
         public void Activate() => NativeWindow.Activate();
