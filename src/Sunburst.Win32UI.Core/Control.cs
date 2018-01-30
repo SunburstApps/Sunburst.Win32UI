@@ -48,19 +48,6 @@ namespace Sunburst.Win32UI
             }
         }
 
-        public void DestroyHandle()
-        {
-            if (NativeWindow != null)
-            {
-                NativeWindow.DestroyWindow();
-                NativeWindow = null;
-            }
-            else
-            {
-                throw new InvalidOperationException($"Cannot call {nameof(DestroyHandle)} on a {nameof(Control)} that doesn't have one");
-            }
-        }
-
         /// <summary>
         /// The handle to the Win32 control or top-level window that this instance wraps.
         /// </summary>
