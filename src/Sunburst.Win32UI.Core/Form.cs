@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Sunburst.Win32UI.Graphics;
 using Sunburst.Win32UI.Interop;
 
-namespace Sunburst.Win32UI.Core
+namespace Sunburst.Win32UI
 {
     public class Form : Control
     {

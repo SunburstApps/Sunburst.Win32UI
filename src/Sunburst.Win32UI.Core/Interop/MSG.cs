@@ -13,7 +13,4 @@ namespace Sunburst.Win32UI.Interop
         public int time;
         public Point pt;
     }
-
-    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    internal delegate IntPtr WNDPROC(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 }

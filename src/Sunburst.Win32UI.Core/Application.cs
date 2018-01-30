@@ -6,7 +6,6 @@ namespace Sunburst.Win32UI
 {
     public sealed class Application
     {
-        private static Stack<Control> mDialogBoxes = new Stack<Control>();
         private static Stack<Tuple<Control, AcceleratorTable>> mAcceleratorTables = new Stack<Tuple<Control, AcceleratorTable>>();
 
         public static void PushAcceleratorTable(Control hWnd, AcceleratorTable hAccel)
@@ -26,21 +25,11 @@ namespace Sunburst.Win32UI
             }
         }
 
-        public static void PushDialog(Control hWnd)
+        public static int Run(Form form)
         {
-            mDialogBoxes.Push(hWnd);
-        }
-
-        public static void PopDialog()
-        {
-            try
-            {
-                mDialogBoxes.Pop();
-            }
-            catch (InvalidOperationException)
-            {
-                // Ignore the exception - trying to pop a dialog handle when there is none is silently ignored.
-            }
+            form.FormClosed += (s, e) => Exit();
+            form.Show();
+            return Run();
         }
 
         public static int Run()
@@ -49,11 +38,6 @@ namespace Sunburst.Win32UI
 
             while (NativeMethods.GetMessageW(out msg, IntPtr.Zero, 0, 0) != 0)
             {
-                if (mDialogBoxes.Count != 0)
-                {
-                    if (NativeMethods.IsDialogMessage(mDialogBoxes.Peek().Handle, ref msg)) continue;
-                }
-
                 if (mAcceleratorTables.Count != 0)
                 {
                     var table = mAcceleratorTables.Peek();

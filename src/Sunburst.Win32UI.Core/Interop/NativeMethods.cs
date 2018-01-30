@@ -56,6 +56,30 @@ namespace Sunburst.Win32UI.Interop
         public static extern int SizeofResource(IntPtr hModule, IntPtr hResInfo);
 
         [DllImport("user32.dll")]
+        public static extern int GetMessageW(out MSG msg, IntPtr hWnd, int a, int b);
+
+        [DllImport("user32.dll")]
+        public static extern void TranslateMessage(ref MSG msg);
+
+        [DllImport("user32.dll")]
+        public static extern void DispatchMessageW(ref MSG msg);
+
+        [DllImport("user32.dll")]
+        public static extern void PostQuitMessage(int exitCode);
+
+        [DllImport("user32.dll")]
+        public static extern int TranslateAcceleratorW(IntPtr hWnd, IntPtr hAccel, ref MSG msg);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern bool ShutdownBlockReasonCreate(IntPtr hWnd, string reason);
+
+        [DllImport("user32.dll")]
+        public static extern bool ShutdownBlockReasonDestroy(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr CreateAcceleratorTableW([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] AcceleratorTableEntry[] entries, int count);
+
+        [DllImport("user32.dll")]
         public static extern IntPtr CreateWindowEx(int extendedStyle, string windowClass, string windowName,
             int style, int left, int top, int width, int height, IntPtr hWndParent, IntPtr hMenu,
             IntPtr hInstance, IntPtr createParam);
@@ -152,12 +176,6 @@ namespace Sunburst.Win32UI.Interop
 
         [DllImport("user32.dll")]
         public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
-
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-        public static extern bool ShutdownBlockReasonCreate(IntPtr hWnd, string reason);
-
-        [DllImport("user32.dll")]
-        public static extern bool ShutdownBlockReasonDestroy(IntPtr hWnd);
 
         [DllImport("user32.dll")]
         public static extern IntPtr GetWindow(IntPtr hWnd, int relationship);
