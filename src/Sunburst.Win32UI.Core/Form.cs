@@ -122,6 +122,9 @@ namespace Sunburst.Win32UI
             }
         }
 
+        public Size MinimumSize { get; set; }
+        public Size MaximumSize { get; set; }
+
         public event EventHandler<CancelEventArgs> FormClosing;
         protected virtual void OnFormClosing(CancelEventArgs e) => FormClosing?.Invoke(this, e);
 
@@ -148,6 +151,17 @@ namespace Sunburst.Win32UI
             else if (m.MessageId == WindowMessages.WM_DESTROY)
             {
                 OnFormClosed(EventArgs.Empty);
+            }
+            else if (m.MessageId == WindowMessages.WM_GETMINMAXINFO)
+            {
+                unsafe
+                {
+                    MINMAXINFO* sizeInfo = (MINMAXINFO*)m.LParam;
+                    sizeInfo->ptMinTrackSize = new Point(MinimumSize.width, MinimumSize.height);
+                    sizeInfo->ptMaxTrackSize = new Point(MaximumSize.width, MaximumSize.height);
+                }
+
+                handled = true;
             }
 
             if (!handled) base.WndProc(ref m);
