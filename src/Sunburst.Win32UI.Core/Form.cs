@@ -22,30 +22,55 @@ namespace Sunburst.Win32UI
             }
         }
 
-        public bool MaximizeBox
+        private void UpdateControlStyles()
+        {
+            if (!HandleValid) return;
+
+            int style = NativeWindow.Style;
+            int exStyle = NativeWindow.ExtendedStyle;
+
+            void ProcessStyle(int flag)
+            {
+                style &= ~flag;
+                if ((m_style & flag) == flag) style |= flag;
+            }
+
+            ProcessStyle(WindowStyles.WS_MINIMIZEBOX);
+            ProcessStyle(WindowStyles.WS_MAXIMIZEBOX);
+            ProcessStyle(WindowStyles.WS_SYSMENU);
+
+            NativeWindow.Style = style;
+            NativeWindow.ExtendedStyle = exStyle;
+            Invalidate();
+        }
+
+        public bool SystemMenu
         {
             get
             {
-                if (HandleValid) return (NativeWindow.Style & WindowStyles.WS_MAXIMIZEBOX) == WindowStyles.WS_MAXIMIZEBOX;
-                else return (m_style & WindowStyles.WS_MAXIMIZEBOX) == WindowStyles.WS_MAXIMIZEBOX;
+                return (m_style & WindowStyles.WS_SYSMENU) == WindowStyles.WS_SYSMENU;
             }
 
             set
             {
-                if (HandleValid)
-                {
-                    int style = NativeWindow.Style;
-                    if (value) style |= WindowStyles.WS_MAXIMIZEBOX;
-                    else style &= ~WindowStyles.WS_MAXIMIZEBOX;
-                    NativeWindow.Style = style;
+                if (value) m_style |= WindowStyles.WS_SYSMENU;
+                else m_style &= ~WindowStyles.WS_SYSMENU;
+                UpdateControlStyles();
+            }
+        }
 
-                    NativeWindow.Invalidate();
-                }
-                else
-                {
-                    if (value) m_style |= WindowStyles.WS_MAXIMIZEBOX;
-                    else m_style &= ~WindowStyles.WS_MAXIMIZEBOX;
-                }
+        public bool MaximizeBox
+        {
+            get
+            {
+                return (m_style & WindowStyles.WS_MAXIMIZEBOX) == WindowStyles.WS_MAXIMIZEBOX;
+            }
+
+            set
+            {
+                if (value) m_style |= WindowStyles.WS_MAXIMIZEBOX;
+                else m_style &= ~WindowStyles.WS_MAXIMIZEBOX;
+                UpdateControlStyles();
             }
         }
 
@@ -53,26 +78,14 @@ namespace Sunburst.Win32UI
         {
             get
             {
-                if (HandleValid) return (NativeWindow.Style & WindowStyles.WS_MINIMIZEBOX) == WindowStyles.WS_MINIMIZEBOX;
-                else return (m_style & WindowStyles.WS_MINIMIZEBOX) == WindowStyles.WS_MINIMIZEBOX;
+                return (m_style & WindowStyles.WS_MINIMIZEBOX) == WindowStyles.WS_MINIMIZEBOX;
             }
 
             set
             {
-                if (HandleValid)
-                {
-                    int style = NativeWindow.Style;
-                    if (value) style |= WindowStyles.WS_MINIMIZEBOX;
-                    else style &= ~WindowStyles.WS_MINIMIZEBOX;
-                    NativeWindow.Style = style;
-
-                    NativeWindow.Invalidate();
-                }
-                else
-                {
-                    if (value) m_style |= WindowStyles.WS_MINIMIZEBOX;
-                    else m_style &= ~WindowStyles.WS_MINIMIZEBOX;
-                }
+                if (value) m_style |= WindowStyles.WS_MINIMIZEBOX;
+                else m_style &= ~WindowStyles.WS_MINIMIZEBOX;
+                UpdateControlStyles();
             }
         }
 
@@ -93,16 +106,7 @@ namespace Sunburst.Win32UI
         {
             get
             {
-                if (HandleValid)
-                {
-                    if (NativeWindow.IsMaximized) return FormState.Maximized;
-                    else if (NativeWindow.IsIconic) return FormState.Minimized;
-                    else return FormState.Normal;
-                }
-                else
-                {
-                    return m_state;
-                }
+                return m_state;
             }
 
             set
@@ -110,11 +114,10 @@ namespace Sunburst.Win32UI
                 m_state = value;
                 if (HandleValid)
                 {
-                    if (value == FormState.Normal) NativeWindow.RestoreFromMaximize();
+                    if (value == FormState.Normal && NativeWindow.IsMaximized) NativeWindow.RestoreFromMaximize();
                     else if (value == FormState.Maximized) NativeWindow.Maximize();
                     else if (value == FormState.Minimized) NativeWindow.Minimize();
-
-                    NativeWindow.Show();
+                    else NativeWindow.Show();
                 }
             }
         }
