@@ -31,10 +31,8 @@ namespace Sunburst.Win32UI.Graphics
         public Font(string fontName, int pointSize, bool bold = false, bool italic = false)
             : this(CreatePointFontStruct(fontName, pointSize, bold, italic)) { }
 
-        public Font(LOGFONT font_struct)
-        {
-            Handle = NativeMethods.CreateFontIndirect(ref font_struct);
-        }
+        internal Font(LOGFONT font_struct)
+            : this(NativeMethods.CreateFontIndirect(ref font_struct)) { }
 
         /// <summary>
         /// Creates a new instance of Font.
