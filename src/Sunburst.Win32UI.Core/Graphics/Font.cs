@@ -6,7 +6,7 @@ namespace Sunburst.Win32UI.Graphics
     /// <summary>
     /// Wraps a Windows font (GDI <c>HFONT</c>).
     /// </summary>
-    public class Font : IDisposable
+    public sealed class Font : IDisposable
     {
         private static LOGFONT CreatePointFontStruct(string fontName, int pointSize, bool bold, bool italic)
         {
@@ -45,6 +45,14 @@ namespace Sunburst.Win32UI.Graphics
         public Font(IntPtr ptr)
         {
             Handle = ptr;
+
+            using (StructureBuffer<LOGFONT> logFontPtr = new StructureBuffer<LOGFONT>())
+            {
+                int returnedSize = NativeMethods.GetObject(Handle, logFontPtr.Size, logFontPtr.Handle);
+                if (logFontPtr.Size != returnedSize)
+                    throw new InvalidOperationException($"GetObject() returned incorrect size (got {returnedSize} bytes, expected {logFontPtr.Size} bytes)");
+                mFontDescriptor = logFontPtr.Value;
+            }
         }
 
         public void Dispose()
@@ -52,20 +60,41 @@ namespace Sunburst.Win32UI.Graphics
             NativeMethods.DeleteObject(Handle);
         }
 
-        public LOGFONT GetFontDescriptor()
-        {
-            using (StructureBuffer<LOGFONT> ptr = new StructureBuffer<LOGFONT>())
-            {
-                int returnedSize = NativeMethods.GetObject(Handle, ptr.Size, ptr.Handle);
-                if (ptr.Size != returnedSize)
-                    throw new InvalidOperationException($"GetObject() returned incorrect size (got {returnedSize} bytes, expected {ptr.Size} bytes)");
-                return ptr.Value;
-            }
-        }
+        private LOGFONT mFontDescriptor;
 
         /// <summary>
         /// The native handle to the font data.
         /// </summary>
-        public IntPtr Handle { get; protected set; }
+        public IntPtr Handle { get; }
+
+        /// <summary>
+        /// The name of the font face.
+        /// </summary>
+        public string FaceName => mFontDescriptor.lfFaceName;
+
+        /// <summary>
+        /// Gets the size of the font, in points.
+        /// </summary>
+        public int PointSize
+        {
+            get
+            {
+                using (GraphicsContext dc = GraphicsContext.CreateOffscreenContext())
+                {
+                    const int LOGPIXELSY = 90;
+                    return NativeMethods.MulDiv(Convert.ToInt32(-mFontDescriptor.lfHeight), 72, dc.GetCapability(LOGPIXELSY));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="T:Sunburst.Win32UI.Graphics.Font"/> is bold.
+        /// </summary>
+        public bool IsBold => mFontDescriptor.lfWeight >= 700; // FW_BOLD == 700
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="T:Sunburst.Win32UI.Graphics.Font"/> is italic.
+        /// </summary>
+        public bool IsItalic => mFontDescriptor.lfItalic != 0;
     }
 }
