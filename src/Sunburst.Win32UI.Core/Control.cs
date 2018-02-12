@@ -185,6 +185,11 @@ namespace Sunburst.Win32UI
         private Font mOldScalingFont;
 
         public AutoSizeMode AutoSizeMode { get; set; } = AutoSizeMode.GrowOnly;
+        public virtual Size GetPreferredSize()
+        {
+            Rect rect = WindowRect;
+            return new Size(rect.Width, rect.Height);
+        }
 
         protected virtual void WndProc(ref Message m)
         {
