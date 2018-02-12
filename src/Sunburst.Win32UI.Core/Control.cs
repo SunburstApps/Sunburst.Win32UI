@@ -80,7 +80,6 @@ namespace Sunburst.Win32UI
             }
         }
 
-        protected virtual void WndProc(ref Message m) => DefWndProc(ref m);
         internal void CallWndProc(ref Message m) => WndProc(ref m);
 
         public string Text
@@ -181,5 +180,85 @@ namespace Sunburst.Win32UI
             bool retval = NativeMethods.KillTimer(Handle, timerId);
             if (!retval) throw new Win32Exception();
         }
+
+        public AutoScaleMode AutoScaleMode { get; set; } = AutoScaleMode.Font;
+        private Font mOldScalingFont;
+
+        public AutoSizeMode AutoSizeMode { get; set; } = AutoSizeMode.GrowOnly;
+
+        protected virtual void WndProc(ref Message m)
+        {
+            bool handled = false;
+
+            if (m.MessageId == WindowMessages.WM_SETFONT && AutoScaleMode == AutoScaleMode.Font)
+            {
+                Size GetAutoScaleDimensions(Font font)
+                {
+                    using (GraphicsContext ctx = GraphicsContext.CreateOffscreenContext())
+                    {
+                        ctx.CurrentFont = font;
+                        TEXTMETRIC metric;
+                        NativeMethods.GetTextMetrics(ctx.Handle, out metric);
+
+                        Size scaleFactor = new Size();
+                        scaleFactor.height = metric.tmHeight;
+                        if ((metric.tmPitchAndFamily & 1) != 0)
+                        {
+                            string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                            int alphabetLength = alphabet.Length;
+
+                            Size extents = Size.Zero;
+                            NativeMethods.GetTextExtentPoint32(ctx.Handle, alphabet, alphabetLength, ref extents);
+                            scaleFactor.width = (int)Math.Round((float)extents.width / alphabetLength);
+                        }
+                        else
+                        {
+                            scaleFactor.width = metric.tmAveCharWidth;
+                        }
+
+                        return scaleFactor;
+                    }
+                }
+
+                Font newFont = new Font(m.WParam);
+                if (mOldScalingFont != null)
+                {
+                    Size newScaleFactor = GetAutoScaleDimensions(newFont);
+                    Size oldScaleFactor = GetAutoScaleDimensions(mOldScalingFont);
+
+                    float fractionX = (float)newScaleFactor.width / (float)oldScaleFactor.width;
+                    float fractionY = (float)newScaleFactor.height / (float)oldScaleFactor.width;
+
+                    Rect myRect = WindowRect;
+                    NativeMethods.MapWindowPoints(IntPtr.Zero, Handle, ref myRect);
+
+                    int top = myRect.top, left = myRect.left, width = myRect.Width, height = myRect.Height;
+                    top = (int)Math.Round(top * fractionY);
+                    left = (int)Math.Round(left * fractionX);
+                    width = (int)Math.Round(width * fractionX);
+                    height = (int)Math.Round(height * fractionY);
+
+                    NativeMethods.SetWindowPos(Handle, IntPtr.Zero, left, top, width, height, MoveWindowFlags.IgnoreZOrder | MoveWindowFlags.DoNotActivate);
+                }
+
+                mOldScalingFont = newFont;
+                handled = false;
+           }
+
+            if (!handled) DefWndProc(ref m);
+        }
+    }
+
+    public enum AutoScaleMode
+    {
+        Disabled = 0,
+        Font
+    }
+
+    public enum AutoSizeMode
+    {
+        Disabled = 0,
+        GrowOnly,
+        GrowAndShrink
     }
 }

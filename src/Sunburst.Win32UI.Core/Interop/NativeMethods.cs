@@ -402,11 +402,33 @@ namespace Sunburst.Win32UI.Interop
         [DllImport("gdi32.dll")]
         public static extern bool SetViewportOrgEx(IntPtr hDC, int x, int y, out Point oldOrg);
 
+        [DllImport("gdi32.dll")]
+        public static extern void GetTextMetrics(IntPtr hDC, out TEXTMETRIC metric);
+
+        [DllImport("gdi32.dll")]
+        public static extern void MapWindowPoints(IntPtr hWndParent, IntPtr hWnd, ref Rect rect, int pointCount = 2);
+
+        [DllImport("gdi32.dll")]
+        public static extern void MapWindowPoints(IntPtr hWndParent, IntPtr hWnd, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Point[] points, int pointCount);
+
         [DllImport("user32.dll")]
         public static extern IntPtr GetCursor();
 
         [DllImport("user32.dll")]
         public static extern IntPtr SetCursor(IntPtr hCursor);
+
+        [DllImport("user32.dll")]
+        public static extern void SetWindowPos(IntPtr hWnd, IntPtr hWndNewParent, int left, int top, int width, int height, MoveWindowFlags flags);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr BeginDeferWindowPos(int controlCount);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr DeferWindowPos(IntPtr hDefer, IntPtr hWnd, IntPtr hWndInsertAfter,
+            int left, int top, int width, int height, MoveWindowFlags flags);
+
+        [DllImport("user32.dll")]
+        public static extern void EndDeferWindowPos(IntPtr hDefer);
 
         [DllImport("comctl32.dll")]
         public static extern int ImageList_GetImageCount(IntPtr hImageList);
