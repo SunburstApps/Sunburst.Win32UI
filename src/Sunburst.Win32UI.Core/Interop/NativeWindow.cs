@@ -4,7 +4,7 @@ using Sunburst.Win32UI.Graphics;
 
 namespace Sunburst.Win32UI.Interop
 {
-    public class NativeWindow : IWin32Window
+    public class NativeWindow : IWin32Window, IDisposable
     {
         public NativeWindow() { }
         public NativeWindow(IntPtr hWnd)
@@ -102,5 +102,35 @@ namespace Sunburst.Win32UI.Interop
             }
         }
 
+        #region IDisposable Support
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // Dispose managed objects here.
+                }
+
+                DestroyWindow();
+
+                disposedValue = true;
+            }
+        }
+
+        ~NativeWindow() {
+          // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+          Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

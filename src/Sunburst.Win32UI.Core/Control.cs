@@ -31,6 +31,12 @@ namespace Sunburst.Win32UI
             NativeWindow = new NativeWindow(hWnd);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            NativeWindow?.Dispose();
+            base.Dispose(disposing);
+        }
+
         public Control Parent { get; set; } = null;
 
         public virtual void CreateHandle()
