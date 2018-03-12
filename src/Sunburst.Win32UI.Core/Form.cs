@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Sunburst.Win32UI.Graphics;
 using Sunburst.Win32UI.Interop;
@@ -166,6 +167,30 @@ namespace Sunburst.Win32UI
 
             if (!handled) base.WndProc(ref m);
         }
+
+        private readonly List<Control> m_ChildControls = new List<Control>();
+
+        public void AddChild(Control child)
+        {
+            if (!HandleValid) CreateHandle();
+
+            m_ChildControls.Add(child);
+            NativeMethods.SetParent(child.Handle, Handle);
+            if (child.Visible) child.Show();
+        }
+
+        public void RemoveChild(Control child)
+        {
+            if (!HandleValid) CreateHandle();
+
+            if (m_ChildControls.Remove(child))
+            {
+                child.Hide();
+                NativeMethods.SetParent(child.Handle, IntPtr.Zero);
+            }
+        }
+
+        public IEnumerable<Control> ChildControls => m_ChildControls;
     }
 
     public enum FormState
