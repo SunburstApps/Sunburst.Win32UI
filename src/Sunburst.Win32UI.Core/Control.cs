@@ -37,38 +37,13 @@ namespace Sunburst.Win32UI
             base.Dispose(disposing);
         }
 
-        private Control m_Parent = null;
-        public Control Parent
-        {
-            get
-            {
-                if (HandleValid) return new Control(NativeMethods.GetParent(Handle), false);
-                else return m_Parent;
-            }
-
-            set
-            {
-                m_Parent = value;
-                if (HandleValid) NativeMethods.SetParent(Handle, m_Parent.Handle);
-                else CreateHandle();
-            }
-        }
-
         public virtual void CreateHandle()
         {
             if (NativeWindow != null) throw new InvalidOperationException($"Cannot call {nameof(CreateHandle)}() on a {nameof(Control)} instance that already has one");
 
             CreateParams cp = CreateParams;
-            if ((cp.Style & WindowStyles.WS_CHILD) == WindowStyles.WS_CHILD)
-            {
-                if (Parent == null) throw new InvalidOperationException("A child control must have a parent");
-            }
-
-            cp.ParentHandle = Parent.Handle;
+            cp.ParentHandle = IntPtr.Zero;
             NativeWindow = ControlNativeWindow.Create(this, cp);
-
-            if (m_visible) NativeWindow.Show();
-            else NativeWindow.Hide();
         }
 
         protected virtual CreateParams CreateParams
