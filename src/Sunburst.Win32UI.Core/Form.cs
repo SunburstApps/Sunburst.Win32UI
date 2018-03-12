@@ -176,7 +176,7 @@ namespace Sunburst.Win32UI
 
             m_ChildControls.Add(child);
             NativeMethods.SetParent(child.Handle, Handle);
-            if (child.Visible) child.IsVisible = true;
+            child.IsVisible = true;
         }
 
         public void RemoveChild(Control child)

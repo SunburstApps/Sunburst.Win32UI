@@ -96,35 +96,18 @@ namespace Sunburst.Win32UI
             set => NativeWindow.SendMessage(WindowMessages.WM_SETFONT, Font.Handle, (IntPtr)1);
         }
 
-        private bool m_visible = true;
-        public bool Visible
+        public bool IsVisible
         {
             get
             {
-                if (HandleValid) return NativeWindow.IsVisible;
-                else return m_visible;
+                if (!HandleValid) throw new InvalidOperationException($"Cannot get {nameof(IsVisible)} until the handle has been created");
+                return NativeWindow.IsVisible;
             }
 
             set
             {
-                if (HandleValid)
-                {
-                    if (value) NativeWindow.Show();
-                    else NativeWindow.Hide();
-                }
-                else
-                {
-                    m_visible = value;
-                }
-            }
-        }
+                if (!HandleValid) throw new InvalidOperationException($"Cannot set {nameof(IsVisible)} until the handle has been created");
 
-        public bool IsVisible
-        {
-            get => NativeWindow.IsVisible;
-
-            set
-            {
                 if (value) NativeWindow.Show();
                 else NativeWindow.Hide();
             }
