@@ -4,6 +4,7 @@ using Sunburst.Win32UI.Graphics;
 
 namespace Sunburst.Win32UI.Interop
 {
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     internal struct LOGFONT : IEquatable<LOGFONT>
     {
         public long lfHeight;
@@ -18,7 +19,7 @@ namespace Sunburst.Win32UI.Interop
         public byte lfClipPrecision;
         public byte lfQuality;
         public byte lfPitchAndFamily;
-        [MarshalAs(UnmanagedType.LPWStr, SizeConst = 32)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string lfFaceName;
 
         public override bool Equals(object obj)
