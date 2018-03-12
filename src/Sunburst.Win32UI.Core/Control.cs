@@ -37,7 +37,22 @@ namespace Sunburst.Win32UI
             base.Dispose(disposing);
         }
 
-        public Control Parent { get; set; } = null;
+        private Control m_Parent = null;
+        public Control Parent
+        {
+            get
+            {
+                if (HandleValid) return new Control(NativeMethods.GetParent(Handle), false);
+                else return m_Parent;
+            }
+
+            set
+            {
+                m_Parent = value;
+                if (HandleValid) NativeMethods.SetParent(Handle, m_Parent.Handle);
+                else CreateHandle();
+            }
+        }
 
         public virtual void CreateHandle()
         {
