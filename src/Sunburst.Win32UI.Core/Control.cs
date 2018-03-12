@@ -122,23 +122,19 @@ namespace Sunburst.Win32UI
         {
             get
             {
-                if (!NativeMethods.IsWindow(Handle)) throw new InvalidOperationException("not a valid HWND");
+                if (!HandleValid) throw new InvalidOperationException($"Cannot get {nameof(WindowRect)} until the handle has been created");
 
                 Rect rect = new Rect();
                 NativeMethods.GetWindowRect(Handle, ref rect);
+                NativeMethods.MapWindowPoints(IntPtr.Zero, NativeMethods.GetParent(Handle), ref rect);
+
                 return rect;
             }
-        }
 
-        public Rect ClientRect
-        {
-            get
+            set
             {
-                if (!NativeMethods.IsWindow(Handle)) throw new InvalidOperationException("not a valid HWND");
-
-                Rect rect = new Rect();
-                NativeMethods.GetClientRect(Handle, ref rect);
-                return rect;
+                if (!HandleValid) throw new InvalidOperationException($"Cannot set {nameof(WindowRect)} until the handle has been created");
+                NativeMethods.MoveWindow(Handle, value.left, value.top, value.Width, value.Height, true);
             }
         }
 
