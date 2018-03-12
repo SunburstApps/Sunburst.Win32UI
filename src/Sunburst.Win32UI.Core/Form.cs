@@ -176,7 +176,7 @@ namespace Sunburst.Win32UI
 
             m_ChildControls.Add(child);
             NativeMethods.SetParent(child.Handle, Handle);
-            if (child.Visible) child.Show();
+            if (child.Visible) child.IsVisible = true;
         }
 
         public void RemoveChild(Control child)
@@ -185,12 +185,15 @@ namespace Sunburst.Win32UI
 
             if (m_ChildControls.Remove(child))
             {
-                child.Hide();
+                child.IsVisible = false;
                 NativeMethods.SetParent(child.Handle, IntPtr.Zero);
             }
         }
 
         public IEnumerable<Control> ChildControls => m_ChildControls;
+
+        public void Show() => IsVisible = true;
+        public void Hide() => IsVisible = false;
     }
 
     public enum FormState

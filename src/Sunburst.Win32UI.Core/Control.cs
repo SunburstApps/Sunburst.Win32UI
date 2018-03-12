@@ -119,9 +119,19 @@ namespace Sunburst.Win32UI
             }
         }
 
+        public bool IsVisible
+        {
+            get => NativeWindow.IsVisible;
+
+            set
+            {
+                if (value) NativeWindow.Show();
+                else NativeWindow.Hide();
+            }
+        }
+
         public void Activate() => NativeWindow.Activate();
         public void Focus() => NativeWindow.Focus();
-        public bool IsVisible => NativeWindow.IsVisible;
         public void Move(Rect location) => NativeMethods.MoveWindow(Handle, location.left, location.top, location.Width, location.Height, true);
         public void BringToTop() => NativeMethods.BringWindowToTop(Handle);
 
@@ -149,8 +159,6 @@ namespace Sunburst.Win32UI
             }
         }
 
-        public void Show() => NativeMethods.ShowWindow(Handle, 1);
-        public void Hide() => NativeMethods.ShowWindow(Handle, 0);
         public void Update() => NativeMethods.UpdateWindow(Handle);
 
         public void Invalidate(bool redraw = true) => NativeMethods.InvalidateRect(Handle, IntPtr.Zero, redraw);
