@@ -45,7 +45,7 @@ namespace Sunburst.Win32UI
             Invalidate();
         }
 
-        public bool SystemMenu
+        public bool HasSystemMenu
         {
             get
             {
@@ -194,6 +194,19 @@ namespace Sunburst.Win32UI
 
         public void Show() => IsVisible = true;
         public void Hide() => IsVisible = false;
+
+        #region Menus
+
+        public Menu Menu
+        {
+            get => new Menu(NativeMethods.GetMenu(Handle));
+            set => NativeMethods.SetMenu(Handle, value.Handle);
+        }
+
+        public Menu SystemMenu => new Menu(NativeMethods.GetSystemMenu(Handle, false));
+        public void ResetSystemMenu() => NativeMethods.GetSystemMenu(Handle, true);
+
+        #endregion
     }
 
     public enum FormState

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Sunburst.Win32UI.Graphics;
 using Sunburst.Win32UI.Interop;
 
-namespace Sunburst.Win32UI.Menus
+namespace Sunburst.Win32UI
 {
     public sealed class MenuItem
     {
@@ -23,7 +23,7 @@ namespace Sunburst.Win32UI.Menus
             if (nativeStruct.hbmpChecked != IntPtr.Zero) CheckedBitmap = new Bitmap(nativeStruct.hbmpChecked);
             if (nativeStruct.hbmpUnchecked != IntPtr.Zero) UncheckedBitmap = new Bitmap(nativeStruct.hbmpUnchecked);
             if (nativeStruct.hbmpItem != IntPtr.Zero) ItemBitmap = new Bitmap(nativeStruct.hbmpItem);
-            if (nativeStruct.hSubMenu != IntPtr.Zero) Submenu = new Menu() { Handle = nativeStruct.hSubMenu };
+            if (nativeStruct.hSubMenu != IntPtr.Zero) Submenu = new Menu(nativeStruct.hSubMenu);
         }
 
         internal MENUITEMINFO ToNativeStruct()

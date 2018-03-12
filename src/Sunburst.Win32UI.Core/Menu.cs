@@ -3,11 +3,25 @@ using System.Runtime.InteropServices;
 using Sunburst.Win32UI.Graphics;
 using Sunburst.Win32UI.Interop;
 
-namespace Sunburst.Win32UI.Menus
+namespace Sunburst.Win32UI
 {
-    public class NonOwnedMenu
+    public sealed class Menu : IDisposable
     {
-        public IntPtr Handle { get; set; }
+        public static Menu CreateMenuBar() => new Menu(NativeMethods.CreateMenu());
+
+        public static Menu CreatePopupMenu() => new Menu(NativeMethods.CreatePopupMenu());
+
+        internal Menu(IntPtr hMenu)
+        {
+            Handle = hMenu;
+        }
+
+        public void Dispose()
+        {
+            NativeMethods.DestroyMenu(Handle);
+        }
+
+        public IntPtr Handle { get; }
 
         public void InsertItem(uint position, MenuItem item)
         {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sunburst.Win32UI.Menus
+namespace Sunburst.Win32UI
 {
     [Flags]
     public enum PopupMenuFlags : uint
