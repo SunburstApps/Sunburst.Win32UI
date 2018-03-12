@@ -26,9 +26,9 @@ namespace Sunburst.Win32UI
         {
         }
 
-        public Control(IntPtr hWnd)
+        public Control(IntPtr hWnd, bool ownsHandle)
         {
-            NativeWindow = new NativeWindow(hWnd);
+            NativeWindow = new NativeWindow(hWnd, ownsHandle);
         }
 
         protected override void Dispose(bool disposing)

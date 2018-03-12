@@ -7,12 +7,14 @@ namespace Sunburst.Win32UI.Interop
     public class NativeWindow : IWin32Window, IDisposable
     {
         public NativeWindow() { }
-        public NativeWindow(IntPtr hWnd)
+        public NativeWindow(IntPtr hWnd, bool ownsHandle)
         {
             Handle = hWnd;
+            OwnsHandle = ownsHandle;
         }
 
         public IntPtr Handle { get; protected set; } = IntPtr.Zero;
+        private bool OwnsHandle { get; }
 
         public string Text
         {
@@ -114,7 +116,7 @@ namespace Sunburst.Win32UI.Interop
                     // Dispose managed objects here.
                 }
 
-                DestroyWindow();
+                if (OwnsHandle) DestroyWindow();
 
                 disposedValue = true;
             }
