@@ -3,6 +3,7 @@
     <OutputType>Library</OutputType>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyTitle>Sunburst.Win32UI.Core</AssemblyTitle>
+    <RootNamespace>Sunburst.Win32UI</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 </Project>
