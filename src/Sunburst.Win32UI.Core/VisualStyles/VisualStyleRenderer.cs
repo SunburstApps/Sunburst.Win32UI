@@ -3,9 +3,9 @@ using System.Runtime.InteropServices;
 using Sunburst.Win32UI.Graphics;
 using Sunburst.Win32UI.Interop;
 
-namespace Sunburst.Win32UI.Theming
+namespace Sunburst.Win32UI.VisualStyles
 {
-    public class ThemeData : IDisposable
+    public sealed class VisualStyleRenderer : IDisposable
     {
         private static int GetGDIFlags(TextAlignment halign, VerticalTextAlignment valign, StringDrawingFlags flags)
         {
@@ -43,7 +43,7 @@ namespace Sunburst.Win32UI.Theming
 
         public IntPtr Handle { get; private set; }
 
-        public ThemeData(Control window, string themeClassList)
+        public VisualStyleRenderer(Control window, string themeClassList)
         {
             Handle = NativeMethods.OpenThemeData(window.Handle, themeClassList);
             if (Handle == IntPtr.Zero) throw new System.ComponentModel.Win32Exception();
@@ -97,7 +97,7 @@ namespace Sunburst.Win32UI.Theming
         {
             AssertPartDefined(partId, stateId);
             int hr = NativeMethods.GetThemeBackgroundExtent(Handle, dc.Handle, partId, stateId, ref contentRect, out var boundingRect);
-            if (hr != 0) Marshal.ThrowExceptionForHR(hr); ;
+            if (hr != 0) Marshal.ThrowExceptionForHR(hr);
 
             return boundingRect;
         }
