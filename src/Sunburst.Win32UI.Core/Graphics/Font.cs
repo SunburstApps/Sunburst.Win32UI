@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI.Graphics
@@ -8,6 +9,21 @@ namespace Sunburst.Win32UI.Graphics
     /// </summary>
     public sealed class Font : IDisposable
     {
+        public static Font CreateSystemUIFont()
+        {
+            using (StructureBuffer<NONCLIENTMETRICSW> metricsPtr = new StructureBuffer<NONCLIENTMETRICSW>())
+            {
+                const int SPI_GETNONCLIENTMETRICS = 0x29;
+
+                NONCLIENTMETRICSW metrics = new NONCLIENTMETRICSW();
+                metrics.cbSize = Marshal.SizeOf<NONCLIENTMETRICSW>();
+                metricsPtr.Value = metrics;
+
+                NativeMethods.SystemParametersInfoW(SPI_GETNONCLIENTMETRICS, metricsPtr.Size, metricsPtr.Handle, 0);
+                return new Font(metricsPtr.Value.lfMessageFont);
+            }
+        }
+
         private static LOGFONT CreatePointFontStruct(string fontName, int pointSize, bool bold, bool italic)
         {
             const byte DEFAULT_CHARSET = 1;

@@ -585,6 +585,10 @@ namespace Sunburst.Win32UI.Interop
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool IsThemePartDefined(IntPtr hTheme, int partId, int stateId);
 
+        [DllImport("user32.dll", ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SystemParametersInfoW(uint id, int byteSize, IntPtr data, int flags);
+
         #region Windows Imaging Component
 
         public enum WICDecodeOptions
