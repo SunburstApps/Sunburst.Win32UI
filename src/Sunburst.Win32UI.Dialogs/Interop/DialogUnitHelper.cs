@@ -12,7 +12,7 @@ namespace Sunburst.Win32UI.Interop
             DialogTemplate template = new DialogTemplate();
             template.CreateTemplate(DialogTemplateMode.TopLevelWindow, "Dialog Unit Helper", windowRect, 0, 0, metric: DialogMetric.DialogUnit);
             Dialog dialog = new Dialog();
-            dialog.CreateFromTemplate(template);
+            dialog.Create(template);
 
             DialogUnitHelper unitHelper = new DialogUnitHelper(dialog);
             dialog.DestroyWindow();
