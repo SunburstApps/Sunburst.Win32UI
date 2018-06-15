@@ -27,7 +27,7 @@ namespace Sunburst.Win32UI.Interop
 
         private static IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
-            const string propertyName = "Sunburst.WindowsForms.Control";
+            const string propertyName = "Sunburst.Win32UI.Control";
 
             if (msg == WindowMessages.WM_NCCREATE)
             {

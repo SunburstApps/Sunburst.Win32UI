@@ -11,7 +11,7 @@ namespace Sunburst.Win32UI.Interop
         private static string GetFullClassName(string className, int classStyle)
         {
             string realClassName = className ?? "<Window>";
-            return $"Sunburst.WindowsForms:{realClassName}:{classStyle}";
+            return $"Sunburst.Win32UI:{realClassName}:{classStyle}";
         }
 
         public static WindowClass GetWindowClass(string className, int classStyle)
