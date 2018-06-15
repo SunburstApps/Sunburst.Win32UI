@@ -18,9 +18,18 @@ namespace Sunburst.Win32UI
             CreateTemplate(mode, caption, rc, style, exStyle, font.FaceName, font.PointSize, className, metric);
         }
 
-        public void CreateTemplate(DialogTemplateMode mode, string caption, Rect rc, uint style, uint exStyle, string fontName = "Segoe UI",
-            int fontSize = 9, string className = null, DialogMetric metric = DialogMetric.Pixel)
+        public void CreateTemplate(DialogTemplateMode mode, string caption, Rect rc, uint style, uint exStyle, string fontName = null,
+            int fontSize = -1, string className = null, DialogMetric metric = DialogMetric.Pixel)
         {
+            if (fontName == null)
+            {
+                using (Font font = Font.CreateSystemUIFont())
+                {
+                    fontName = font.FaceName;
+                    fontSize = font.PointSize;
+                }
+            }
+
             uint realStyle = style;
 
             // Since I am setting the font here, the DS_SETFONT style must be provided.
