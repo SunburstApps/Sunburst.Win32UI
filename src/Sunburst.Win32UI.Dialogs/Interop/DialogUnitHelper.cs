@@ -10,7 +10,7 @@ namespace Sunburst.Win32UI.Interop
             Rect windowRect = new Rect() { left = 0, top = 0, right = 100, bottom = 100 };
 
             DialogTemplate template = new DialogTemplate();
-            template.CreateTemplate(DialogTemplateMode.TopLevelWindow, "Dialog Unit Helper", windowRect, 0, 0, metric: DialogMetric.DialogUnit);
+            template.Create(DialogTemplateMode.TopLevelWindow, "Dialog Unit Helper", windowRect, 0, 0, metric: DialogMetric.DialogUnit);
             Dialog dialog = new Dialog();
             dialog.Create(template);
 

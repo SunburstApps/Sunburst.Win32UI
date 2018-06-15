@@ -12,21 +12,22 @@ namespace Sunburst.Win32UI
         private DialogUnitHelper mDLUHelper;
         private Vestris.ResourceLib.DialogTemplate mNativeTemplate = null;
 
-        public void CreateTemplate(DialogTemplateMode mode, string caption, Rect rc, uint style, uint exStyle, Font font, string className = null, DialogMetric metric = DialogMetric.Pixel)
+        public void Create(DialogTemplateMode mode, string caption, Rect rc, uint style, uint exStyle, Font font = null, DialogMetric metric = DialogMetric.Pixel)
         {
-            if (font == null) throw new ArgumentNullException(nameof(font));
-            CreateTemplate(mode, caption, rc, style, exStyle, font.FaceName, font.PointSize, className, metric);
-        }
+            string fontName;
+            int fontSize;
 
-        public void CreateTemplate(DialogTemplateMode mode, string caption, Rect rc, uint style, uint exStyle, string fontName = null,
-            int fontSize = -1, string className = null, DialogMetric metric = DialogMetric.Pixel)
-        {
-            if (fontName == null)
+            if (font != null)
             {
-                using (Font font = Font.CreateSystemUIFont())
+                fontName = font.FaceName;
+                fontSize = font.PointSize;
+            }
+            else
+            {
+                using (Font systemFont = Font.CreateSystemUIFont())
                 {
-                    fontName = font.FaceName;
-                    fontSize = font.PointSize;
+                    fontName = systemFont.FaceName;
+                    fontSize = systemFont.PointSize;
                 }
             }
 

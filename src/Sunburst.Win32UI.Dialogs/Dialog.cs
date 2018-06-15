@@ -82,7 +82,7 @@ namespace Sunburst.Win32UI
         public Dialog(IntPtr hWnd, bool ownsHandle) : base(hWnd, ownsHandle) { }
         private bool mHandleDestroyed = false;
 
-        public void CreateFromTemplate(DialogTemplate template, IWin32Window parent = null)
+        public void Create(DialogTemplate template, IWin32Window parent = null)
         {
             DLGPROC callback = DialogProc;
             IntPtr wndProcPtr = Marshal.GetFunctionPointerForDelegate(callback);
