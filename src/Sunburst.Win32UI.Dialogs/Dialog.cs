@@ -112,7 +112,7 @@ namespace Sunburst.Win32UI
             return IntPtr.Zero;
         }
 
-        public T GetItem<T>(int controlId)
+        public T GetControl<T>(int controlId)
         {
             IntPtr hWnd = NativeMethods.GetDlgItem(Handle, controlId);
             return (T)Activator.CreateInstance(typeof(T), hWnd, false);
