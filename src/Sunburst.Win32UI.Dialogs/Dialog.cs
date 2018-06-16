@@ -43,7 +43,7 @@ namespace Sunburst.Win32UI
                 const uint WM_COMPAREITEM = 0x39, WM_VKEYTOITEM = 0x2E, WM_CHARTOITEM = 0x2F,
                     WM_QUERYDRAGICON = 0x37, WM_CTLCOLORMSGBOX = 0x132, WM_CTLCOLOREDIT = 0x133,
                     WM_CTLCOLORLISTBOX = 0x134, WM_CTLCOLORBTN = 0x135, WM_CTLCOLORDLG = 0x136,
-                    WM_CTLCOLORSCROLLBAR = 0x137, WM_CTLCOLORSTATIC = 0x138, WM_DESTROY = 0x2;
+                    WM_CTLCOLORSCROLLBAR = 0x137, WM_CTLCOLORSTATIC = 0x138;
 
                 switch (msg)
                 {
@@ -76,7 +76,6 @@ namespace Sunburst.Win32UI
 
         public Dialog() : base() { }
         public Dialog(IntPtr hWnd, bool ownsHandle) : base(hWnd, ownsHandle) { }
-        private bool mHandleDestroyed = false;
 
         public void Create(DialogTemplate template, IWin32Window parent = null)
         {
