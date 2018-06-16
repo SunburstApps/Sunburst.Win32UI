@@ -125,6 +125,8 @@ namespace Sunburst.Win32UI
             if (replacementControl == null) throw new ArgumentNullException(nameof(replacementControl));
 
             Control oldControl = GetControl<Control>(controlId);
+            if (oldControl == null) throw new ArgumentException("Given control ID isn't present in this dialog", nameof(controlId));
+
             Rect frame = oldControl.WindowRect;
             oldControl.NativeWindow.DestroyWindow();
             oldControl = null;
