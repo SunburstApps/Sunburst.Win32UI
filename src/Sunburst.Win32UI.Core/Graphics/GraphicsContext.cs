@@ -250,7 +250,7 @@ namespace Sunburst.Win32UI.Graphics
         public int SetClippingRegion(Region region, RegionCombinationMode combinationMode)
         {
             return NativeMethods.ExtSelectClipRgn(Handle, region.Handle,
-                Region.TranslateCombinationMode(combinationMode, nameof(combinationMode))); 
+                Region.TranslateCombinationMode(combinationMode, nameof(combinationMode)));
         }
 
         public bool DrawIcon(Icon icon, Point position, Size size)
@@ -348,7 +348,7 @@ namespace Sunburst.Win32UI.Graphics
             return NativeMethods.DrawText(Handle, text, -1, ref frame, formatFlags);
         }
 
-        public Size GetSizeOfString(string text)
+        public Size MeasureString(string text)
         {
             Size retval = new Size();
             bool success = NativeMethods.GetTextExtentPoint32(Handle, text, -1, ref retval);
@@ -356,7 +356,7 @@ namespace Sunburst.Win32UI.Graphics
             return retval;
         }
 
-        public Size GetSizeOfString(string text, int? maximumWidth, TextAlignment halign = TextAlignment.Left, VerticalTextAlignment valign = VerticalTextAlignment.Top, StringDrawingFlags flags = 0)
+        public Size MeasureString(string text, int? maximumWidth, TextAlignment halign = TextAlignment.Left, VerticalTextAlignment valign = VerticalTextAlignment.Top, StringDrawingFlags flags = 0)
         {
             uint formatFlags = GDIConstants.DT_CALCRECT;
 
