@@ -475,6 +475,7 @@ namespace Sunburst.Win32UI.TaskDialogs
                 {
                     List<StringMarshaller> marshallers = new List<StringMarshaller>();
                     StringMarshaller sm;
+                    GCHandle handle;
 
                     try
                     {
@@ -516,7 +517,7 @@ namespace Sunburst.Win32UI.TaskDialogs
                         config.cRadioButtons = (uint)radioButtons.Count;
                         config.pRadioButtons = samRadioButtons.Buffer;
 
-                        GCHandle handle = GCHandle.Alloc(this);
+                        handle = GCHandle.Alloc(this);
                         config.lpCallbackData = GCHandle.ToIntPtr(handle);
 
                         int verificationFlagResultInt;
@@ -527,12 +528,12 @@ namespace Sunburst.Win32UI.TaskDialogs
                             out verificationFlagResultInt);
                         verificationFlagResult = verificationFlagResultInt != 0;
 
-                        handle.Free();
                         Marshal.ThrowExceptionForHR(hr);
                     }
                     finally
                     {
                         foreach (var marshaller in marshallers) marshaller.Dispose();
+                        handle.Free();
                     }
                 }
             }
