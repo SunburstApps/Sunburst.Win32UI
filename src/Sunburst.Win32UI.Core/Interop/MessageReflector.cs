@@ -115,6 +115,7 @@ namespace Sunburst.Win32UI.Interop
             NativeMethods.RemoveProp(hWndChild, HandledProperty); // clear it out, just in case
             IntPtr result = NativeMethods.SendMessage(hWndChild, msg.MessageId + WM_REFLECTED_MESSAGE_BASE, msg.WParam, msg.LParam);
             handled = NativeMethods.GetProp(hWndChild, HandledProperty) != IntPtr.Zero;
+            NativeMethods.RemoveProp(hWndChild, HandledProperty);
             if (handled) msg.Result = result;
         }
 
