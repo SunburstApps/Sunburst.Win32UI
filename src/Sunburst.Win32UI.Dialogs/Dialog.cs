@@ -61,12 +61,8 @@ namespace Sunburst.Win32UI
                     case WM_CTLCOLORSTATIC:
                         return result;
 
-                    case WM_DESTROY:
-                        dlg.mHandleDestroyed = true;
-                        goto default;
-
                     default:
-                        if (!dlg.mHandleDestroyed) dlg.SetWindowLongPtr(0, result);
+                        dlg.SetWindowLongPtr(0, result);
                         return (IntPtr)1;
                 }
             }
