@@ -118,6 +118,22 @@ namespace Sunburst.Win32UI
             return (T)Activator.CreateInstance(typeof(T), hWnd, false);
         }
 
+        public void ReplaceControl(int controlId, Control replacementControl)
+        {
+            if (replacementControl == null) throw new ArgumentNullException(nameof(replacementControl));
+
+            Control oldControl = GetControl<Control>(controlId);
+            Rect frame = oldControl.WindowRect;
+            oldControl.NativeWindow.DestroyWindow();
+            oldControl = null;
+
+            NativeMethods.SetParent(replacementControl.Handle, Handle);
+            replacementControl.WindowRect = frame;
+
+            const int GWLP_ID = -12;
+            replacementControl.NativeWindow.SetWindowLongPtr(GWLP_ID, (IntPtr)controlId);
+        }
+
         public void EndModal()
         {
             NativeMethods.EndDialog(Handle, IntPtr.Zero);

@@ -61,6 +61,9 @@ namespace Sunburst.Win32UI.Interop
 
         [DllImport("user32.dll")]
         public static extern int GetSystemMetrics(int metricId);
+
+        [DllImport("user32.dll")]
+        public static extern void SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
