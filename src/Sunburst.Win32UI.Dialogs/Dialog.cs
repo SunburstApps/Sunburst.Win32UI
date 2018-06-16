@@ -29,8 +29,8 @@ namespace Sunburst.Win32UI
                 // so it is set if it is used before CreateDialogParam() returns.
                 if (msg == WM_INITDIALOG) dlg.Handle = hWnd;
 
-                bool handled = false;
-                IntPtr result = dlg.ProcessMessage(msg, wParam, lParam, out handled);
+                Message m = new Message(hWnd, msg, wParam, lParam);
+                bool handled = dlg.ProcessMessage(ref m);
 
                 if (msg == WM_NCDESTROY)
                 {
@@ -59,10 +59,10 @@ namespace Sunburst.Win32UI
                     case WM_CTLCOLORDLG:
                     case WM_CTLCOLORSCROLLBAR:
                     case WM_CTLCOLORSTATIC:
-                        return result;
+                        return m.Result;
 
                     default:
-                        dlg.SetWindowLongPtr(0, result);
+                        dlg.SetWindowLongPtr(0, m.Result);
                         return (IntPtr)1;
                 }
             }
@@ -105,10 +105,11 @@ namespace Sunburst.Win32UI
             }
         }
 
-        protected virtual IntPtr ProcessMessage(uint messageId, IntPtr wParam, IntPtr lParam, out bool handled)
+        protected virtual bool ProcessMessage(ref Message m)
         {
-            handled = false;
-            return IntPtr.Zero;
+            bool handled = false;
+            MessageReflector.ReflectMessage(ref m, out handled);
+            return handled;
         }
 
         public T GetControl<T>(int controlId)
