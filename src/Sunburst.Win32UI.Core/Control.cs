@@ -231,8 +231,9 @@ namespace Sunburst.Win32UI
 
                 mOldScalingFont = newFont;
                 handled = false;
-           }
+            }
 
+            if (!handled) MessageReflector.ReflectMessage(ref m, out handled);
             if (!handled) DefWndProc(ref m);
         }
     }

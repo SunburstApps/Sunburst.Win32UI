@@ -242,6 +242,9 @@ namespace Sunburst.Win32UI.Interop
         [DllImport("user32.dll")]
         public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool revert);
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetDlgItem(IntPtr hWnd, int controlId);
+
         [DllImport("comctl32.dll")]
         public static extern bool InitCommonControlsEx(ref INITCOMMONCONTROLSEX init_struct);
 
