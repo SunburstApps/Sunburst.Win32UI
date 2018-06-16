@@ -516,9 +516,8 @@ namespace Sunburst.Win32UI.TaskDialogs
                         config.cRadioButtons = (uint)radioButtons.Count;
                         config.pRadioButtons = samRadioButtons.Buffer;
 
-                        int key = mTopmostTaskDialogMapKey++;
-                        mRunningTaskDialogMap[key] = this;
-                        config.lpCallbackData = (IntPtr)key;
+                        GCHandle handle = GCHandle.Alloc(this);
+                        config.lpCallbackData = GCHandle.ToIntPtr(handle);
 
                         int verificationFlagResultInt;
                         int hr = TaskDialogNative.TaskDialogIndirect(
@@ -528,8 +527,8 @@ namespace Sunburst.Win32UI.TaskDialogs
                             out verificationFlagResultInt);
                         verificationFlagResult = verificationFlagResultInt != 0;
 
+                        handle.Free();
                         Marshal.ThrowExceptionForHR(hr);
-                        mRunningTaskDialogMap.Remove(key);
                     }
                     finally
                     {
@@ -539,24 +538,13 @@ namespace Sunburst.Win32UI.TaskDialogs
             }
         }
 
-        private static readonly Dictionary<int, TaskDialog> mRunningTaskDialogMap = new Dictionary<int, TaskDialog>();
-        private static int mTopmostTaskDialogMapKey = 1;
-
         private static IntPtr StaticCallback(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam, IntPtr lpRefData)
         {
-            try
-            {
-                int key = (int)lpRefData;
-                return mRunningTaskDialogMap[key].Callback(hwnd, msg, wParam, lParam, lpRefData);
-            }
-            catch (Exception ex)
-            {
-                UnhandledExceptionProxy.OnUnhandledException(ex);
-                return IntPtr.Zero;
-            }
+            TaskDialog target = (TaskDialog)GCHandle.FromIntPtr(lpRefData).Target;
+            return target.Callback(hwnd, msg, wParam, lParam);
         }
 
-        private IntPtr Callback(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam, IntPtr lpRefData)
+        private IntPtr Callback(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
             TaskDialogDriver driver = new TaskDialogDriver(hwnd);
             switch (msg)
