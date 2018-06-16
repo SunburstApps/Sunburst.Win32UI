@@ -450,13 +450,13 @@ namespace Sunburst.Win32UI.TaskDialogs
 
         #endregion
 
-        public void Show(Control dialogOwner)
+        public void Show(IWin32Window dialogOwner)
         {
             int buttonResult, radioButtonResult; bool verificationFlagResult;
             Show(dialogOwner, out buttonResult, out radioButtonResult, out verificationFlagResult);
         }
 
-        public void Show(Control dialogOwner, out int buttonResult, out int radioButtonResult, out bool verificationFlagResult)
+        public void Show(IWin32Window dialogOwner, out int buttonResult, out int radioButtonResult, out bool verificationFlagResult)
         {
             config.hInstance = ResourceLoader.GetEntryModule().ModuleHandle;
             config.hwndParent = (dialogOwner != null) ? dialogOwner.Handle : IntPtr.Zero;
