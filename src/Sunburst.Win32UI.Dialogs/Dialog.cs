@@ -115,6 +115,8 @@ namespace Sunburst.Win32UI
         public T GetControl<T>(int controlId)
         {
             IntPtr hWnd = NativeMethods.GetDlgItem(Handle, controlId);
+            if (hWnd == IntPtr.Zero) return default(T);
+
             return (T)Activator.CreateInstance(typeof(T), hWnd, false);
         }
 
