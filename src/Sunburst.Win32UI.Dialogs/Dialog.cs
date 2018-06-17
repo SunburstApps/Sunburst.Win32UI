@@ -112,7 +112,7 @@ namespace Sunburst.Win32UI
             return handled;
         }
 
-        public T GetControl<T>(int controlId)
+        public T GetControl<T>(int controlId) where T : Control
         {
             IntPtr hWnd = NativeMethods.GetDlgItem(Handle, controlId);
             if (hWnd == IntPtr.Zero) return default(T);
