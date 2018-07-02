@@ -64,8 +64,8 @@
                           LegalCopyright="$(Copyright)" ProductName="$(Product)" />
   </Target>
 
-  <Target Name="CoreCopyEntryPointResourcesForCoreRT" DependsOnTargets="CoreCopyEntryPointResources" AfterTargets="LinkNative"
+  <Target Name="CopyEntryPointResourcesForCoreRT" DependsOnTargets="CoreCopyEntryPointResources" AfterTargets="LinkNative"
           Condition="'$(IlcCalledViaPackage)' == 'true' and '$(NativeBinaryExt)' == '.exe'" />
-  <Target Name="CoreCopyEntryPointResources" DependsOnTargets="CoreCopyEntryPointResources" AfterTargets="Build"
+  <Target Name="CopyEntryPointResources" DependsOnTargets="CoreCopyEntryPointResources" AfterTargets="Build"
           Condition="'$(IlcCalledViaPackage)' == '' and '$(DeployAppHost)' == 'true'" />
 </Project>
