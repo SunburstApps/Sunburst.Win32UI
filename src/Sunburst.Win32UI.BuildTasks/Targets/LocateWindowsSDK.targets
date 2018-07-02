@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <UsingTask TaskName="LocateWindowsSDK" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
+
+  <Target Name="LocateWindowsSDK">
+    <LocateWindowsSDK>
+      <Output TaskParameter="BinDirectory" PropertyName="WindowsSDKBinDirectory" />
+      <Output TaskParameter="IncludeDirectories" ItemName="_NativeIncludeDirectory" />
+      <Output TaskParameter="LibraryDirectories" ItemName="_NativeLibraryDirectory" />
+    </LocateWindowsSDK>
+  </Target>
+</Project>

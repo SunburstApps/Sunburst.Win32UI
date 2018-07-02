@@ -3,8 +3,6 @@
     <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)tools/Sunburst.Win32UI.Build.Tasks/bin/$(Configuration)/netcoreapp2.0/Sunburst.Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
     <Win32UITasksAssembly Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)tools/Sunburst.Win32UI.Build.Tasks/bin/$(Configuration)/net46/Sunburst.Win32UI.Build.Tasks.dll</Win32UITasksAssembly>
 
-    <WindowsSDKVersion Condition="'$(WindowsSDKVersion)' == ''">15063</WindowsSDKVersion>
-
     <GuiEntryPoint Condition="'$(GuiEntryPoint)' == ''">false</GuiEntryPoint>
     <UpdateEntryPointResources Condition="'$(UpdateEntryPointResources)' == '' and '$(GuiEntryPoint)' == 'true'">true</UpdateEntryPointResources>
     <SetEntryPointVersionFromAssemblyMetadata Condition="'$(SetEntryPointVersionFromAssemblyMetadata)' == '' and '$(UpdateEntryPointResources)' == 'true'">true</SetEntryPointVersionFromAssemblyMetadata>
@@ -16,20 +14,6 @@
     <!-- Note: These paths are specific to my machine. You may have to modify them for yours. -->
     <RCToolPath>C:\Program Files (x86)\Windows Kits\10\bin\$(LinkerPlatform)</RCToolPath>
     <SxsManifestToolPath>C:\Program Files (x86)\Windows Kits\10\bin\$(LinkerPlatform)</SxsManifestToolPath>
-
-    <RCIncludePaths>
-      C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\include\um;
-      C:\Program Files (x86)\Windows Kits\10\include\10.0.$(WindowsSDKVersion).0\ucrt;
-      C:\Program Files (x86)\Windows Kits\10\include\10.0.$(WindowsSDKVersion).0\shared;
-      C:\Program Files (x86)\Windows Kits\10\include\10.0.$(WindowsSDKVersion).0\um;
-      C:\Program Files (x86)\Windows Kits\10\include\10.0.$(WindowsSDKVersion).0\winrt;
-    </RCIncludePaths>
-
-    <LinkLibraryPaths>
-      C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6.1\lib\um\$(LinkerPlatform);
-      C:\Program Files (x86)\Windows Kits\10\lib\10.0.$(WindowsSDKVersion).0\ucrt\$(LinkerPlatform);
-      C:\Program Files (x86)\Windows Kits\10\lib\10.0.$(WindowsSDKVersion).0\um\$(LinkerPlatform);
-    </LinkLibraryPaths>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(GuiEntryPoint)' == 'true'">
