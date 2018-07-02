@@ -13,5 +13,13 @@
 
     <Version Condition="'$(Version)' == ''">1.0.0.0</Version>
     <FileVersion Condition="'$(FileVersion)' == '' and '$(Version)' != ''">$(Version)</FileVersion>
+
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-*" PrivateAssets="all" />
+  </ItemGroup>
 </Project>
