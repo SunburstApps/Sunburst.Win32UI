@@ -27,7 +27,7 @@
   <Target Name="CompileEntryPointResources" DependsOnTargets="PrepareForBuild;LocateWindowsSDK;GenerateEntryPointResourceScript"
           Inputs="@(ResourceScript)" Outputs="$(IntermediateOutputPath)/EntryPoint.res">
     <CompileResourceScript ResourceScripts="@(ResourceScript)" OutputFile="$(IntermediateOutputPath)/EntryPoint.res"
-                           WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" IncludeDirectories="@(_NativeIncludeDirectory)" />
+                           WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" IncludePaths="@(_NativeIncludeDirectory)" />
 
     <ItemGroup>
       <FileWrites Include="$(IntermediateOutputPath)/EntryPoint.res" />
