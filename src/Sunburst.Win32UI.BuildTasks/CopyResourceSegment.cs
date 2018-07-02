@@ -4,7 +4,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Vestris.ResourceLib;
 
-namespace Win32UI.Build.Tasks
+namespace Sunburst.Win32UI.BuildTasks
 {
     public sealed class CopyResourceSegment : Task
     {

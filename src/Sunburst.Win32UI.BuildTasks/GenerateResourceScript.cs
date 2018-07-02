@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace Win32UI.Build.Tasks
+namespace Sunburst.Win32UI.BuildTasks
 {
     public sealed class GenerateResourceScript : Task
     {
