@@ -1,4 +1,5 @@
-﻿namespace Sunburst.Win32UI.Interop
+﻿#pragma warning disable 0649
+namespace Sunburst.Win32UI.Interop
 {
     internal struct NONCLIENTMETRICSW
     {
