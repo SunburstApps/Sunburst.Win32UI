@@ -1,11 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <BuildOutputTargetFolder>build</BuildOutputTargetFolder>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.3.409" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.3.409" />
-    <PackageReference Include="Vestris.ResourceLib" Version="2.0.0-*" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.3.409" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.3.409" PrivateAssets="all" />
+    <PackageReference Include="Vestris.ResourceLib" Version="2.0.0-*" PrivateAssets="all" />
+
+    <Content Include="Targets/**/*.props" Pack="true" PackagePath="build/%(RecursiveDir)" />
+    <Content Include="Targets/**/*.targets" Pack="true" PackagePath="build/%(RecursiveDir)" />
+
+    <!-- TODO: Remove this line once the migration to the new targets files is complete -->
+    <None Include="GuiEntryPoint.targets" />
   </ItemGroup>
+
+  <Target Name="CopyResourceLibAssembly" BeforeTargets="_GetPackageFiles" DependsOnTargets="_CopyFilesMarkedCopyLocal">
+    <ItemGroup>
+      <Content Include="$(OutputPath)\ResourceLib.dll" Pack="true" PackagePath="build/$(TargetFramework)" />
+    </ItemGroup>
+  </Target>
 </Project>
