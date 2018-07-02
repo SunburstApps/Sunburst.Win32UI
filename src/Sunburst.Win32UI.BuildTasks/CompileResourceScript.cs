@@ -10,28 +10,27 @@ namespace Sunburst.Win32UI.BuildTasks
 {
     public sealed class CompileResourceScript : ToolTask
     {
-        [RequiredAttribute]
+        [Required]
         public ITaskItem[] ResourceScripts { get; set; }
-        [RequiredAttribute]
-        public string OutputDirectory { get; set; }
+        [Required]
+        public ITaskItem OutputFile { get; set; }
+        [Required]
+        public string WindowsSDKBinDirectory { get; set; }
         public string[] IncludePaths { get; set; }
 
         protected override string ToolName => "rc.exe";
 
         protected override string GenerateFullPathToTool()
         {
-            return ToolPath ?? "rc.exe";
+            return Path.Combine(WindowsSDKBinDirectory, "x86", "rc.exe");
         }
 
         protected override string GenerateCommandLineCommands()
         {
-            string firstInputFile = Path.GetFileNameWithoutExtension(ResourceScripts[0].GetMetadata("FullPath"));
-            string outputPath = Path.Combine(OutputDirectory, Path.ChangeExtension(firstInputFile, "res"));
-
             List<string> argv = new List<string>();
             argv.Add("/nologo");
             argv.Add("/Fo");
-            argv.Add(outputPath);
+            argv.Add(OutputFile.GetMetadata("FullPath"));
             argv.AddRange(IncludePaths.Select(path => "/i" + path));
             argv.AddRange(ResourceScripts.Select(item => item.GetMetadata("FullPath")));
 
@@ -42,22 +41,11 @@ namespace Sunburst.Win32UI.BuildTasks
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Log.LogWarning("Skipping CompileResourceScript task on non-Windows platform");
-                return true;
+                Log.LogError("CompileResourceScript task can only be run on Windows.");
+                return false;
             }
 
-            bool success = base.Execute();
-
-            if (success)
-            {
-                if (ExitCode != 0)
-                {
-                    Log.LogError("{0} failed with code {1}", GenerateFullPathToTool(), ExitCode);
-                    success = false;
-                }
-            }
-
-            return success;
+            return base.Execute();
         }
     }
 }

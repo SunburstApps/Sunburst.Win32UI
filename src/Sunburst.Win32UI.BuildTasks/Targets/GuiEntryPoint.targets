@@ -1,13 +1,7 @@
 <Project>
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <GuiEntryPoint Condition="'$(GuiEntryPoint)' == ''">false</GuiEntryPoint>
-    <UpdateEntryPointResources Condition="'$(UpdateEntryPointResources)' == '' and '$(GuiEntryPoint)' == 'true'">true</UpdateEntryPointResources>
-    <SetEntryPointVersionFromAssemblyMetadata Condition="'$(SetEntryPointVersionFromAssemblyMetadata)' == '' and '$(UpdateEntryPointResources)' == 'true'">true</SetEntryPointVersionFromAssemblyMetadata>
-    <UacPrivilegeLevel Condition="'$(UacPrivilegeLevel)' == ''">AsInvoker</UacPrivilegeLevel>
   </PropertyGroup>
 
   <UsingTask TaskName="MarkExecutableAsGui" AssemblyFile="$(Win32UIBuildTasksAssembly)" />

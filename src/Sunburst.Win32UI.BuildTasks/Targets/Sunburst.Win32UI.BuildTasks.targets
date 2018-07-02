@@ -6,6 +6,7 @@
 
   <ImportGroup Condition="$([MSBuild]::IsOSPlatform(Windows))">
     <Import Project="$(MSBuildThisFileDirectory)/LocateWindowsSDK.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)/EntryPointResources.targets" />
     <Import Project="$(MSBuildThisFileDirectory)/GuiEntryPoint.targets" />
   </ImportGroup>
 </Project>

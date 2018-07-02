@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
@@ -9,6 +10,8 @@ namespace Sunburst.Win32UI.BuildTasks
 {
     public sealed class MsvcSxsManifestTool : ToolTask
     {
+        [Required]
+        public string WindowsSDKBinDirectory { get; set; }
         public string InputManifestFile { get; set; }
         public string InputAssembly { get; set; }
         public string OutputManifestFile { get; set; }
@@ -20,7 +23,7 @@ namespace Sunburst.Win32UI.BuildTasks
 
         protected override string GenerateFullPathToTool()
         {
-            return ToolPath ?? "mt.exe";
+            return Path.Combine(WindowsSDKBinDirectory, "x86", "mt.exe");
         }
 
         protected override string GenerateCommandLineCommands()
@@ -61,8 +64,8 @@ namespace Sunburst.Win32UI.BuildTasks
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Log.LogWarning("Skipping MsvcSxsManifestTool task on non-Windows platform");
-                return true;
+                Log.LogError("MsvcSxsManifestTool task can only be run on Windows.");
+                return false;
             }
 
             if (InputManifestFile == null && InputAssembly == null)
