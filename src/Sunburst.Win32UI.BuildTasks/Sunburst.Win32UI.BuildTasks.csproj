@@ -14,9 +14,6 @@
 
     <Content Include="Targets/**/*.props" Pack="true" PackagePath="build/%(RecursiveDir)" />
     <Content Include="Targets/**/*.targets" Pack="true" PackagePath="build/%(RecursiveDir)" />
-
-    <!-- TODO: Remove this line once the migration to the new targets files is complete -->
-    <None Include="GuiEntryPoint.targets" />
   </ItemGroup>
 
   <Target Name="CopyResourceLibAssembly" BeforeTargets="_GetPackageFiles" DependsOnTargets="_CopyFilesMarkedCopyLocal">
