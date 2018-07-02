@@ -12,11 +12,11 @@
   <UsingTask TaskName="MsvcSxsManifestTool" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
   <UsingTask TaskName="CopyResourceSegment" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
 
+  <!-- The MSBuildProjectFullPath is here to ensure that the target always runs, even if no icons or RC fragments were specified. -->
   <Target Name="GenerateEntryPointResourceScript" DependsOnTargets="PrepareForBuild;LocateWindowsSDK"
-          Inputs="@(EntryPointIcon);@(EntryPointRCFragment)" Outputs="$(IntermediateOutputPath)/EntryPoint.rc"
-          Condition="'$(UpdateEntryPointResources)' == 'true'">
+          Inputs="@(EntryPointIcon);@(EntryPointRCFragment);$(MSBuildProjectFullPath)" Outputs="$(IntermediateOutputPath)/EntryPoint.rc">
     <GenerateResourceScript Icons="@(EntryPointIcon)" ScriptFragments="@(EntryPointRCFragment)"
-                            OutputDirectory="$(IntermediateOutputPath)" />
+                            OutputFile="$(IntermediateOutputPath)/EntryPoint.rc" />
 
     <ItemGroup>
       <ResourceScript Include="$(IntermediateOutputPath)/EntryPoint.rc" />
