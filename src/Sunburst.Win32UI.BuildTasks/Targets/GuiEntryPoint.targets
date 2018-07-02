@@ -13,7 +13,7 @@
   <UsingTask TaskName="MarkExecutableAsGui" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
 
   <Target Name="CoreMarkEntryPointAsGuiApp" Condition="'$(OutputType)' == 'Exe' or '$(OutputType)' == 'WinExe'">
-    <MarkExecutableAsGui Executable="$(OutputPath)$(TargetName).exe" />
+    <MarkExecutableAsGui Executable="$(OutputPath)$(TargetName).exe" RuntimeIdentifier="$(RuntimeIdentifier)" />
   </Target>
 
   <Target Name="MarkEntryPointAsGuiAppForCoreRT" DependsOnTargets="CoreMarkEntryPointAsGuiApp" AfterTargets="LinkNative"
