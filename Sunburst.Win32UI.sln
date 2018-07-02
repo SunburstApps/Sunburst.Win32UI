@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.Core", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.TaskDialogs", "src\Sunburst.Win32UI.TaskDialogs\Sunburst.Win32UI.TaskDialogs.csproj", "{81F2D565-3B17-4657-83CC-D1F3C06363B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.Build.Tasks", "tools\Sunburst.Win32UI.Build.Tasks\Sunburst.Win32UI.Build.Tasks.csproj", "{9204C77D-C8A0-4535-A205-935675DB9C33}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{97DFB2B8-1A33-4F5C-94B0-353B4399C688}"
 	ProjectSection(SolutionItems) = preProject
 		src\Directory.Build.props = src\Directory.Build.props
@@ -15,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{97DFB2B8
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.Dialogs", "src\Sunburst.Win32UI.Dialogs\Sunburst.Win32UI.Dialogs.csproj", "{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.BuildTasks", "src\Sunburst.Win32UI.BuildTasks\Sunburst.Win32UI.BuildTasks.csproj", "{E6A5F608-6F8F-4D54-895F-1752A19B252E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,18 +50,6 @@ Global
 		{81F2D565-3B17-4657-83CC-D1F3C06363B3}.Release|x64.Build.0 = Release|Any CPU
 		{81F2D565-3B17-4657-83CC-D1F3C06363B3}.Release|x86.ActiveCfg = Release|Any CPU
 		{81F2D565-3B17-4657-83CC-D1F3C06363B3}.Release|x86.Build.0 = Release|Any CPU
-		{9204C77D-C8A0-4535-A205-935675DB9C33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9204C77D-C8A0-4535-A205-935675DB9C33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9204C77D-C8A0-4535-A205-935675DB9C33}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{9204C77D-C8A0-4535-A205-935675DB9C33}.Debug|x64.Build.0 = Debug|Any CPU
-		{9204C77D-C8A0-4535-A205-935675DB9C33}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9204C77D-C8A0-4535-A205-935675DB9C33}.Debug|x86.Build.0 = Debug|Any CPU
-		{9204C77D-C8A0-4535-A205-935675DB9C33}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9204C77D-C8A0-4535-A205-935675DB9C33}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9204C77D-C8A0-4535-A205-935675DB9C33}.Release|x64.ActiveCfg = Release|Any CPU
-		{9204C77D-C8A0-4535-A205-935675DB9C33}.Release|x64.Build.0 = Release|Any CPU
-		{9204C77D-C8A0-4535-A205-935675DB9C33}.Release|x86.ActiveCfg = Release|Any CPU
-		{9204C77D-C8A0-4535-A205-935675DB9C33}.Release|x86.Build.0 = Release|Any CPU
 		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -74,6 +62,18 @@ Global
 		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Release|x64.Build.0 = Release|Any CPU
 		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Release|x86.ActiveCfg = Release|Any CPU
 		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Release|x86.Build.0 = Release|Any CPU
+		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Debug|x64.Build.0 = Debug|Any CPU
+		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Debug|x86.Build.0 = Debug|Any CPU
+		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Release|x64.ActiveCfg = Release|Any CPU
+		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Release|x64.Build.0 = Release|Any CPU
+		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Release|x86.ActiveCfg = Release|Any CPU
+		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
