@@ -19,8 +19,8 @@ namespace Sunburst.Win32UI.BuildTasks
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Log.LogWarning("Skipping LocateWindowsSDK task on non-Windows platorm");
-                return true;
+                Log.LogError("LocateWindowsSDK task can only be run on Windows.");
+                return false;
             }
 
             string windowsSDKRoot = @"C:\Program Files (x86)\Windows Kits\10";

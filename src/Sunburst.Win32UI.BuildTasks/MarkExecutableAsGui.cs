@@ -34,8 +34,8 @@ namespace Sunburst.Win32UI.BuildTasks
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Log.LogWarning("Skipping MarkExecutableAsGui task on non-Windows platform");
-                return true;
+                Log.LogError("MarkExecutableAsGui task can only be run on Windows.");
+                return false;
             }
 
             if (RuntimeIdentifier.EndsWith("-x64", StringComparison.Ordinal))
