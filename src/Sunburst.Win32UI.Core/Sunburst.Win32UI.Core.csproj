@@ -5,5 +5,6 @@
     <AssemblyTitle>Sunburst.Win32UI.Core</AssemblyTitle>
     <RootNamespace>Sunburst.Win32UI</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 </Project>
