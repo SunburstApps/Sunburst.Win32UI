@@ -4,6 +4,8 @@
     <Win32UIBuildTasksAssembly>$(MSBuildThisFileDirectory)/netstandard2.0/Sunburst.Win32UI.BuildTasks.dll</Win32UIBuildTasksAssembly>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)/LocateWindowsSDK.targets" />
-  <Import Project="$(MSBuildThisFileDirectory)/GuiEntryPoint.targets" />
+  <ImportGroup Condition="$([MSBuild]::IsOSPlatform(Windows))">
+    <Import Project="$(MSBuildThisFileDirectory)/LocateWindowsSDK.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)/GuiEntryPoint.targets" />
+  </ImportGroup>
 </Project>
