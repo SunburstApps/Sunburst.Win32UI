@@ -40,14 +40,16 @@
     <LinkResourceDll OutputFilePath="$(IntermediateOutputPath)/EntryPointResources.dll"
                      Objects="$(IntermediateOutputPath)/EntryPoint.res"
                      UacPrivilegeLevel="$(UacPrivilegeLevel)"
-                     LibraryPaths="@(_NativeLibraryDirectory)" />
+                     LibraryPaths="@(_NativeLibraryDirectory)"
+                     WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
 
     <MsvcSxsManifestTool InputAssembly="$(IntermediateOutputPath)/EntryPointResources.dll"
-                         OutputManifestFile="$(IntermediateOutputPath)/EntryPoint.manifest" />
+                         OutputManifestFile="$(IntermediateOutputPath)/EntryPoint.manifest"
+                         WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
     <MsvcSxsManifestTool InputManifestFile="$(IntermediateOutputPath)/EntryPoint.manifest"
                          OutputAssembly="$(OutputPath)$(TargetName).exe"
                          ManifestFragments="@(SxsManifestFragment)"
-                         CanonicalizeXml="true" />
+                         CanonicalizeXml="true" WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
 
     <ItemGroup>
       <FileWrites Include="$(IntermediateOutputPath)/EntryPointResources.dll" />

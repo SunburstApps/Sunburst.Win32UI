@@ -21,6 +21,8 @@ namespace Sunburst.Win32UI.BuildTasks
         public string OutputFilePath { get; set; }
         [Required]
         public ITaskItem[] Objects { get; set; }
+        [Required]
+        public string WindowsSDKBinDirectory { get; set; }
         public string UacPrivilegeLevel { get; set; }
         public string[] LibraryPaths { get; set; }
 
@@ -42,9 +44,11 @@ namespace Sunburst.Win32UI.BuildTasks
 
             string[] pathAdditions =
             {
+                Path.Combine(WindowsSDKBinDirectory, "x86"),
                 Path.Combine(mVisualStudioPath, "VC", "Tools", "MSVC", mMsvcToolsVersion, "bin", "HostX86", "x86")
             };
 
+            Log.LogMessage("Prepending PATH: {0}", string.Join("; ", pathAdditions));
             EnvironmentVariables = new[]
             {
                 "PATH=" + string.Join(Path.PathSeparator.ToString(), pathAdditions) + Path.PathSeparator + Environment.GetEnvironmentVariable("PATH")
