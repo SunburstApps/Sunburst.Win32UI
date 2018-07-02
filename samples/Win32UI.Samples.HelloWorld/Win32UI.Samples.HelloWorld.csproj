@@ -5,6 +5,7 @@
     <AssemblyTitle>Win32UI Hello World Sample</AssemblyTitle>
     <RuntimeIdentifier>win-x86</RuntimeIdentifier>
     <SelfContained>true</SelfContained>
+    <GuiEntryPoint>true</GuiEntryPoint>
   </PropertyGroup>
 
   <ItemGroup>
