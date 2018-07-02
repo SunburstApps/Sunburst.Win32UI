@@ -8,19 +8,16 @@ namespace Sunburst.Win32UI.BuildTasks
 {
     public sealed class GenerateResourceScript : Task
     {
-        [RequiredAttribute]
-        public string OutputDirectory { get; set; }
-        [OutputAttribute]
-        public ITaskItem ResourceScriptPath { get; set; }
+        [Required]
+        public ITaskItem OutputFile { get; set; }
         public ITaskItem[] Icons { get; set; }
         public ITaskItem[] ScriptFragments { get; set; }
-        public ITaskItem[] EmbeddedFiles { get; set; }
 
         public override bool Execute()
         {
-            StringBuilder outputFile = new StringBuilder();
-            outputFile.AppendLine("#include <Windows.h>");
-            outputFile.AppendLine();
+            StringBuilder outputCode = new StringBuilder();
+            outputCode.AppendLine("#include <Windows.h>");
+            outputCode.AppendLine();
 
             foreach (var icon in Icons ?? Enumerable.Empty<ITaskItem>())
             {
@@ -29,7 +26,7 @@ namespace Sunburst.Win32UI.BuildTasks
                 {
                     bool parseOK = int.TryParse(indexString, out var iconIndex);
                     string path = icon.GetMetadata("FullPath").Replace("\\", "\\\\");
-                    outputFile.AppendLine($"{iconIndex} ICON \"{path}\"");
+                    outputCode.AppendLine($"{iconIndex} ICON \"{path}\"");
                 }
                 else
                 {
@@ -37,46 +34,22 @@ namespace Sunburst.Win32UI.BuildTasks
                 }
             }
 
-            outputFile.AppendLine();
-
-            foreach (var file in EmbeddedFiles ?? Enumerable.Empty<ITaskItem>())
-            {
-                string resourceType = file.GetMetadata("ResourceType");
-                string resourceName = file.GetMetadata("ResourceName");
-
-                if (string.IsNullOrEmpty(resourceType))
-                {
-                    Log.LogError("Embedded file resource '{0}' must have a value for the ResourceType metadata property", file.ItemSpec);
-                }
-                else if (string.IsNullOrEmpty(resourceName))
-                {
-                    Log.LogError("Embedded file resource '{0}' must have a value for the ResourceName metadata property", file.ItemSpec);
-                }
-                else
-                {
-                    string path = file.GetMetadata("FullPath").Replace("\\", "\\\\");
-                    outputFile.AppendLine($"{resourceName} {resourceType} \"{path}\"");
-                }
-            }
-
-            outputFile.AppendLine();
+            outputCode.AppendLine();
 
             foreach (var fragment in ScriptFragments ?? Enumerable.Empty<ITaskItem>())
             {
                 foreach (string line in File.ReadAllLines(fragment.GetMetadata("FullPath")))
                 {
-                    outputFile.AppendLine(line);
+                    outputCode.AppendLine(line);
                 }
 
-                outputFile.AppendLine();
+                outputCode.AppendLine();
             }
 
             if (!Log.HasLoggedErrors)
             {
-                string outputPath = Path.Combine(OutputDirectory, "Generated.rc");
-
-                File.WriteAllText(outputPath, outputFile.ToString(), Encoding.Unicode);
-                ResourceScriptPath = new TaskItem(outputPath);
+                Log.LogMessage(MessageImportance.High, "Writing to {0}", OutputFile.GetMetadata("FullPath"));
+                File.WriteAllText(OutputFile.GetMetadata("FullPath"), outputCode.ToString(), Encoding.Unicode);
             }
 
             return !Log.HasLoggedErrors;
