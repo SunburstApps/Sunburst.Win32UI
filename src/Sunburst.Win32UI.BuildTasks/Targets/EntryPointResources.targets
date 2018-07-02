@@ -11,6 +11,7 @@
   <UsingTask TaskName="LinkResourceDll" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
   <UsingTask TaskName="MsvcSxsManifestTool" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
   <UsingTask TaskName="CopyResourceSegment" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
+  <UsingTask TaskName="SetNativeVersionInfo" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
 
   <!-- The MSBuildProjectFullPath is here to ensure that the target always runs, even if no icons or RC fragments were specified. -->
   <Target Name="GenerateEntryPointResourceScript" DependsOnTargets="PrepareForBuild;LocateWindowsSDK"
