@@ -78,10 +78,6 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="MarkEntryPointAsGuiApp" AfterTargets="Build" DependsOnTargets="_CompileGuiEntryPointTasks; _GuiEntryPointGetMsvcPath" Condition="'$(GuiEntryPoint)' == 'true' and '$(OutputType)' == 'Exe'">
-    <MarkExecutableAsGui ToolPath="$(EditbinToolPath)" Executable="$(OutputPath)$(TargetName).exe" />
-  </Target>
-
   <Target Name="_GuiEntryPointGetMsvcPath" Condition="'$(OS)' == 'Windows_NT'">
     <GetVisualStudioPath RequiredWorkloads="Microsoft.VisualCpp.Tools.Host$(LinkerPlatform.ToUpperInvariant()).Target$(LinkerPlatform.ToUpperInvariant())">
       <Output TaskParameter="VisualStudioPath" PropertyName="_VisualStudioPath" />

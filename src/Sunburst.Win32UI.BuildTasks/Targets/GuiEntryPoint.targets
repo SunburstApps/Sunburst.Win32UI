@@ -1,0 +1,23 @@
+<Project>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GuiEntryPoint Condition="'$(GuiEntryPoint)' == ''">false</GuiEntryPoint>
+    <UpdateEntryPointResources Condition="'$(UpdateEntryPointResources)' == '' and '$(GuiEntryPoint)' == 'true'">true</UpdateEntryPointResources>
+    <SetEntryPointVersionFromAssemblyMetadata Condition="'$(SetEntryPointVersionFromAssemblyMetadata)' == '' and '$(UpdateEntryPointResources)' == 'true'">true</SetEntryPointVersionFromAssemblyMetadata>
+    <UacPrivilegeLevel Condition="'$(UacPrivilegeLevel)' == ''">AsInvoker</UacPrivilegeLevel>
+  </PropertyGroup>
+
+  <UsingTask TaskName="MarkExecutableAsGui" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
+
+  <Target Name="CoreMarkEntryPointAsGuiApp">
+    <MarkExecutableAsGui Executable="$(OutputPath)$(TargetName).exe" />
+  </Target>
+
+  <Target Name="MarkEntryPointAsGuiAppForCoreRT" DependsOnTargets="CoreMarkEntryPointAsGuiApp" AfterTargets="LinkNative"
+          Condition="'$(IlcCalledViaPackage)' == 'true' and '$(NativeBinaryExt)' == '.exe'" />
+  <Target Name="MarkEntryPointAsGuiApp" DependsOnTargets="CoreMarkEntryPointAsGuiApp" AfterTargets="Build"
+          Condition="'$(IlcCalledViaPackage)' == '' and '$(DeployAppHost)' == 'true'" />
+</Project>

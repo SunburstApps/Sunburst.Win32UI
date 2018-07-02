@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -9,15 +8,20 @@ namespace Sunburst.Win32UI.BuildTasks
 {
     public sealed class MarkExecutableAsGui : ToolTask
     {
-        [RequiredAttribute]
+        [Required]
+        public string RuntimeIdentifier { get; set; }
+        [Required]
         public ITaskItem Executable { get; set; }
+
+        private string mLinkerArchitecture;
+        private string mVisualStudioPath;
+        private string mMsvcToolsVersion;
 
         protected override string ToolName => "editbin.exe";
 
         protected override string GenerateFullPathToTool()
         {
-            if (!string.IsNullOrEmpty(ToolPath)) return ToolPath;
-            else return "editbin.exe";
+            return Path.Combine(mVisualStudioPath, @"VC\Tools\MSVC", mMsvcToolsVersion, @"bin\HostX86", mLinkerArchitecture, "editbin.exe");
         }
 
         protected override string GenerateCommandLineCommands()
@@ -30,22 +34,41 @@ namespace Sunburst.Win32UI.BuildTasks
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                Log.LogWarning("Skipping CompileResourceScript task on non-Windows platform");
+                Log.LogWarning("Skipping MarkExecutableAsGui task on non-Windows platform");
                 return true;
             }
 
-            bool success = base.Execute();
-
-            if (success)
+            if (RuntimeIdentifier.EndsWith("-x64", StringComparison.Ordinal))
             {
-                if (ExitCode != 0)
-                {
-                    Log.LogError("{0} failed with code {1}", GenerateFullPathToTool(), ExitCode);
-                    success = false;
-                }
+                mLinkerArchitecture = "x64";
+            }
+            else if (RuntimeIdentifier.EndsWith("-x86", StringComparison.Ordinal))
+            {
+                mLinkerArchitecture = "x86";
+            }
+            else
+            {
+                Log.LogError("Could not determine the linker architecture from RID '{0}'", RuntimeIdentifier);
+                return false;
             }
 
-            return success;
+            mVisualStudioPath = VSLocator.GetVisualStudioPath($"Microsoft.VisualCpp.Tools.HostX86.Target{mLinkerArchitecture.ToUpperInvariant()}");
+            string msvcToolsVersionFilePath = Path.Combine(mVisualStudioPath, @"VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt");
+            mMsvcToolsVersion = File.ReadAllLines(msvcToolsVersionFilePath)[0];
+
+
+            string[] pathAdditions =
+            {
+                Path.Combine(mVisualStudioPath, @"VC\Tools\MSVC", mMsvcToolsVersion, @"bin\HostX86", mLinkerArchitecture),
+                Path.Combine(mVisualStudioPath, @"VC\Tools\MSVC", mMsvcToolsVersion, @"bin\HostX86\x86"),
+            };
+
+            EnvironmentVariables = new[]
+            {
+                "PATH=" + string.Join(Path.PathSeparator.ToString(), pathAdditions) + Path.PathSeparator + Environment.GetEnvironmentVariable("PATH")
+            };
+
+            return base.Execute();
         }
     }
 }

@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <Win32UIBuildTasksAssembly>$(MSBuildThisFileDirectory)/netstandard2.0/Sunburst.Win32UI.BuildTasks.dll</Win32UIBuildTasksAssembly>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)/GuiEntryPoint.targets" />
+</Project>
