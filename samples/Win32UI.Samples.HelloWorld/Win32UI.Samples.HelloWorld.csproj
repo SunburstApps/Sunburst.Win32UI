@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyTitle>Win32UI Hello World Sample</AssemblyTitle>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Sunburst.Win32UI.Core" Version="1.0.*" />
+    <PackageReference Include="Sunburst.Win32UI.BuildTasks" Version="1.0.*" />
+  </ItemGroup>
+</Project>
