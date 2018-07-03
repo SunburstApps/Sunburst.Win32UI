@@ -9,7 +9,6 @@
   <UsingTask TaskName="GenerateResourceScript" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
   <UsingTask TaskName="CompileResourceScript" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
   <UsingTask TaskName="LinkResourceDll" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
-  <UsingTask TaskName="MsvcSxsManifestTool" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
   <UsingTask TaskName="ExtractSxsManifest" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
   <UsingTask TaskName="MergeSxsManifests" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
   <UsingTask TaskName="CopyResourceSegment" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
