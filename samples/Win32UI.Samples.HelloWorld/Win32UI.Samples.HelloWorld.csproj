@@ -11,5 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Sunburst.Win32UI.Core" Version="1.0.*" />
     <PackageReference Include="Sunburst.Win32UI.BuildTasks" Version="1.0.*" />
+
+    <SxsManifestFragment Include="compat.manifest" />
   </ItemGroup>
 </Project>
