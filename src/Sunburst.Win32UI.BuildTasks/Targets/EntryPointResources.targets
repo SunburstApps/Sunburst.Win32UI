@@ -44,6 +44,12 @@
                      LibraryPaths="@(_NativeLibraryDirectory)"
                      WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
 
+    <ItemGroup>
+      <FileWrites Include="$(IntermediateOutputPath)/EntryPointResources.dll" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="CoreCopyEntryPointResources" DependsOnTargets="LinkEntryPointResources">
     <MsvcSxsManifestTool InputAssembly="$(IntermediateOutputPath)/EntryPointResources.dll"
                          OutputManifestFile="$(IntermediateOutputPath)/EntryPoint.manifest"
                          WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
@@ -52,23 +58,20 @@
                          ManifestFragments="@(SxsManifestFragment)"
                          CanonicalizeXml="true" WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
 
-    <ItemGroup>
-      <FileWrites Include="$(IntermediateOutputPath)/EntryPointResources.dll" />
-      <FileWrites Include="$(IntermediateOutputPath)/EntryPoint.manifest" />
-    </ItemGroup>
-  </Target>
-
-  <Target Name="CoreCopyEntryPointResources" DependsOnTargets="LinkEntryPointResources">
     <CopyResourceSegment InputFile="$(IntermediateOutputPath)/EntryPointResources.dll"
                          OutputFile="$(OutputPath)$(TargetName).exe" />
 
     <SetNativeVersionInfo Condition="'$(SetEntryPointVersionFromAssemblyMetadata)' == 'true'" InputFiles="$(OutputPath)$(TargetName).exe"
                           FileVersion="$(FileVersion)" ProductVersion="$(Version)" CompanyName="$(Authors)" FileDescription="$(AssemblyTitle)"
                           LegalCopyright="$(Copyright)" ProductName="$(Product)" />
+
+    <ItemGroup>
+      <FileWrites Include="$(IntermediateOutputPath)/EntryPoint.manifest" />
+    </ItemGroup>
   </Target>
 
   <Target Name="CopyEntryPointResourcesForCoreRT" DependsOnTargets="CoreCopyEntryPointResources" AfterTargets="LinkNative"
           Condition="'$(IlcCalledViaPackage)' == 'true' and '$(NativeBinaryExt)' == '.exe'" />
-  <Target Name="CopyEntryPointResources" DependsOnTargets="CoreCopyEntryPointResources" AfterTargets="Build"
+  <Target Name="CopyEntryPointResources" DependsOnTargets="CoreCopyEntryPointResources" AfterTargets="CopyFilesToOutputDirectory"
           Condition="'$(IlcCalledViaPackage)' == '' and '$(DeployAppHost)' == 'true'" />
 </Project>

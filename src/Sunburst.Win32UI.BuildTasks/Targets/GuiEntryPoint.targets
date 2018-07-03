@@ -12,6 +12,6 @@
 
   <Target Name="MarkEntryPointAsGuiAppForCoreRT" DependsOnTargets="CoreMarkEntryPointAsGuiApp" AfterTargets="LinkNative"
           Condition="'$(IlcCalledViaPackage)' == 'true' and '$(NativeBinaryExt)' == '.exe'" />
-  <Target Name="MarkEntryPointAsGuiApp" DependsOnTargets="CoreMarkEntryPointAsGuiApp" AfterTargets="Build"
+  <Target Name="MarkEntryPointAsGuiApp" DependsOnTargets="CoreMarkEntryPointAsGuiApp" AfterTargets="CopyFilesToOutputDirectory"
           Condition="'$(IlcCalledViaPackage)' == '' and '$(DeployAppHost)' == 'true'" />
 </Project>
