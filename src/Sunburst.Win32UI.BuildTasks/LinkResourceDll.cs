@@ -48,7 +48,6 @@ namespace Sunburst.Win32UI.BuildTasks
                 Path.Combine(mVisualStudioPath, "VC", "Tools", "MSVC", mMsvcToolsVersion, "bin", "HostX86", "x86")
             };
 
-            Log.LogMessage("Prepending PATH: {0}", string.Join("; ", pathAdditions));
             EnvironmentVariables = new[]
             {
                 "PATH=" + string.Join(Path.PathSeparator.ToString(), pathAdditions) + Path.PathSeparator + Environment.GetEnvironmentVariable("PATH")
