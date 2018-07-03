@@ -15,50 +15,50 @@
 
   <!-- The MSBuildProjectFullPath is here to ensure that the target always runs, even if no icons or RC fragments were specified. -->
   <Target Name="GenerateEntryPointResourceScript" DependsOnTargets="PrepareForBuild;LocateWindowsSDK"
-          Inputs="@(EntryPointIcon);@(EntryPointRCFragment);$(MSBuildProjectFullPath)" Outputs="$(IntermediateOutputPath)/EntryPoint.rc">
+          Inputs="@(EntryPointIcon);@(EntryPointRCFragment);$(MSBuildProjectFullPath)" Outputs="$(IntermediateOutputPath)EntryPoint.rc">
     <GenerateResourceScript Icons="@(EntryPointIcon)" ScriptFragments="@(EntryPointRCFragment)"
-                            OutputFile="$(IntermediateOutputPath)/EntryPoint.rc" />
+                            OutputFile="$(IntermediateOutputPath)EntryPoint.rc" />
 
     <ItemGroup>
-      <ResourceScript Include="$(IntermediateOutputPath)/EntryPoint.rc" />
-      <FileWrites Include="$(IntermediateOutputPath)/EntryPoint.rc" />
+      <ResourceScript Include="$(IntermediateOutputPath)EntryPoint.rc" />
+      <FileWrites Include="$(IntermediateOutputPath)EntryPoint.rc" />
     </ItemGroup>
   </Target>
 
   <Target Name="CompileEntryPointResources" DependsOnTargets="PrepareForBuild;LocateWindowsSDK;GenerateEntryPointResourceScript"
-          Inputs="@(ResourceScript)" Outputs="$(IntermediateOutputPath)/EntryPoint.res">
-    <CompileResourceScript ResourceScripts="@(ResourceScript)" OutputFile="$(IntermediateOutputPath)/EntryPoint.res"
+          Inputs="@(ResourceScript)" Outputs="$(IntermediateOutputPath)EntryPoint.res">
+    <CompileResourceScript ResourceScripts="@(ResourceScript)" OutputFile="$(IntermediateOutputPath)EntryPoint.res"
                            WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" IncludePaths="@(_NativeIncludeDirectory)" />
 
     <ItemGroup>
-      <FileWrites Include="$(IntermediateOutputPath)/EntryPoint.res" />
+      <FileWrites Include="$(IntermediateOutputPath)EntryPoint.res" />
     </ItemGroup>
   </Target>
 
   <Target Name="LinkEntryPointResources" DependsOnTargets="PrepareForBuild;LocateWindowsSDK;CompileEntryPointResources"
-          Inputs="$(IntermediateOutputPath)/EntryPoint.res;@(SxsManifestFragment)"
-          Outputs="$(IntermediateOutputPath)/EntryPointResources.dll">
-    <LinkResourceDll OutputFilePath="$(IntermediateOutputPath)/EntryPointResources.dll"
-                     Objects="$(IntermediateOutputPath)/EntryPoint.res"
+          Inputs="$(IntermediateOutputPath)EntryPoint.res;@(SxsManifestFragment)"
+          Outputs="$(IntermediateOutputPath)EntryPointResources.dll">
+    <LinkResourceDll OutputFilePath="$(IntermediateOutputPath)EntryPointResources.dll"
+                     Objects="$(IntermediateOutputPath)EntryPoint.res"
                      UacPrivilegeLevel="$(UacPrivilegeLevel)"
                      LibraryPaths="@(_NativeLibraryDirectory)"
                      WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
 
     <ItemGroup>
-      <FileWrites Include="$(IntermediateOutputPath)/EntryPointResources.dll" />
+      <FileWrites Include="$(IntermediateOutputPath)EntryPointResources.dll" />
     </ItemGroup>
   </Target>
 
   <Target Name="CoreCopyEntryPointResources" DependsOnTargets="LinkEntryPointResources">
-    <MsvcSxsManifestTool InputAssembly="$(IntermediateOutputPath)/EntryPointResources.dll"
-                         OutputManifestFile="$(IntermediateOutputPath)/EntryPoint.manifest"
+    <MsvcSxsManifestTool InputAssembly="$(IntermediateOutputPath)EntryPointResources.dll"
+                         OutputManifestFile="$(IntermediateOutputPath)EntryPoint.manifest"
                          WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
-    <MsvcSxsManifestTool InputManifestFile="$(IntermediateOutputPath)/EntryPoint.manifest"
+    <MsvcSxsManifestTool InputManifestFile="$(IntermediateOutputPath)EntryPoint.manifest"
                          OutputAssembly="$(OutputPath)$(TargetName).exe"
                          ManifestFragments="@(SxsManifestFragment)"
                          CanonicalizeXml="true" WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
 
-    <CopyResourceSegment InputFile="$(IntermediateOutputPath)/EntryPointResources.dll"
+    <CopyResourceSegment InputFile="$(IntermediateOutputPath)EntryPointResources.dll"
                          OutputFile="$(OutputPath)$(TargetName).exe" />
 
     <SetNativeVersionInfo Condition="'$(SetEntryPointVersionFromAssemblyMetadata)' == 'true'" InputFiles="$(OutputPath)$(TargetName).exe"
@@ -66,7 +66,7 @@
                           LegalCopyright="$(Copyright)" ProductName="$(Product)" />
 
     <ItemGroup>
-      <FileWrites Include="$(IntermediateOutputPath)/EntryPoint.manifest" />
+      <FileWrites Include="$(IntermediateOutputPath)EntryPoint.manifest" />
     </ItemGroup>
   </Target>
 
