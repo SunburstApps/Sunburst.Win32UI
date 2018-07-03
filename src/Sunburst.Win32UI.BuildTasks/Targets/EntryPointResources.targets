@@ -10,6 +10,8 @@
   <UsingTask TaskName="CompileResourceScript" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
   <UsingTask TaskName="LinkResourceDll" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
   <UsingTask TaskName="MsvcSxsManifestTool" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
+  <UsingTask TaskName="ExtractSxsManifest" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
+  <UsingTask TaskName="MergeSxsManifests" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
   <UsingTask TaskName="CopyResourceSegment" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
   <UsingTask TaskName="SetNativeVersionInfo" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
 
@@ -36,38 +38,51 @@
   </Target>
 
   <Target Name="LinkEntryPointResources" DependsOnTargets="PrepareForBuild;LocateWindowsSDK;CompileEntryPointResources"
-          Inputs="$(IntermediateOutputPath)EntryPoint.res;@(SxsManifestFragment)"
-          Outputs="$(IntermediateOutputPath)EntryPointResources.dll">
+          Inputs="$(IntermediateOutputPath)EntryPoint.res"
+          Outputs="$(IntermediateOutputPath)EntryPointResources.dll;$(IntermediateOutputPath)EntryPoint.manifest">
     <LinkResourceDll OutputFilePath="$(IntermediateOutputPath)EntryPointResources.dll"
                      Objects="$(IntermediateOutputPath)EntryPoint.res"
                      UacPrivilegeLevel="$(UacPrivilegeLevel)"
                      LibraryPaths="@(_NativeLibraryDirectory)"
                      WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
 
+    <ExtractSxsManifest InputAssembly="$(IntermediateOutputPath)EntryPointResources.dll"
+                        OutputManifestFile="$(IntermediateOutputPath)EntryPoint.manifest"
+                        WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
+
     <ItemGroup>
       <FileWrites Include="$(IntermediateOutputPath)EntryPointResources.dll" />
+      <FileWrites Include="$(IntermediateOutputPath)EntryPoint.manifest" />
+      <SxsManifestFragment Include="$(IntermediateOutputPath)EntryPoint.manifest" />
     </ItemGroup>
   </Target>
 
-  <Target Name="CoreCopyEntryPointResources" DependsOnTargets="LinkEntryPointResources">
-    <MsvcSxsManifestTool InputAssembly="$(IntermediateOutputPath)EntryPointResources.dll"
-                         OutputManifestFile="$(IntermediateOutputPath)EntryPoint.manifest"
-                         WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
-    <MsvcSxsManifestTool InputManifestFile="$(IntermediateOutputPath)EntryPoint.manifest"
-                         OutputAssembly="$(OutputPath)$(TargetName).exe"
-                         ManifestFragments="@(SxsManifestFragment)"
-                         CanonicalizeXml="true" WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
+  <Target Name="MergeEntryPointSxsManifests" DependsOnTargets="CopyFilesToOutputDirectory;LocateWindowsSDK;LinkEntryPointResources"
+          Inputs="@(SxsManifestFragment)" Outputs="$(IntermediateOutputPath)MergeSxsManifests.stamp">
+    <MergeSxsManifests ManifestFragments="@(SxsManifestFragment)" OutputAssembly="$(OutputPath)$(TargetName).exe"
+                       WindowsSDKBinDirectory="$(WindowsSDKBinDirectory)" />
 
+    <WriteLinesToFile Lines="timestamp" File="$(IntermediateOutputPath)MergeSxsManifests.stamp" />
+  </Target>
+
+  <Target Name="SetNativeVersionInfo" DependsOnTargets="CopyFilesToOutputDirectory;GenerateAssemblyInfo"
+          Inputs="$(GeneratedAssemblyInfoFile);$(OutputPath)$(TargetName).exe" Outputs="$(IntermediateOutputPath)SetNativeVersionInfo.stamp"
+          Condition="'$(SetEntryPointVersionFromAssemblyMetadata)' == 'true'"
+          AfterTargets="CoreCopyEntryPointResources">
+    <SetNativeVersionInfo InputFiles="$(OutputPath)$(TargetName).exe"
+                          FileVersion="$(FileVersion)" ProductVersion="$(Version)"
+                          CompanyName="$(Authors)" FileDescription="$(AssemblyTitle)"
+                          LegalCopyright="$(Copyright)" ProductName="$(Product)" />
+
+    <WriteLinesToFile Lines="timestamp" File="$(IntermediateOutputPath)SetNativeVersionInfo.stamp"  />
+  </Target>
+
+  <Target Name="CoreCopyEntryPointResources" DependsOnTargets="LinkEntryPointResources;CopyFilesToOutputDirectory;MergeEntryPointSxsManifests"
+          Inputs="$(IntermediateOutputPath)EntryPointResources.dll;$(OutputPath)$(TargetName).exe" Outputs="$(IntermediateOutputPath)CopyEntryPointResources.stamp">
     <CopyResourceSegment InputFile="$(IntermediateOutputPath)EntryPointResources.dll"
                          OutputFile="$(OutputPath)$(TargetName).exe" />
 
-    <SetNativeVersionInfo Condition="'$(SetEntryPointVersionFromAssemblyMetadata)' == 'true'" InputFiles="$(OutputPath)$(TargetName).exe"
-                          FileVersion="$(FileVersion)" ProductVersion="$(Version)" CompanyName="$(Authors)" FileDescription="$(AssemblyTitle)"
-                          LegalCopyright="$(Copyright)" ProductName="$(Product)" />
-
-    <ItemGroup>
-      <FileWrites Include="$(IntermediateOutputPath)EntryPoint.manifest" />
-    </ItemGroup>
+    <WriteLinesToFile Lines="timstamp" File="$(IntermediateOutputPath)CopyEntryPointResources.stamp" />
   </Target>
 
   <Target Name="CopyEntryPointResourcesForCoreRT" DependsOnTargets="CoreCopyEntryPointResources" AfterTargets="LinkNative"
