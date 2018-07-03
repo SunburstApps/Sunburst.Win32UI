@@ -32,10 +32,9 @@ namespace Sunburst.Win32UI.BuildTasks
             argv.Add("-nologo");
 
             if (InputManifestFile != null || (ManifestFragments != null && ManifestFragments.Length > 0)) argv.Add("-manifest");
-            if (ManifestFragments != null && ManifestFragments.Length > 0) argv.AddRange(ManifestFragments.Select(item => item.GetMetadata("FullPath")));
-
             if (InputManifestFile != null) argv.Add(InputManifestFile);
-            else if (InputAssembly != null) argv.Add("-inputresource:" + InputAssembly);
+            if (ManifestFragments != null && ManifestFragments.Length > 0) argv.AddRange(ManifestFragments.Select(item => item.GetMetadata("FullPath")));
+            if (InputAssembly != null) argv.Add("-inputresource:" + InputAssembly);
 
             if (OutputManifestFile != null)
             {
