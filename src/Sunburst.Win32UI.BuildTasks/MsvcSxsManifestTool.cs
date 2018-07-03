@@ -31,15 +31,11 @@ namespace Sunburst.Win32UI.BuildTasks
             List<string> argv = new List<string>();
             argv.Add("-nologo");
 
-            if (InputManifestFile != null)
-            {
-                argv.Add("-manifest");
-                argv.Add(InputManifestFile);
-            }
-            else if (InputAssembly != null)
-            {
-                argv.Add("-inputresource:" + InputAssembly + ";#1");
-            }
+            if (InputManifestFile != null || (ManifestFragments != null && ManifestFragments.Length > 0)) argv.Add("-manifest");
+            if (ManifestFragments != null && ManifestFragments.Length > 0) argv.AddRange(ManifestFragments.Select(item => item.GetMetadata("FullPath")));
+
+            if (InputManifestFile != null) argv.Add(InputManifestFile);
+            else if (InputAssembly != null) argv.Add("-inputresource:" + InputAssembly);
 
             if (OutputManifestFile != null)
             {
@@ -47,13 +43,7 @@ namespace Sunburst.Win32UI.BuildTasks
             }
             else if (OutputAssembly != null)
             {
-                argv.Add("-outputresource:" + OutputAssembly + ";#1");
-            }
-
-            if (ManifestFragments != null && ManifestFragments.Length > 0)
-            {
-                argv.Add("-manifest");
-                foreach (var item in ManifestFragments) argv.Add(item.GetMetadata("FullPath"));
+                argv.Add("-outputresource:" + OutputAssembly);
             }
 
             if (CanonicalizeXml) argv.Add("-canonicalize");
