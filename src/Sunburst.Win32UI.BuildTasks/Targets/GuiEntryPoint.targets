@@ -6,8 +6,10 @@
 
   <UsingTask TaskName="MarkExecutableAsGui" AssemblyFile="$(Win32UIBuildTasksAssembly)" />
 
-  <Target Name="CoreMarkEntryPointAsGuiApp" Condition="'$(OutputType)' == 'Exe' or '$(OutputType)' == 'WinExe'">
+  <Target Name="CoreMarkEntryPointAsGuiApp" Condition="'$(OutputType)' == 'Exe' or '$(OutputType)' == 'WinExe'"
+          Inputs="$(OutputPath)$(TargetName).exe" Outputs="$(IntermediateOutputPath)MarkEntryPointAsGuiApp.stamp">
     <MarkExecutableAsGui Executable="$(OutputPath)$(TargetName).exe" RuntimeIdentifier="$(RuntimeIdentifier)" />
+    <WriteLinesToFile Lines="timestamp" File="$(IntermediateOutputPath)MarkEntryPointAsGuiApp.stamp" />
   </Target>
 
   <Target Name="MarkEntryPointAsGuiAppForCoreRT" DependsOnTargets="CoreMarkEntryPointAsGuiApp" AfterTargets="LinkNative"
