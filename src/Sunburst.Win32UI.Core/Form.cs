@@ -8,8 +8,22 @@ namespace Sunburst.Win32UI
 {
     public class Form : Control
     {
-        private int m_style = WindowStyles.WS_OVERLAPPEDWINDOW, m_exStyle = 0;
         private FormState m_state = FormState.Normal;
+        private FormBorderStyle m_borderStyle = FormBorderStyle.Resizable;
+
+        private void InvalidateFrame()
+        {
+            NativeMethods.SetWindowPos(Handle, IntPtr.Zero, 0, 0, 0, 0,
+                                       MoveWindowFlags.IgnoreMove | MoveWindowFlags.IgnoreSize |
+                                       MoveWindowFlags.IgnoreZOrder | MoveWindowFlags.FrameChanged);
+        }
+
+        public Form()
+        {
+            CreateHandle();
+        }
+
+        public Form(IntPtr hWnd, bool owns) : base(hWnd, owns) { }
 
         protected override CreateParams CreateParams
         {
@@ -17,46 +31,28 @@ namespace Sunburst.Win32UI
             {
                 CreateParams cp = base.CreateParams;
                 cp.Style &= ~WindowStyles.WS_CHILD;
-                cp.Style |= m_style;
-                cp.ExtendedStyle |= m_exStyle;
+                cp.Style |= WindowStyles.WS_OVERLAPPEDWINDOW;
+                cp.ExtendedStyle |= WindowStyles.WS_EX_CONTROLPARENT;
                 return cp;
             }
-        }
-
-        private void UpdateControlStyles()
-        {
-            if (!HandleValid) return;
-
-            int style = NativeWindow.Style;
-            int exStyle = NativeWindow.ExtendedStyle;
-
-            void ProcessStyle(int flag)
-            {
-                style &= ~flag;
-                if ((m_style & flag) == flag) style |= flag;
-            }
-
-            ProcessStyle(WindowStyles.WS_MINIMIZEBOX);
-            ProcessStyle(WindowStyles.WS_MAXIMIZEBOX);
-            ProcessStyle(WindowStyles.WS_SYSMENU);
-
-            NativeWindow.Style = style;
-            NativeWindow.ExtendedStyle = exStyle;
-            Invalidate();
         }
 
         public bool HasSystemMenu
         {
             get
             {
-                return (m_style & WindowStyles.WS_SYSMENU) == WindowStyles.WS_SYSMENU;
+                return (NativeWindow.Style & WindowStyles.WS_SYSMENU) == WindowStyles.WS_SYSMENU;
             }
 
             set
             {
-                if (value) m_style |= WindowStyles.WS_SYSMENU;
-                else m_style &= ~WindowStyles.WS_SYSMENU;
-                UpdateControlStyles();
+                int style = NativeWindow.Style;
+                if (value) style |= WindowStyles.WS_SYSMENU;
+                else style &= ~WindowStyles.WS_SYSMENU;
+
+                NativeWindow.Style = style;
+                Invalidate();
+                InvalidateFrame();
             }
         }
 
@@ -64,14 +60,18 @@ namespace Sunburst.Win32UI
         {
             get
             {
-                return (m_style & WindowStyles.WS_MAXIMIZEBOX) == WindowStyles.WS_MAXIMIZEBOX;
+                return (NativeWindow.Style & WindowStyles.WS_MAXIMIZEBOX) == WindowStyles.WS_MAXIMIZEBOX;
             }
 
             set
             {
-                if (value) m_style |= WindowStyles.WS_MAXIMIZEBOX;
-                else m_style &= ~WindowStyles.WS_MAXIMIZEBOX;
-                UpdateControlStyles();
+                int style = NativeWindow.Style;
+                if (value) style |= WindowStyles.WS_MAXIMIZEBOX;
+                else style &= ~WindowStyles.WS_MAXIMIZEBOX;
+
+                NativeWindow.Style = style;
+                Invalidate();
+                InvalidateFrame();
             }
         }
 
@@ -79,14 +79,18 @@ namespace Sunburst.Win32UI
         {
             get
             {
-                return (m_style & WindowStyles.WS_MINIMIZEBOX) == WindowStyles.WS_MINIMIZEBOX;
+                return (NativeWindow.Style & WindowStyles.WS_MINIMIZEBOX) == WindowStyles.WS_MINIMIZEBOX;
             }
 
             set
             {
-                if (value) m_style |= WindowStyles.WS_MINIMIZEBOX;
-                else m_style &= ~WindowStyles.WS_MINIMIZEBOX;
-                UpdateControlStyles();
+                int style = NativeWindow.Style;
+                if (value) style |= WindowStyles.WS_MINIMIZEBOX;
+                else style &= ~WindowStyles.WS_MINIMIZEBOX;
+
+                NativeWindow.Style = style;
+                Invalidate();
+                InvalidateFrame();
             }
         }
 
@@ -207,6 +211,37 @@ namespace Sunburst.Win32UI
         public void ResetSystemMenu() => NativeMethods.GetSystemMenu(Handle, true);
 
         #endregion
+
+        public FormBorderStyle BorderStyle
+        {
+            get => m_borderStyle;
+            set
+            {
+                m_borderStyle = value;
+                if (HandleValid)
+                {
+                    int style = NativeWindow.Style;
+
+                    if (m_borderStyle == FormBorderStyle.None)
+                    {
+                        style &= ~WindowStyles.WS_OVERLAPPEDWINDOW;
+                    }
+                    else if (m_borderStyle == FormBorderStyle.FixedSize)
+                    {
+                        style |= WindowStyles.WS_OVERLAPPEDWINDOW;
+                        style &= ~WindowStyles.WS_SIZEBOX;
+                    }
+                    else if (m_borderStyle == FormBorderStyle.Resizable)
+                    {
+                        style |= WindowStyles.WS_OVERLAPPEDWINDOW;
+                    }
+
+                    NativeWindow.Style = style;
+                    Invalidate();
+                    InvalidateFrame();
+                }
+            }
+        }
     }
 
     public enum FormState
@@ -214,5 +249,26 @@ namespace Sunburst.Win32UI
         Normal,
         Maximized,
         Minimized
+    }
+
+    /// <summary>
+    /// Specifies the types of borders and title bar a <see cref="Form"/> can have.
+    /// </summary>
+    public enum FormBorderStyle
+    {
+        /// <summary>
+        /// The <see cref="Form"/> has no title bar or resize borders.
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// The <see cref="Form"/> has a title bar, but cannot be resized by the user.
+        /// </summary>
+        FixedSize,
+
+        /// <summary>
+        /// The <see cref="Form"/> has a title bar and can be resized by dragging the window edges.
+        /// </summary>
+        Resizable
     }
 }
