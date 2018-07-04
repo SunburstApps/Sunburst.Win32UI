@@ -81,7 +81,7 @@
     <CopyResourceSegment InputFile="$(IntermediateOutputPath)EntryPointResources.dll"
                          OutputFile="$(OutputPath)$(TargetName).exe" />
 
-    <WriteLinesToFile Lines="timstamp" File="$(IntermediateOutputPath)CopyEntryPointResources.stamp" />
+    <WriteLinesToFile Lines="timestamp" File="$(IntermediateOutputPath)CopyEntryPointResources.stamp" />
   </Target>
 
   <Target Name="CopyEntryPointResourcesForCoreRT" DependsOnTargets="CoreCopyEntryPointResources" AfterTargets="LinkNative"
