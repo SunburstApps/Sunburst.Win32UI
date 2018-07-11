@@ -14,7 +14,7 @@ namespace Sunburst.Win32UI.Interop
         }
 
         public IntPtr Handle { get; protected set; } = IntPtr.Zero;
-        private bool OwnsHandle { get; }
+        internal bool OwnsHandle { get; }
 
         public string Text
         {

@@ -5,6 +5,24 @@ namespace Sunburst.Win32UI.Interop
 {
     internal sealed class ControlNativeWindow : NativeWindow
     {
+        public static ControlNativeWindow SubclassWindow(Control owner, IntPtr hWnd, bool ownsHandle)
+        {
+            if (owner == null) throw new ArgumentNullException(nameof(owner));
+            if (!NativeMethods.IsWindow(hWnd)) throw new ArgumentException("not a valid HWND", nameof(hWnd));
+
+            ControlNativeWindow nativeWindow = new ControlNativeWindow(owner, hWnd, ownsHandle);
+            IntPtr wndProc = Marshal.GetFunctionPointerForDelegate((WNDPROC)WndProc);
+
+            const int GWLP_WNDPROC = 0;
+            nativeWindow.superclassWndProc = NativeMethods.GetWindowLongPtr(hWnd, GWLP_WNDPROC);
+
+            GCHandle gcHandle = GCHandle.Alloc(nativeWindow);
+            NativeMethods.SetProp(hWnd, "Sunburst.Win32UI.Control", GCHandle.ToIntPtr(gcHandle));
+
+            NativeMethods.SetWindowLongPtr(hWnd, GWLP_WNDPROC, wndProc);
+            return nativeWindow;
+        }
+
         public static ControlNativeWindow Create(Control owner, CreateParams createParams)
         {
             if (owner == null) throw new ArgumentNullException(nameof(owner));
@@ -57,6 +75,13 @@ namespace Sunburst.Win32UI.Interop
         }
 
         private ControlNativeWindow(Control owner)
+        {
+            if (owner == null) throw new ArgumentNullException(nameof(owner));
+            Owner = owner;
+        }
+
+        private ControlNativeWindow(Control owner, IntPtr hWnd, bool ownsHandle)
+            : base(hWnd, ownsHandle)
         {
             if (owner == null) throw new ArgumentNullException(nameof(owner));
             Owner = owner;
