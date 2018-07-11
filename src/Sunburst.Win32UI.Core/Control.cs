@@ -34,6 +34,8 @@ namespace Sunburst.Win32UI
         protected void SubclassWindow()
         {
             if (!HandleValid) throw new InvalidOperationException("You must have a valid handle before calling this method");
+            if (NativeWindow is ControlNativeWindow) throw new InvalidOperationException("The NativeWindow has already been subclassed");
+
             NativeWindow = ControlNativeWindow.SubclassWindow(this, Handle, NativeWindow.OwnsHandle);
         }
 
