@@ -64,6 +64,14 @@
     <WriteLinesToFile Lines="timestamp" File="$(IntermediateOutputPath)MergeSxsManifests.stamp" />
   </Target>
 
+  <Target Name="CopyEntryPointResourceSegment" DependsOnTargets="LinkEntryPointResources;CopyFilesToOutputDirectory"
+          Inputs="$(IntermediateOutputPath)EntryPointResources.dll;$(OutputPath)$(TargetName).exe" Outputs="$(IntermediateOutputPath)CopyEntryPointResources.stamp">
+    <CopyResourceSegment InputFile="$(IntermediateOutputPath)EntryPointResources.dll"
+                         OutputFile="$(OutputPath)$(TargetName).exe" />
+
+    <WriteLinesToFile Lines="timestamp" File="$(IntermediateOutputPath)CopyEntryPointResources.stamp" />
+  </Target>
+
   <Target Name="SetNativeVersionInfo" DependsOnTargets="CopyFilesToOutputDirectory;GenerateAssemblyInfo"
           Inputs="$(GeneratedAssemblyInfoFile);$(OutputPath)$(TargetName).exe" Outputs="$(IntermediateOutputPath)SetNativeVersionInfo.stamp"
           Condition="'$(SetEntryPointVersionFromAssemblyMetadata)' == 'true'"
@@ -76,13 +84,7 @@
     <WriteLinesToFile Lines="timestamp" File="$(IntermediateOutputPath)SetNativeVersionInfo.stamp"  />
   </Target>
 
-  <Target Name="CoreCopyEntryPointResources" DependsOnTargets="LinkEntryPointResources;CopyFilesToOutputDirectory;MergeEntryPointSxsManifests"
-          Inputs="$(IntermediateOutputPath)EntryPointResources.dll;$(OutputPath)$(TargetName).exe" Outputs="$(IntermediateOutputPath)CopyEntryPointResources.stamp">
-    <CopyResourceSegment InputFile="$(IntermediateOutputPath)EntryPointResources.dll"
-                         OutputFile="$(OutputPath)$(TargetName).exe" />
-
-    <WriteLinesToFile Lines="timestamp" File="$(IntermediateOutputPath)CopyEntryPointResources.stamp" />
-  </Target>
+  <Target Name="CoreCopyEntryPointResources" DependsOnTargets="CopyEntryPointResourceSegment;SetNativeVersionInfo;MergeEntryPointSxsManifests" />
 
   <Target Name="CopyEntryPointResourcesForCoreRT" DependsOnTargets="CoreCopyEntryPointResources" AfterTargets="LinkNative"
           Condition="'$(IlcCalledViaPackage)' == 'true' and '$(NativeBinaryExt)' == '.exe'" />
