@@ -6,7 +6,7 @@ using Sunburst.Win32UI.Interop;
 
 namespace Sunburst.Win32UI
 {
-    public class Form : Control
+    public class Form : ContainerControl
     {
         private FormState m_state = FormState.Normal;
         private FormBorderStyle m_borderStyle = FormBorderStyle.Resizable;
@@ -32,7 +32,6 @@ namespace Sunburst.Win32UI
                 CreateParams cp = base.CreateParams;
                 cp.Style &= ~WindowStyles.WS_CHILD;
                 cp.Style |= WindowStyles.WS_OVERLAPPEDWINDOW;
-                cp.ExtendedStyle |= WindowStyles.WS_EX_CONTROLPARENT;
                 return cp;
             }
         }
@@ -171,30 +170,6 @@ namespace Sunburst.Win32UI
 
             if (!handled) base.WndProc(ref m);
         }
-
-        private readonly List<Control> m_ChildControls = new List<Control>();
-
-        public void AddChild(Control child)
-        {
-            if (!HandleValid) CreateHandle();
-
-            m_ChildControls.Add(child);
-            NativeMethods.SetParent(child.Handle, Handle);
-            child.IsVisible = true;
-        }
-
-        public void RemoveChild(Control child)
-        {
-            if (!HandleValid) CreateHandle();
-
-            if (m_ChildControls.Remove(child))
-            {
-                child.IsVisible = false;
-                NativeMethods.SetParent(child.Handle, IntPtr.Zero);
-            }
-        }
-
-        public IEnumerable<Control> ChildControls => m_ChildControls;
 
         public void Show() => IsVisible = true;
         public void Hide() => IsVisible = false;
