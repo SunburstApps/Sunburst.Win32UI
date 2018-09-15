@@ -86,8 +86,37 @@ namespace Sunburst.Win32UI
 
         internal void CallWndProc(ref Message m) => WndProc(ref m);
 
-        public AnchorStyle Anchor { get; set; } = AnchorStyle.None;
-        public AnchorStyle Dock { get; set; } = AnchorStyle.None;
+        private const string AnchorPropertyKey = "Sunburst.Win32UI.Control.Anchor";
+        public AnchorStyle Anchor
+        {
+            get
+            {
+                if (!HandleValid) throw new InvalidOperationException("Cannot get Anchor/Dock until the handle has been created");
+                return (AnchorStyle)NativeMethods.GetProp(Handle, AnchorPropertyKey);
+            }
+
+            set
+            {
+                if (!HandleValid) throw new InvalidOperationException("Cannot set Anchor/Dock until the handle has been created");
+                NativeMethods.SetProp(Handle, AnchorPropertyKey, (IntPtr)value);
+            }
+        }
+
+        private const string DockPropertyKey = "Sunburst.Win32UI.Control.Dock";
+        public AnchorStyle Dock
+        {
+            get
+            {
+                if (!HandleValid) throw new InvalidOperationException("Cannot get Anchor/Dock until the handle has been created");
+                return (AnchorStyle)NativeMethods.GetProp(Handle, DockPropertyKey);
+            }
+
+            set
+            {
+                if (!HandleValid) throw new InvalidOperationException("Cannot set Anchor/Dock until the handle has been created");
+                NativeMethods.SetProp(Handle, DockPropertyKey, (IntPtr)value);
+            }
+        }
 
         public string Text
         {
@@ -237,6 +266,11 @@ namespace Sunburst.Win32UI
 
                 mOldScalingFont = newFont;
                 handled = false;
+            }
+            else if (m.MessageId == WindowMessages.WM_NCDESTROY)
+            {
+                if (NativeMethods.GetProp(Handle, AnchorPropertyKey) != IntPtr.Zero) NativeMethods.RemoveProp(Handle, AnchorPropertyKey);
+                if (NativeMethods.GetProp(Handle, DockPropertyKey) != IntPtr.Zero) NativeMethods.RemoveProp(Handle, AnchorPropertyKey);
             }
 
             if (!handled) MessageReflector.ReflectMessage(ref m, out handled);
