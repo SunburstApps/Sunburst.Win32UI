@@ -2,9 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.Core", "src\Sunburst.Win32UI.Core\Sunburst.Win32UI.Core.csproj", "{2C91B26B-D6FD-4C16-AACF-8166FFF54070}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.Win32UI.Core", "src\Sunburst.Win32UI.Core\Sunburst.Win32UI.Core.csproj", "{2C91B26B-D6FD-4C16-AACF-8166FFF54070}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.TaskDialogs", "src\Sunburst.Win32UI.TaskDialogs\Sunburst.Win32UI.TaskDialogs.csproj", "{81F2D565-3B17-4657-83CC-D1F3C06363B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.Win32UI.TaskDialogs", "src\Sunburst.Win32UI.TaskDialogs\Sunburst.Win32UI.TaskDialogs.csproj", "{81F2D565-3B17-4657-83CC-D1F3C06363B3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{97DFB2B8-1A33-4F5C-94B0-353B4399C688}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,9 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{97DFB2B8
 		src\Directory.Build.targets = src\Directory.Build.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.Dialogs", "src\Sunburst.Win32UI.Dialogs\Sunburst.Win32UI.Dialogs.csproj", "{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunburst.Win32UI.BuildTasks", "src\Sunburst.Win32UI.BuildTasks\Sunburst.Win32UI.BuildTasks.csproj", "{E6A5F608-6F8F-4D54-895F-1752A19B252E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.Win32UI.BuildTasks", "src\Sunburst.Win32UI.BuildTasks\Sunburst.Win32UI.BuildTasks.csproj", "{E6A5F608-6F8F-4D54-895F-1752A19B252E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,18 +48,6 @@ Global
 		{81F2D565-3B17-4657-83CC-D1F3C06363B3}.Release|x64.Build.0 = Release|Any CPU
 		{81F2D565-3B17-4657-83CC-D1F3C06363B3}.Release|x86.ActiveCfg = Release|Any CPU
 		{81F2D565-3B17-4657-83CC-D1F3C06363B3}.Release|x86.Build.0 = Release|Any CPU
-		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Debug|x64.Build.0 = Debug|Any CPU
-		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Debug|x86.Build.0 = Debug|Any CPU
-		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Release|x64.ActiveCfg = Release|Any CPU
-		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Release|x64.Build.0 = Release|Any CPU
-		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Release|x86.ActiveCfg = Release|Any CPU
-		{D1AC5DD4-F43C-480E-ACE0-26877E1F84AA}.Release|x86.Build.0 = Release|Any CPU
 		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6A5F608-6F8F-4D54-895F-1752A19B252E}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -77,8 +63,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9651FA15-E618-406F-BCCC-4A12C349EA8A}
