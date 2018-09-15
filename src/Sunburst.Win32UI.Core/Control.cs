@@ -222,17 +222,12 @@ namespace Sunburst.Win32UI
                     Size newScaleFactor = GetAutoScaleDimensions(newFont);
                     Size oldScaleFactor = GetAutoScaleDimensions(mOldScalingFont);
 
-                    float fractionX = (float)newScaleFactor.width / (float)oldScaleFactor.width;
-                    float fractionY = (float)newScaleFactor.height / (float)oldScaleFactor.width;
-
                     Rect myRect = WindowRect;
-                    NativeMethods.MapWindowPoints(IntPtr.Zero, Handle, ref myRect);
-
                     int top = myRect.top, left = myRect.left, width = myRect.Width, height = myRect.Height;
-                    top = (int)Math.Round(top * fractionY);
-                    left = (int)Math.Round(left * fractionX);
-                    width = (int)Math.Round(width * fractionX);
-                    height = (int)Math.Round(height * fractionY);
+                    top = top * newScaleFactor.height / oldScaleFactor.height;
+                    left = left * newScaleFactor.width / oldScaleFactor.width;
+                    width = width * newScaleFactor.width / oldScaleFactor.width;
+                    height = height * newScaleFactor.height / oldScaleFactor.height;
 
                     NativeMethods.SetWindowPos(Handle, IntPtr.Zero, left, top, width, height, MoveWindowFlags.IgnoreZOrder | MoveWindowFlags.DoNotActivate);
                 }
