@@ -17,10 +17,7 @@ namespace Sunburst.Win32UI.Interop
             get
             {
                 if (Handle == IntPtr.Zero) throw new InvalidOperationException("Cannot get the value of a StructureBuffer that has been disposed");
-
-                TStruct retval = new TStruct();
-                Marshal.PtrToStructure(Handle, retval);
-                return retval;
+                return Marshal.PtrToStructure<TStruct>(Handle);
             }
 
             set
