@@ -86,6 +86,9 @@ namespace Sunburst.Win32UI
 
         internal void CallWndProc(ref Message m) => WndProc(ref m);
 
+        public AnchorStyle Anchor { get; set; } = AnchorStyle.None;
+        public AnchorStyle Dock { get; set; } = AnchorStyle.None;
+
         public string Text
         {
             get => NativeWindow.Text;
