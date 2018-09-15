@@ -43,6 +43,7 @@ namespace Sunburst.Win32UI.Interop
             {
                 if (Handle != IntPtr.Zero)
                 {
+                    if (DeleteOldStructure) Marshal.DestroyStructure<TStruct>(Handle);
                     Marshal.FreeHGlobal(Handle);
                     Handle = IntPtr.Zero;
                 }
